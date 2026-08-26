@@ -1,0 +1,512 @@
+training:
+  id: ATS006
+  title: "LFCS: Essential Commands"
+  description: >
+    Training material covering the Linux Foundation Certified System
+    Administrator (LFCS) Essential Commands domain, with hands-on labs for
+    each competency.
+
+  certification:
+    name: Linux Foundation Certified System Administrator
+    code: LFCS
+    provider: Linux Foundation
+    domain: Essential Commands
+    weight: 20
+
+modules:
+  - id: module-010
+    title: "Section 010: Shell Semantics: Redirection, Exit Codes & Environment"
+    description: >
+      Master the plumbing every other command in this course sits on top
+      of: diagnosing a program's stdout/stderr/exit-code contract, and the
+      difference between a shell-local variable and one exported into a
+      child process's environment.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-010/README.md
+
+      - type: reading
+        title: "Module 1: Shell Redirection, stdout/stderr, and Exit Codes"
+        path: sections/section-010/module-01/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-011/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-011/docs/solution.md
+
+      - type: lab
+        title: "Shell Redirection & Exit Code Diagnostics Lab"
+        path: labs/lab-011
+
+      - type: reading
+        title: "Module 2: Environment Variables and Scope"
+        path: sections/section-010/module-02/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-012/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-012/docs/solution.md
+
+      - type: lab
+        title: "Environment Variable Scope Lab"
+        path: labs/lab-012
+
+      - type: reading
+        title: "Section 010 Knowledge Check: Shell Semantics"
+        path: sections/section-010/quiz.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-010/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-010/docs/solution.md
+
+      - type: lab
+        title: "Shell Semantics Integration Capstone Lab"
+        path: labs/lab-010
+
+  - id: module-020
+    title: "Section 020: Permissions & File Triage"
+    description: >
+      Master chmod's symbolic/octal/special bits, understand why umask
+      decides new-file permissions before chmod ever runs, and use find's
+      permission/size/age predicates to triage files at scale.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-020/README.md
+
+      - type: reading
+        title: "Module 1: chmod — Symbolic vs Octal, and the Three Special Bits"
+        path: sections/section-020/module-01/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-021/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-021/docs/solution.md
+
+      - type: lab
+        title: "chmod Permission Bits Lab"
+        path: labs/lab-021
+
+      - type: reading
+        title: "Module 2: umask — Why New Files Aren't 777 By Default"
+        path: sections/section-020/module-02/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-022/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-022/docs/solution.md
+
+      - type: lab
+        title: "umask Default Permissions Lab"
+        path: labs/lab-022
+
+      - type: reading
+        title: "Module 3: Find, Filter, and Triage Files by Age, Size, and Permission"
+        path: sections/section-020/module-03/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-023/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-023/docs/solution.md
+
+      - type: lab
+        title: "find Triage by Criteria Lab"
+        path: labs/lab-023
+
+      - type: reading
+        title: "Section 020 Knowledge Check: Permissions & File Triage"
+        path: sections/section-020/quiz.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-020/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-020/docs/solution.md
+
+      - type: lab
+        title: "Permissions & File Triage Capstone Lab"
+        path: labs/lab-020
+
+  - id: module-030
+    title: "Section 030: Everyday Shell Craft: Text Processing, History & Aliases"
+    description: >
+      Extract and redact log content precisely with grep and sed, then
+      compress repetitive command-line work with shell history recall and
+      safe, non-surprising aliases.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-030/README.md
+
+      - type: reading
+        title: "Module 1: Text Processing: Targeted Extraction with grep and Redaction with sed"
+        path: sections/section-030/module-01/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-031/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-031/docs/solution.md
+
+      - type: lab
+        title: "grep & sed Text Processing Lab"
+        path: labs/lab-031
+
+      - type: reading
+        title: "Module 2: Shell Command History: Recall, Search, and Control What Gets Remembered"
+        path: sections/section-030/module-02/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-032/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-032/docs/solution.md
+
+      - type: lab
+        title: "Shell History Recall Lab"
+        path: labs/lab-032
+
+      - type: reading
+        title: "Module 3: Command Aliases: Safe Shortcuts Without Surprising Anyone"
+        path: sections/section-030/module-03/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-033/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-033/docs/solution.md
+
+      - type: lab
+        title: "Command Aliases Lab"
+        path: labs/lab-033
+
+      - type: reading
+        title: "Section 030 Knowledge Check: Everyday Shell Craft"
+        path: sections/section-030/quiz.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-030/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-030/docs/solution.md
+
+      - type: lab
+        title: "Everyday Shell Craft Capstone Lab"
+        path: labs/lab-030
+
+  - id: module-040
+    title: "Section 040: Version Control with Git"
+    description: >
+      Build baseline Git fluency for configuration-as-code work: local
+      repository fundamentals, cross-branch inspection and merging, and
+      reconciling a topic branch against a moving upstream.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-040/README.md
+
+      - type: reading
+        title: "Module 1: Git Fundamentals — Init, Status, Diff, Log, and Remotes"
+        path: sections/section-040/module-01/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-041/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-041/docs/solution.md
+
+      - type: lab
+        title: "Git Fundamentals Lab"
+        path: labs/lab-041
+
+      - type: reading
+        title: "Module 2: Git Branches — Clone, Inspect, Merge, Commit"
+        path: sections/section-040/module-02/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-042/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-042/docs/solution.md
+
+      - type: lab
+        title: "Git Branch Inspection & Merge Lab"
+        path: labs/lab-042
+
+      - type: reading
+        title: "Module 3: Cloning an Upstream Repo, Working on a Topic Branch, and Reconciling Changes"
+        path: sections/section-040/module-03/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-043/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-043/docs/solution.md
+
+      - type: lab
+        title: "Git Upstream Reconciliation Lab"
+        path: labs/lab-043
+
+      - type: reading
+        title: "Section 040 Knowledge Check: Version Control with Git"
+        path: sections/section-040/quiz.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-040/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-040/docs/solution.md
+
+      - type: lab
+        title: "Git Operations Capstone Lab"
+        path: labs/lab-040
+
+  - id: module-050
+    title: "Section 050: Archiving, Compression & Backup Strategy"
+    description: >
+      Convert between archive/compression formats with verifiable
+      integrity, then build a real full+incremental tar backup strategy
+      with a proven restore path.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-050/README.md
+
+      - type: reading
+        title: "Module 1: Archive Conversion: bzip2 to gzip with Content Verification"
+        path: sections/section-050/module-01/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-051/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-051/docs/solution.md
+
+      - type: lab
+        title: "Archive Conversion & Verification Lab"
+        path: labs/lab-051
+
+      - type: reading
+        title: "Module 2: Backup Strategy with tar: Full, Excluded, Incremental, and Verified Restore"
+        path: sections/section-050/module-02/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-052/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-052/docs/solution.md
+
+      - type: lab
+        title: "tar Backup Strategy Lab"
+        path: labs/lab-052
+
+      - type: reading
+        title: "Section 050 Knowledge Check: Archiving & Backup Strategy"
+        path: sections/section-050/quiz.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-050/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-050/docs/solution.md
+
+      - type: lab
+        title: "Archiving & Backup Capstone Lab"
+        path: labs/lab-050
+
+  - id: module-060
+    title: "Section 060: Diskspace Management & Remote Sync"
+    description: >
+      Diagnose a full filesystem that du can't explain — the classic
+      deleted-but-open-file-handle problem — then mirror and snapshot data
+      efficiently across hosts with rsync.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-060/README.md
+
+      - type: reading
+        title: "Module 1: Diskspace Troubleshooting: The Full Filesystem That du Can't Explain"
+        path: sections/section-060/module-01/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-061/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-061/docs/solution.md
+
+      - type: lab
+        title: "Diskspace Troubleshooting Lab"
+        path: labs/lab-061
+
+      - type: reading
+        title: "Module 2: Mirroring and Space-Efficient Incremental Snapshots with rsync"
+        path: sections/section-060/module-02/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-062/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-062/docs/solution.md
+
+      - type: lab
+        title: "rsync Mirroring & Snapshots Lab"
+        path: labs/lab-062
+
+      - type: reading
+        title: "Section 060 Knowledge Check: Diskspace & Remote Sync"
+        path: sections/section-060/quiz.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-060/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-060/docs/solution.md
+
+      - type: lab
+        title: "Diskspace & Sync Capstone Lab"
+        path: labs/lab-060
+
+  - id: module-070
+    title: "Section 070: Service Configuration: systemd Units & SSL Certificates"
+    description: >
+      Wrap a plain script as a proper systemd service, override a vendor
+      unit safely without editing shipped files, and generate/verify SSL
+      key material.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-070/README.md
+
+      - type: reading
+        title: "Module 1: Wrapping a Script as a systemd Service: Unit Creation and Troubleshooting"
+        path: sections/section-070/module-01/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-071/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-071/docs/solution.md
+
+      - type: lab
+        title: "systemd Unit Creation Lab"
+        path: labs/lab-071
+
+      - type: reading
+        title: "Module 2: Overriding a Vendor systemd Unit with systemctl edit"
+        path: sections/section-070/module-02/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-072/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-072/docs/solution.md
+
+      - type: lab
+        title: "systemd Unit Override Lab"
+        path: labs/lab-072
+
+      - type: reading
+        title: "Module 3: Working with SSL Certificates: Keys, Self-Signed Certs, CSRs, and Verification"
+        path: sections/section-070/module-03/course.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-073/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-073/docs/solution.md
+
+      - type: lab
+        title: "SSL Certificate Generation Lab"
+        path: labs/lab-073
+
+      - type: reading
+        title: "Section 070 Knowledge Check: Service Configuration"
+        path: sections/section-070/quiz.md
+
+      - type: reading
+        title: Question
+        path: labs/lab-070/docs/question.md
+
+      - type: reading
+        title: Solution Walkthrough
+        path: labs/lab-070/docs/solution.md
+
+      - type: lab
+        title: "Service Configuration Capstone Lab"
+        path: labs/lab-070
+
+  - id: module-080
+    title: "LFCS Essential Commands Domain Certification Quiz"
+    description: >
+      A comprehensive, scenario-based final assessment covering all 18
+      modules across the 7 Essential Commands sections, simulating actual
+      Linux Foundation exam pressure.
+
+    content:
+      - type: reading
+        title: "Final Domain Certification Quiz"
+        path: sections/final-domain-quiz.md

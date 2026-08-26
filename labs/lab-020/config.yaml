@@ -1,0 +1,59 @@
+metadata:
+  name: "ats-006-lab-020"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-020-setup"
+      description: "Creates the ops group and opsuser account with no persistent umask yet, pre-stages /srv/teamspace/shared, bin/deploy.sh, and dropbox with intentionally wrong permissions, and seeds /srv/teamspace/incoming with files of mixed ages, sizes, and permission bits"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-umask-persistent"
+      description: "Confirms a fresh login shell for opsuser produces 640 files and 750 directories with no chmod involved"
+      type: "file"
+      source: "validation/validate-umask-persistent.sh"
+
+    - name: "verify-shared-setgid"
+      description: "Confirms /srv/teamspace/shared is mode 2770 owned by group ops, and that new files inside it inherit the ops group"
+      type: "file"
+      source: "validation/validate-shared-setgid.sh"
+
+    - name: "verify-deploy-script-locked"
+      description: "Confirms /srv/teamspace/bin/deploy.sh is mode 700"
+      type: "file"
+      source: "validation/validate-deploy-script-locked.sh"
+
+    - name: "verify-dropbox-sticky"
+      description: "Confirms /srv/teamspace/dropbox is mode 1777"
+      type: "file"
+      source: "validation/validate-dropbox-sticky.sh"
+
+    - name: "verify-incoming-age-and-size"
+      description: "Confirms files older than the cutoff were deleted from /srv/teamspace/incoming, and remaining files were correctly split into archive/small and archive/large"
+      type: "file"
+      source: "validation/validate-incoming-age-and-size.sh"
+
+    - name: "verify-incoming-quarantine"
+      description: "Confirms permission-777 files were moved to quarantine/ and the untouched mid-range files remain at the top level"
+      type: "file"
+      source: "validation/validate-incoming-quarantine.sh"
+
+teardown:
+  keepCluster: false

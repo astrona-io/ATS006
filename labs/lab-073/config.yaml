@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-073"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-073-setup"
+      description: "Ensures openssl is installed and creates the empty working directory for certificate generation"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-ssl-key-cert-csr"
+      description: "Confirms the RSA key, self-signed SAN certificate, CSR, and key/cert pairing"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

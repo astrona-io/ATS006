@@ -1,0 +1,54 @@
+metadata:
+  name: "ats-006-lab-070"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-070-setup"
+      description: "Stages the unmanaged healthcheck.sh script, its log directory, and an empty TLS working directory"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-service-unit"
+      description: "Confirms healthcheck.service's base unit file has the correct directives and does not itself set RestartSec"
+      type: "file"
+      source: "validation/validate-service-unit.sh"
+
+    - name: "verify-dropin-override"
+      description: "Confirms a systemctl edit drop-in (not the base unit) sets RestartSec=10"
+      type: "file"
+      source: "validation/validate-dropin-override.sh"
+
+    - name: "verify-service-running"
+      description: "Confirms healthcheck.service is active, enabled, and the merged RestartSec is actually in effect"
+      type: "file"
+      source: "validation/validate-service-running.sh"
+
+    - name: "verify-tls-key-cert"
+      description: "Confirms the RSA key and self-signed SAN certificate for healthcheck.internal.local"
+      type: "file"
+      source: "validation/validate-tls-key-cert.sh"
+
+    - name: "verify-key-cert-match"
+      description: "Confirms the TLS private key and certificate are a matching pair"
+      type: "file"
+      source: "validation/validate-key-cert-match.sh"
+
+teardown:
+  keepCluster: false

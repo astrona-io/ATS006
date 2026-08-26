@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-072"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-072-setup"
+      description: "Installs the vendor-packaged nginx.service and records a checksum of the untouched vendor unit file"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-nginx-drop-in-override"
+      description: "Confirms a drop-in override sets Restart and Environment without modifying the vendor unit file"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-023"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-023-setup"
+      description: "Seeds /var/backup/backup-015 with files of mixed ages, sizes, and permission bits for the find-based triage task"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-find-triage"
+      description: "Confirms old files were deleted, and remaining files were correctly sorted into small/, large/, and compromised/"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

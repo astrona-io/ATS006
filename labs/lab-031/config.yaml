@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-031"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-031-setup"
+      description: "Seeds /var/log-collector/003/nginx.log and server.log with realistic mixed matching/decoy lines"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-grep-sed-completed"
+      description: "Confirms nginx.log.extracted contains exactly the matching lines and server.log was redacted correctly"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

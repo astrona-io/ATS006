@@ -1,0 +1,54 @@
+metadata:
+  name: "ats-006-lab-050"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-050-setup"
+      description: "Seeds /exports/reports-2026-08.tar.bz2 for the archive-conversion half, and /opt/services (config, stable data, restricted-permission secrets file, and a disposable tmp/ dir) for the backup-strategy half"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-archive-conversion"
+      description: "Confirms reports-2026-08.tar.gz was created at gzip level 9, both sorted listings match, and the original bz2 archive is untouched"
+      type: "file"
+      source: "validation/validate-archive-conversion.sh"
+
+    - name: "verify-full-backup"
+      description: "Confirms the full services backup excludes data/tmp and preserves permissions"
+      type: "file"
+      source: "validation/validate-full-backup.sh"
+
+    - name: "verify-incremental-backup"
+      description: "Confirms the incremental backup is a true increment: smaller than the full backup, captures the real changes, and skips the unchanged ledger file"
+      type: "file"
+      source: "validation/validate-incremental-backup.sh"
+
+    - name: "verify-restore-full"
+      description: "Confirms the full-only restore reflects the pre-change state with correct permissions and no excluded content"
+      type: "file"
+      source: "validation/validate-restore-full.sh"
+
+    - name: "verify-restore-incremental"
+      description: "Confirms the full+incremental layered restore reflects the post-change state"
+      type: "file"
+      source: "validation/validate-restore-incremental.sh"
+
+teardown:
+  keepCluster: false

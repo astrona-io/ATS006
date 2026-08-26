@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-032"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-032-setup"
+      description: "Seeds ~/.bash_history with a prior investigation session's commands"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-history-config-and-recovery"
+      description: "Confirms HISTSIZE/HISTFILESIZE/HISTCONTROL/HISTTIMEFORMAT are persisted and the two recovered commands are correct"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

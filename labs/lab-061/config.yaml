@@ -1,0 +1,53 @@
+metadata:
+  name: "ats-006-lab-061"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    # NOTE: astrona-cli's extraDisks are not guaranteed to land on a
+    # predictable /dev/vdX letter -- in practice they can enumerate
+    # before or after the main disk depending on the host. This disk is
+    # always resolved via its `serial` through the stable
+    # /dev/disk/by-id/virtio-<serial> path instead of ever guessing a
+    # raw device name, both in bootstrap and in validation.
+    extraDisks:
+      - sizeGB: 2
+        serial: "lab061-disk1"
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-061-setup"
+      description: "Formats and mounts the extraDisk at /var/log/reporting-app, seeds three legitimate rotated log files, and starts a reporting-app.service that opens a log file, immediately deletes it, and keeps writing through the held-open descriptor -- reproducing the classic df-vs-du deleted-open-file mismatch"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-space-reclaimed"
+      description: "Confirms /var/log/reporting-app usage has dropped substantially from its near-100% baseline"
+      type: "file"
+      source: "validation/validate-space-reclaimed.sh"
+
+    - name: "verify-no-deleted-fd-leak"
+      description: "Confirms no deleted-but-open reporting-app file descriptors remain"
+      type: "file"
+      source: "validation/validate-no-deleted-fd-leak.sh"
+
+    - name: "verify-legit-logs-preserved"
+      description: "Confirms the legitimate reporting-app.log.* files were not deleted as part of the fix"
+      type: "file"
+      source: "validation/validate-legit-logs-preserved.sh"
+
+teardown:
+  keepCluster: false

@@ -1,0 +1,59 @@
+metadata:
+  name: "ats-006-lab-040"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-040-setup"
+      description: "Seeds the bare deploy-configs upstream repository with three candidate environment branches"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-repo-cloned"
+      description: "Confirms the deploy-configs repository was cloned to the expected path"
+      type: "file"
+      source: "validation/validate-repo-cloned.sh"
+
+    - name: "verify-feature-flag-branch-merged"
+      description: "Confirms only the env-canary branch (feature_flag: enabled) was merged into main"
+      type: "file"
+      source: "validation/validate-feature-flag-merged.sh"
+
+    - name: "verify-scripts-directory-committed"
+      description: "Confirms scripts/.keep was committed with the exact expected message"
+      type: "file"
+      source: "validation/validate-scripts-dir-committed.sh"
+
+    - name: "verify-retry-limit-and-timeout-present"
+      description: "Confirms both the retry-limit bump and the simulated upstream timeout commit landed on main"
+      type: "file"
+      source: "validation/validate-retry-limit-rebased.sh"
+
+    - name: "verify-linear-history"
+      description: "Confirms the reconciliation used a rebase (no merge commits) resulting in a linear history"
+      type: "file"
+      source: "validation/validate-linear-history.sh"
+
+    - name: "verify-commit-sequence"
+      description: "Confirms the exact, ordered sequence of commit messages on main's final history"
+      type: "file"
+      source: "validation/validate-commit-sequence.sh"
+
+teardown:
+  keepCluster: false

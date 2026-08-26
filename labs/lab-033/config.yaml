@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-033"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-033-setup"
+      description: "Pre-stages a file that must later be removed with the real, non-aliased rm"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-aliases-completed"
+      description: "Confirms ll/rm/myip are persisted and functional, non-interactive shells don't see them, and the artifact file was removed with the real rm"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

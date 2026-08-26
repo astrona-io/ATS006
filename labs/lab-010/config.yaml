@@ -1,0 +1,54 @@
+metadata:
+  name: "ats-006-lab-010"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-010-setup"
+      description: "Installs the /usr/local/bin/service-probe diagnostic program and prepares the /var/log/monitor directory"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-wrapper-script"
+      description: "Confirms run-check.sh exports PROBE_MODE=strict to the child probe but keeps CHECK_ID shell-local"
+      type: "file"
+      source: "validation/validate-wrapper-script.sh"
+
+    - name: "verify-stdout-isolated"
+      description: "Confirms probe.out contains only the probe's stdout content"
+      type: "file"
+      source: "validation/validate-stdout-isolated.sh"
+
+    - name: "verify-stderr-isolated"
+      description: "Confirms probe.err contains only the probe's stderr content, with no leaked CHECK_ID warning"
+      type: "file"
+      source: "validation/validate-stderr-isolated.sh"
+
+    - name: "verify-combined-output"
+      description: "Confirms probe.combined interleaves both stdout and stderr content"
+      type: "file"
+      source: "validation/validate-combined-output.sh"
+
+    - name: "verify-exit-code-and-propagation"
+      description: "Confirms probe.exit captured 0 and that run-check.sh itself exits with the probe's exit code"
+      type: "file"
+      source: "validation/validate-exit-code-and-propagation.sh"
+
+teardown:
+  keepCluster: false

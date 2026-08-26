@@ -1,0 +1,59 @@
+metadata:
+  name: "ats-006-lab-030"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "capstone-setup"
+      description: "Seeds the incident's access.log/service.log, seeds ~/.bash_history with the prior responder's session, and opens up permissions on the log directory"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-attacker-requests-extracted"
+      description: "Confirms attacker-requests.log contains exactly the matching lines and access.log is untouched"
+      type: "file"
+      source: "validation/validate-attacker-requests.sh"
+
+    - name: "verify-service-log-redacted"
+      description: "Confirms service.log was redacted exactly where required and nowhere else"
+      type: "file"
+      source: "validation/validate-service-log-redacted.sh"
+
+    - name: "verify-history-recovery"
+      description: "Confirms the ufw blocking command and the command run right after it were recovered correctly"
+      type: "file"
+      source: "validation/validate-history-recovery.sh"
+
+    - name: "verify-aliases-persisted"
+      description: "Confirms ll, rm, and report aliases are persisted and functional in ~/.bashrc"
+      type: "file"
+      source: "validation/validate-aliases-persisted.sh"
+
+    - name: "verify-noninteractive-rm"
+      description: "Confirms a non-interactive shell never sees the rm safety alias"
+      type: "file"
+      source: "validation/validate-noninteractive-rm.sh"
+
+    - name: "verify-report-alias-functional"
+      description: "Confirms the report alias actually runs and prints the correct redacted-line count"
+      type: "file"
+      source: "validation/validate-report-alias-functional.sh"
+
+teardown:
+  keepCluster: false

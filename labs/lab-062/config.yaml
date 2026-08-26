@@ -1,0 +1,84 @@
+metadata:
+  name: "ats-006-lab-062"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  # lab-net is this scenario's private subnet: data-001 is the rsync
+  # source + SSH client, data-002 is the rsync destination + SSH server,
+  # both reachable at real, static addresses.
+  networks:
+    - name: "lab-net"
+      cidr: "10.10.60.0/24"
+
+  qemu:
+    - name: "data-001"
+      image:
+        type: "oci"
+        source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+      cpus: 2
+      memoryMB: 2048
+      diskSizeGB: 15
+      display: false
+
+      sshAccess:
+        - "data-002"
+
+      networks:
+        - name: "lab-net"
+          ipv4: "10.10.60.5"
+
+      bootstrap:
+        init:
+          - name: "data-001-lab-setup"
+            description: "Installs rsync and openssh-server, seeds /srv/appdata with a sample working tree (including a tmp/ subdirectory that must be excluded from the sync), and seeds /etc/hosts with data-002's address"
+            type: "folder"
+            source: "bootstrap/data-001/"
+
+    - name: "data-002"
+      image:
+        type: "oci"
+        source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+      cpus: 2
+      memoryMB: 2048
+      diskSizeGB: 15
+      display: false
+      networks:
+        - name: "lab-net"
+          ipv4: "10.10.60.10"
+
+      bootstrap:
+        init:
+          - name: "data-002-lab-setup"
+            description: "Installs rsync and openssh-server, pre-creates /backup/appdata with a stale file that no longer exists on data-001's source, and seeds /etc/hosts with data-001's address"
+            type: "folder"
+            source: "bootstrap/data-002/"
+
+      validation:
+        scripts:
+          - name: "verify-mirror-synced"
+            description: "Confirms /backup/appdata contains an exact mirror of /srv/appdata's real files"
+            type: "file"
+            source: "validation/validate-mirror-synced.sh"
+
+          - name: "verify-tmp-excluded"
+            description: "Confirms tmp/ was excluded from the mirror entirely"
+            type: "file"
+            source: "validation/validate-tmp-excluded.sh"
+
+          - name: "verify-stale-file-deleted"
+            description: "Confirms the pre-existing stale file was removed by the --delete mirroring sync"
+            type: "file"
+            source: "validation/validate-stale-file-deleted.sh"
+
+          - name: "verify-snapshot-link-dest"
+            description: "Confirms a second snapshot exists at /backup/snapshots/snap2 and shares inodes with the mirror via --link-dest"
+            type: "file"
+            source: "validation/validate-snapshot-link-dest.sh"
+
+teardown:
+  keepCluster: false

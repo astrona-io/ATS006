@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-021"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-021-setup"
+      description: "Creates the analysts group/user and pre-stages the shared reports directory, backup-runner.sh script, and dropbox folder with intentionally wrong permissions"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-chmod-permission-bits"
+      description: "Confirms setgid on the shared reports directory (with group inheritance), owner-only lockdown on backup-runner.sh, and the sticky bit on dropbox"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

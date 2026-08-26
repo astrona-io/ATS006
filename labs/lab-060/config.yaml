@@ -1,0 +1,63 @@
+metadata:
+  name: "ats-006-lab-060"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    # NOTE: astrona-cli's extraDisks are not guaranteed to land on a
+    # predictable /dev/vdX letter -- in practice they can enumerate
+    # before or after the main disk depending on the host. This disk is
+    # always resolved via its `serial` through the stable
+    # /dev/disk/by-id/virtio-<serial> path instead of ever guessing a
+    # raw device name, both in bootstrap and in validation.
+    extraDisks:
+      - sizeGB: 2
+        serial: "lab060-disk1"
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-060-setup"
+      description: "Formats and mounts the extraDisk at /var/log/audit-svc, seeds three legitimate rotated log files, starts an audit-svc.service that opens a log file, immediately deletes it, and keeps writing through the held-open descriptor, and creates the empty /backup parent directory for the rsync snapshot steps"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-space-reclaimed"
+      description: "Confirms /var/log/audit-svc usage has dropped substantially from its near-100% baseline"
+      type: "file"
+      source: "validation/validate-space-reclaimed.sh"
+
+    - name: "verify-no-deleted-fd-leak"
+      description: "Confirms no deleted-but-open audit-svc file descriptors remain"
+      type: "file"
+      source: "validation/validate-no-deleted-fd-leak.sh"
+
+    - name: "verify-legit-logs-preserved"
+      description: "Confirms the legitimate audit.log.1/2/3 files were not deleted as part of the fix"
+      type: "file"
+      source: "validation/validate-legit-logs-preserved.sh"
+
+    - name: "verify-full-backup-exists"
+      description: "Confirms /backup/audit-svc-full holds a full rsync copy taken before audit.log.4 was created"
+      type: "file"
+      source: "validation/validate-full-backup-exists.sh"
+
+    - name: "verify-snapshot-link-dest"
+      description: "Confirms /backup/audit-svc-snap2 is a complete snapshot with unchanged files hardlinked against the full backup and audit.log.4 present as new content"
+      type: "file"
+      source: "validation/validate-snapshot-link-dest.sh"
+
+teardown:
+  keepCluster: false

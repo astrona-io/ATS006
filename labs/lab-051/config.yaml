@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-051"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-051-setup"
+      description: "Creates /imports and seeds import001.tar.bz2 with a small multi-file dataset, recording a content baseline for the untouched-original check"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-archive-conversion"
+      description: "Confirms the gzip archive was created at max compression, both sorted listings exist and match, and the original bz2 archive is byte-for-byte untouched"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false
