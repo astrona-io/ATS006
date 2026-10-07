@@ -42,6 +42,7 @@ modules:
       - type: lab
         title: "Shell Redirection & Exit Code Diagnostics Lab"
         path: labs/lab-011
+        difficulty: intermediate
 
       - type: reading
         title: "Module 2: Environment Variables and Scope"
@@ -58,6 +59,7 @@ modules:
       - type: lab
         title: "Environment Variable Scope Lab"
         path: labs/lab-012
+        difficulty: intermediate
 
       - type: reading
         title: "Section 010 Knowledge Check: Shell Semantics"
@@ -74,6 +76,7 @@ modules:
       - type: lab
         title: "Shell Semantics Integration Capstone Lab"
         path: labs/lab-010
+        difficulty: advanced
 
   - id: module-020
     title: "Section 020: Permissions & File Triage"
@@ -102,6 +105,7 @@ modules:
       - type: lab
         title: "chmod Permission Bits Lab"
         path: labs/lab-021
+        difficulty: intermediate
 
       - type: reading
         title: "Module 2: umask — Why New Files Aren't 777 By Default"
@@ -118,6 +122,7 @@ modules:
       - type: lab
         title: "umask Default Permissions Lab"
         path: labs/lab-022
+        difficulty: intermediate
 
       - type: reading
         title: "Module 3: Find, Filter, and Triage Files by Age, Size, and Permission"
@@ -134,6 +139,7 @@ modules:
       - type: lab
         title: "find Triage by Criteria Lab"
         path: labs/lab-023
+        difficulty: intermediate
 
       - type: reading
         title: "Section 020 Knowledge Check: Permissions & File Triage"
@@ -150,6 +156,7 @@ modules:
       - type: lab
         title: "Permissions & File Triage Capstone Lab"
         path: labs/lab-020
+        difficulty: advanced
 
   - id: module-030
     title: "Section 030: Everyday Shell Craft: Text Processing, History & Aliases"
@@ -178,6 +185,7 @@ modules:
       - type: lab
         title: "grep & sed Text Processing Lab"
         path: labs/lab-031
+        difficulty: intermediate
 
       - type: reading
         title: "Module 2: Shell Command History: Recall, Search, and Control What Gets Remembered"
@@ -194,6 +202,7 @@ modules:
       - type: lab
         title: "Shell History Recall Lab"
         path: labs/lab-032
+        difficulty: intermediate
 
       - type: reading
         title: "Module 3: Command Aliases: Safe Shortcuts Without Surprising Anyone"
@@ -210,6 +219,7 @@ modules:
       - type: lab
         title: "Command Aliases Lab"
         path: labs/lab-033
+        difficulty: intermediate
 
       - type: reading
         title: "Section 030 Knowledge Check: Everyday Shell Craft"
@@ -226,6 +236,7 @@ modules:
       - type: lab
         title: "Everyday Shell Craft Capstone Lab"
         path: labs/lab-030
+        difficulty: advanced
 
   - id: module-040
     title: "Section 040: Version Control with Git"
@@ -254,6 +265,7 @@ modules:
       - type: lab
         title: "Git Fundamentals Lab"
         path: labs/lab-041
+        difficulty: intermediate
 
       - type: reading
         title: "Module 2: Git Branches — Clone, Inspect, Merge, Commit"
@@ -270,6 +282,7 @@ modules:
       - type: lab
         title: "Git Branch Inspection & Merge Lab"
         path: labs/lab-042
+        difficulty: intermediate
 
       - type: reading
         title: "Module 3: Cloning an Upstream Repo, Working on a Topic Branch, and Reconciling Changes"
@@ -286,6 +299,7 @@ modules:
       - type: lab
         title: "Git Upstream Reconciliation Lab"
         path: labs/lab-043
+        difficulty: intermediate
 
       - type: reading
         title: "Section 040 Knowledge Check: Version Control with Git"
@@ -302,6 +316,7 @@ modules:
       - type: lab
         title: "Git Operations Capstone Lab"
         path: labs/lab-040
+        difficulty: advanced
 
   - id: module-050
     title: "Section 050: Archiving, Compression & Backup Strategy"
@@ -330,6 +345,7 @@ modules:
       - type: lab
         title: "Archive Conversion & Verification Lab"
         path: labs/lab-051
+        difficulty: intermediate
 
       - type: reading
         title: "Module 2: Backup Strategy with tar: Full, Excluded, Incremental, and Verified Restore"
@@ -346,6 +362,7 @@ modules:
       - type: lab
         title: "tar Backup Strategy Lab"
         path: labs/lab-052
+        difficulty: intermediate
 
       - type: reading
         title: "Section 050 Knowledge Check: Archiving & Backup Strategy"
@@ -362,6 +379,7 @@ modules:
       - type: lab
         title: "Archiving & Backup Capstone Lab"
         path: labs/lab-050
+        difficulty: advanced
 
   - id: module-060
     title: "Section 060: Diskspace Management & Remote Sync"
@@ -390,6 +408,7 @@ modules:
       - type: lab
         title: "Diskspace Troubleshooting Lab"
         path: labs/lab-061
+        difficulty: intermediate
 
       - type: reading
         title: "Module 2: Mirroring and Space-Efficient Incremental Snapshots with rsync"
@@ -406,6 +425,7 @@ modules:
       - type: lab
         title: "rsync Mirroring & Snapshots Lab"
         path: labs/lab-062
+        difficulty: intermediate
 
       - type: reading
         title: "Section 060 Knowledge Check: Diskspace & Remote Sync"
@@ -422,6 +442,7 @@ modules:
       - type: lab
         title: "Diskspace & Sync Capstone Lab"
         path: labs/lab-060
+        difficulty: advanced
 
   - id: module-070
     title: "Section 070: Service Configuration: systemd Units & SSL Certificates"
@@ -450,6 +471,7 @@ modules:
       - type: lab
         title: "systemd Unit Creation Lab"
         path: labs/lab-071
+        difficulty: intermediate
 
       - type: reading
         title: "Module 2: Overriding a Vendor systemd Unit with systemctl edit"
@@ -466,6 +488,7 @@ modules:
       - type: lab
         title: "systemd Unit Override Lab"
         path: labs/lab-072
+        difficulty: intermediate
 
       - type: reading
         title: "Module 3: Working with SSL Certificates: Keys, Self-Signed Certs, CSRs, and Verification"
@@ -482,6 +505,7 @@ modules:
       - type: lab
         title: "SSL Certificate Generation Lab"
         path: labs/lab-073
+        difficulty: intermediate
 
       - type: reading
         title: "Section 070 Knowledge Check: Service Configuration"
@@ -498,6 +522,7 @@ modules:
       - type: lab
         title: "Service Configuration Capstone Lab"
         path: labs/lab-070
+        difficulty: advanced
 
   - id: module-080
     title: "LFCS Essential Commands Domain Certification Quiz"
