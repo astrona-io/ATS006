@@ -43,6 +43,15 @@ modules:
         title: "Shell Redirection, stdout/stderr, and Exit Codes"
         path: sections/section-010/module-01/course.md
       - type: reading
+        title: "Three Signal Lines"
+        path: sections/section-010/module-01/course-01-three-signal-lines.md
+      - type: reading
+        title: "Combining Both Streams In The Right Order"
+        path: sections/section-010/module-01/course-02-combining-both-streams.md
+      - type: reading
+        title: "Reading The Exit Code"
+        path: sections/section-010/module-01/course-03-reading-the-exit-code.md
+      - type: reading
         title: Question
         path: labs/lab-011/docs/question.md
       - type: lab
@@ -63,8 +72,17 @@ modules:
           - name: "Bash Reference Manual: Special Parameters"
             url: https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html
       - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-010/module-01/course-04-wrap-up.md
+      - type: reading
         title: "Environment Variables and Scope"
         path: sections/section-010/module-02/course.md
+      - type: reading
+        title: "Shell Variables And Export"
+        path: sections/section-010/module-02/course-01-shell-variables-and-export.md
+      - type: reading
+        title: "Scope In Scripts, Braces And Quotes"
+        path: sections/section-010/module-02/course-02-scope-in-scripts.md
       - type: reading
         title: Question
         path: labs/lab-012/docs/question.md
@@ -86,6 +104,9 @@ modules:
             url: https://www.gnu.org/software/bash/manual/html_node/Environment.html
           - name: "Bash Reference Manual: Bourne Shell Builtins (export, umask)"
             url: https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-010/module-02/course-03-wrap-up.md
       - type: reading
         title: "Section 010 Knowledge Check: Shell Semantics"
         path: sections/section-010/quiz.md
