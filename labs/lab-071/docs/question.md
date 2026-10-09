@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `app-srv1` from the scenario)
 
 Astronaut, this ship runs a metrics script that nobody watches. The script `/opt/metrics/collector.sh` already exists and is executable. It loops forever and appends a metrics line to `/var/log/metrics-collector/collector.log` every few seconds. Right now no service manages it: if it dies, nothing brings it back, and it does not start after a reboot.
 

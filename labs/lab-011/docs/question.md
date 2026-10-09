@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `app-srv1` from the scenario)
 
 Astronaut, mission control has installed a diagnostic program on this ship at `/bin/output-generator`. It is a very predictable crew member: on every run it writes the same normal output to stdout, the same warning to stderr, and hands back the same exit code. Your job is to capture each of its signal lines on its own.
 

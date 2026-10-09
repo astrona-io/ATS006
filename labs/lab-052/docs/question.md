@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `data-001` from the scenario)
 
 Astronaut, this training ship carries two kinds of cargo worth protecting: its configuration in `/etc`, and a data directory `/srv/appdata`. Inside `/srv/appdata` there is a `cache/` subdirectory that rebuilds itself and must never be backed up. Mission control wants a real backup strategy, not a single copy: a full backup, a true incremental backup, and two restores you can prove.
 

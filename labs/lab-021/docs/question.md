@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `app-srv1` from the scenario)
 
 Astronaut, the `analysts` team is moving into a shared compartment on this ship, and its locks are wrong. The group `analysts` and a team member, `someanalyst`, already exist. Fix the permissions on three places:
 

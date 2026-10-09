@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `data-001` from the scenario)
 
 Astronaut, the backup compartment `/var/backup/backup-015` has turned into a junk drawer. Clean it up with these four steps, in this exact order:
 

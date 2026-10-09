@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `data-001`, syncing to `data-002`
 
 Work on the machine `data-001`. It syncs to the second machine, `data-002`, over SSH.
 

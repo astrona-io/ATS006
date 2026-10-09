@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `data-001` from the scenario)
 
 Astronaut, a supply archive has docked at this training ship. It is vacuum-packed with `bzip2`, and mission control needs it repacked with `gzip`, as tightly as possible, with proof that no crate went missing.
 

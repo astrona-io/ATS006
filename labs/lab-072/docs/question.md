@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `app-srv1` from the scenario)
 
 Astronaut, this ship runs `nginx.service`, installed by a package. The package owns its unit file, its duty card, and will reprint that file at the next upgrade. Change how the service behaves without touching the package's file:
 

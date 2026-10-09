@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `ops-001` from the scenario)
 
 Astronaut, this is the section capstone. Your team's shared deployment configuration lives in a bare upstream repository at `/repositories/deploy-configs.git`. It has a `main` branch and three candidate environment branches: `env-staging`, `env-canary` and `env-prod`. Each candidate sets `feature_flag` in `app.conf` to a different value. Complete these operations, in order:
 

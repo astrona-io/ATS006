@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `data-002` from the scenario)
 
 Astronaut, an alarm is going off on your ship. The internal reporting application has started failing its scheduled log writes, and monitoring shows the filesystem behind `/var/log/reporting-app` climbing toward 100% usage.
 

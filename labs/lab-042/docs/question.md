@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `data-001` from the scenario)
 
 Astronaut, the Auto-Verifier application keeps its settings in a Git repository, and three crew members have each proposed a different flight path for one setting. Mission control wants only the path that opens user registration joined to the main course, plus a new directory for logs.
 

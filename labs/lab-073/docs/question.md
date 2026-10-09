@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `web-srv1` from the scenario)
 
 Astronaut, an internal-only station needs TLS (Transport Layer Security) for the hostname `internal.web-srv1.local`. It needs a secret seal (a private key), an ID badge (a certificate) and a badge application form (a certificate signing request, or CSR). Work inside `/opt/tls/internal-web-srv1`, which already exists and belongs to you:
 

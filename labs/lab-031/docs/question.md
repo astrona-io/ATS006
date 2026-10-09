@@ -1,6 +1,6 @@
 # Question
 
-Solve this question on: `terminal`
+Solve this question on: `terminal` (playing the role of `web-srv1` from the scenario)
 
 Astronaut, a web server on this ship has been probed by a scanning bot. Mission control needs the bot's requests pulled out of one log, and sensitive lines blacked out of another. Both log files are in `/var/log-collector/003/`.
 
