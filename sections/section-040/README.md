@@ -1,63 +1,71 @@
 # Section 040: Version Control with Git
 
-Welcome to Section 040. Configuration-as-code has quietly made Git a core system administration tool, not just a developer one. Ansible playbooks, Terraform manifests, dotfiles, cron scripts, and firewall rule sets increasingly live in Git repositories long before they touch a production host — and LFCS expects you to be fluent enough with Git to be trusted with that history.
+Astronaut, every ship keeps a flight log, and today the flight log for a server's configuration is very often a Git repository. Configuration files, scripts, scheduled jobs and firewall rules live in Git long before they reach a production machine. The exam expects you to be trusted with that history: to read it, add to it and share it without damaging anyone else's work.
 
-This section does not attempt to teach Git as a full development workflow. It builds exactly the baseline fluency an operator needs: creating and inspecting a repository from nothing, cloning a shared repository and hunting across its branches without disturbing your working tree, merging the right change into `main`, and reconciling your own in-progress work against an upstream that moved on while you weren't looking.
+This section does not teach Git as a full developer workflow. It builds exactly the base an administrator needs: creating and inspecting a repository from nothing, cloning a shared repository and reading its branches without disturbing your own work, merging the right change into `main`, and bringing your own unfinished work back in line with an upstream that moved on while you were busy.
+
+**Exam topic covered:** Basic Git operations
 
 ---
 
 ## What You Will Master
 
-By completing this section, you will acquire three core version-control capabilities:
-*   **Local Repository Fundamentals:** How to initialize a repository, read `git status` and `git diff` output correctly at every stage of a change's lifecycle, write a working `.gitignore`, and understand what a Git remote actually is.
-*   **Cross-Branch Inspection & Merging:** How to clone a repository, inspect file content across multiple branches without checking any of them out, merge only the correct branch into `main`, and work around Git's refusal to track empty directories.
-*   **Upstream Reconciliation:** How to create a topic branch, make a focused commit, detect that a shared upstream has moved on using `fetch`, and reconcile your branch against it with `rebase` — while knowing when a `merge` is the safer choice instead.
+- The three states of a change (working tree, staging area, history) and how `git status` shows them.
+- The difference between `git diff` and `git diff --staged`, and when to use each one.
+- A `.gitignore` that keeps build output out, and why it never untracks a file that is already committed.
+- What a remote really is (a name for a location), a bare repository, and `git push -u` with upstream tracking.
+- `git fetch` versus `git pull`, and why `fetch` is always safe.
+- Reading a file on any branch with `git show <ref>:<path>`, without checking it out.
+- Merging exactly one chosen branch into the branch you have checked out.
+- Why Git ignores an empty directory, and the `.keep` placeholder that fixes it.
+- Topic branches with `git switch -c`, focused commits, and the two-dot range (`main..topic`).
+- Rebasing a topic branch onto a new upstream tip, handling a conflict, and knowing when to merge instead.
 
 ---
 
-## The Learning & Lab Path
+## Modules In This Section
 
-This section is divided into three focused modules, each paired with a dedicated hands-on practice lab, and concluded with a comprehensive Capstone Integration Challenge:
+Work through the modules in this order. Each part teaches one idea. A mission (a graded lab) comes right after the part it practises, and the last page of each module is a wrap-up. The capstone at the end uses everything in the section at once.
 
-### 1. Git Fundamentals: Init, Status, Diff, Log, and Remotes
-*   **Module Reader:** **[Module 1: Git Fundamentals — Init, Status, Diff, Log, and Remotes](./module-01/course.md)**
-*   **Practice Lab Sandbox:** **`labs/lab-041`**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-041
-    ```
-*   **Hands-on Objective:** Initialize a brand-new repository from scratch, make and inspect isolated commits with `status`/`diff`/`diff --staged`, write a `.gitignore` that keeps generated files out permanently, and wire up a local bare repository as a stand-in remote with tracked `push`/`fetch`/`pull`.
+### [Git Fundamentals: Init, Status, Diff, Log, and Remotes](module-01/course.md)
 
-### 2. Git Branches: Clone, Inspect, Merge, Commit
-*   **Module Reader:** **[Module 2: Git Branches — Clone, Inspect, Merge, Commit](./module-02/course.md)**
-*   **Practice Lab Sandbox:** **`labs/lab-042`**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-042
-    ```
-*   **Hands-on Objective:** Clone an existing repository, inspect a config file's content across three candidate branches without checking any of them out, merge only the branch matching the required value into `main`, and commit a new directory using the `.keep` placeholder convention.
+3 parts and 1 mission:
 
-### 3. Cloning an Upstream Repo, Working on a Topic Branch, and Reconciling Changes
-*   **Module Reader:** **[Module 3: Cloning an Upstream Repo, Working on a Topic Branch, and Reconciling Changes](./module-03/course.md)**
-*   **Practice Lab Sandbox:** **`labs/lab-043`**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-043
-    ```
-*   **Hands-on Objective:** Clone a shared upstream repository, create a topic branch and make a single focused commit, simulate upstream moving on without you, then `fetch` and `rebase` your branch cleanly onto the new upstream tip.
+1. [The Three States Of A File](module-01/course-01-the-three-states-of-a-file.md)
+2. [Diff, Ignore And Log](module-01/course-02-diff-ignore-and-log.md)
+3. [Remotes, Push And Fetch](module-01/course-03-remotes-push-and-fetch.md)
+   - Mission: [Git Fundamentals Lab](../../labs/lab-041/docs/question.md)
+4. [Wrap-Up: Mission Debrief](module-01/course-04-wrap-up.md)
 
-### 4. Section Capstone Challenge
-*   **Comprehensive Challenge:** **`labs/lab-040` (Git Operations Integration)**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-040
-    ```
-*   **Hands-on Objective:** Connect the dots. Clone a shared deployment-configs repository, identify and merge the one candidate branch with the correct feature flag, commit a new directory the `.keep` way, push your update upstream, then open a topic branch, reconcile it against a simulated teammate's upstream commit with a rebase, and push the final, fully linear history back to `origin`.
+### [Git Branches: Clone, Inspect, Merge, Commit](module-02/course.md)
 
----
+2 parts and 1 mission:
 
-## Ready for Assessment?
+1. [Clone And Inspect Branches](module-02/course-01-clone-and-inspect-branches.md)
+2. [Merge And Commit A New Directory](module-02/course-02-merge-and-commit-a-new-directory.md)
+   - Mission: [Git Branch Inspection & Merge Lab](../../labs/lab-042/docs/question.md)
+3. [Wrap-Up: Mission Debrief](module-02/course-03-wrap-up.md)
 
-Test your theoretical knowledge and diagnostic reasoning before tackling the Git lab missions:
+### [Cloning an Upstream Repository, Working on a Topic Branch, and Reconciling Changes](module-03/course.md)
 
-*   **[Take the Section 040 Knowledge Check Quiz](./quiz.md)**
+2 parts and 1 mission:
+
+1. [A Topic Branch And A Focused Commit](module-03/course-01-a-topic-branch-and-a-focused-commit.md)
+2. [Fetch, Rebase Or Merge](module-03/course-02-fetch-rebase-or-merge.md)
+   - Mission: [Git Upstream Reconciliation Lab](../../labs/lab-043/docs/question.md)
+3. [Wrap-Up: Mission Debrief](module-03/course-03-wrap-up.md)
+
+### Knowledge check
+
+Before the capstone, test your reasoning with the **[Section 040 Knowledge Check](./quiz.md)**.
+
+### Capstone
+
+Your final mission for this section: **[Git Operations Capstone Lab](../../labs/lab-040/docs/question.md)**. You clone a shared deployment repository, merge the one branch with the right feature flag, commit a new directory, push, and then rebase a topic branch onto a teammate's newer commit so the final history is one straight line.
+
+```sh
+astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-040
+astrona ssh ats-006-lab-040
+astrona submit -c labs/lab-040
+astrona destroy ats-006-lab-040
+```

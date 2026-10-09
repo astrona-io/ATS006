@@ -1,6 +1,6 @@
-# Solution Guide: Git Operations Capstone
+# Solution Walkthrough
 
-This guide chains all three module skills into one flowing task: clone, cross-branch inspection and merge, and upstream reconciliation via rebase.
+Astronaut, this capstone chains every Git skill of the section into one flight: clone, read the candidate branches and merge the right one, commit a new directory, push, then rebase a topic branch onto a teammate's newer work and push a straight history. The grader reads the upstream repository, so every result must be pushed.
 
 ---
 
@@ -11,9 +11,13 @@ git clone /repositories/deploy-configs.git /home/candidate/deploy-configs
 cd /home/candidate/deploy-configs
 ```
 
+The clone brings every branch as `origin/env-staging`, `origin/env-canary` and `origin/env-prod`, and sets `origin` to `/repositories/deploy-configs.git`.
+
 ---
 
-## Step 2: Inspect the candidate branches and merge the correct one
+## Step 2: Read the candidate branches and merge the correct one
+
+Read `app.conf` on each candidate without checking any of them out:
 
 ```bash
 for b in env-staging env-canary env-prod; do
@@ -22,12 +26,23 @@ for b in env-staging env-canary env-prod; do
 done
 ```
 
-`env-canary` is the branch setting `feature_flag: enabled`.
+```text
+== env-staging ==
+feature_flag: staging_only
+== env-canary ==
+feature_flag: enabled
+== env-prod ==
+feature_flag: disabled  # matches production default
+```
+
+`env-canary` is the branch that sets `feature_flag: enabled`. Make sure you are on `main`, then merge only that branch:
 
 ```bash
 git switch main
 git merge origin/env-canary
 ```
+
+`main` has had no new commits since `env-canary` branched off, so Git simply moves `main` forward to the `env-canary` commit (a fast-forward). No merge commit is created, which keeps the history straight.
 
 ---
 
@@ -40,6 +55,8 @@ git add scripts/.keep
 git commit -m "add scripts directory"
 ```
 
+Git only tracks content, so the placeholder file is what makes the directory part of the commit. The grader checks that this commit changes `scripts/.keep` and nothing else.
+
 ---
 
 ## Step 4: Push `main` with upstream tracking
@@ -47,6 +64,8 @@ git commit -m "add scripts directory"
 ```bash
 git push -u origin main
 ```
+
+`-u` pushes `main` and records that it follows `origin/main`.
 
 ---
 
@@ -61,7 +80,7 @@ git commit -m "increase retry limit to 10"
 
 ---
 
-## Step 6: Simulate a teammate pushing directly to upstream
+## Step 6: Simulate a teammate pushing straight to the upstream
 
 ```bash
 git clone /repositories/deploy-configs.git /tmp/someone-else
@@ -74,6 +93,8 @@ cd /home/candidate/deploy-configs
 rm -rf /tmp/someone-else
 ```
 
+The throwaway clone already contains your pushed `add scripts directory` commit, so the teammate's commit lands on top of it.
+
 ---
 
 ## Step 7: Fetch and rebase the topic branch
@@ -84,7 +105,7 @@ git switch bump-retry-limit
 git rebase origin/main
 ```
 
-Because the teammate's change appended a new line and the topic branch's change modified a different, existing line, the rebase replays with no conflict.
+`git fetch` only moves `origin/main`. `git rebase origin/main` replays your retry-limit commit on top of the teammate's timeout commit. The teammate appended a new line and your change edits a different, existing line, so the rebase replays with no conflict.
 
 ---
 
@@ -97,6 +118,42 @@ git merge bump-retry-limit
 git push origin main
 ```
 
-The first merge fast-forwards `main` to include the teammate's timeout commit; since `bump-retry-limit` was just rebased on top of that exact same tip, the second merge is also a fast-forward — the end result is a single linear history with no merge commits.
+The first merge fast-forwards `main` to include the teammate's timeout commit. `bump-retry-limit` was just rebased on top of that same tip, so the second merge is also a fast-forward. The end result is one straight history with no merge commits.
 
-**Note:** verify the final state with `git log --oneline --graph` and `cat app.conf` — you should see `feature_flag: enabled`, `retry_limit: 10`, and `timeout: 60` together, in a straight line.
+---
+
+## Step 9: Check the result and submit
+
+Check the commit sequence on the upstream, oldest first:
+
+```bash
+git -C /repositories/deploy-configs.git log --reverse --format=%s main
+```
+
+```text
+initial commit
+enable feature flag for canary rollout
+add scripts directory
+add default timeout to app.conf
+increase retry limit to 10
+```
+
+Check the final `app.conf` on the upstream:
+
+```bash
+git -C /repositories/deploy-configs.git show main:app.conf
+```
+
+```text
+feature_flag: enabled
+retry_limit: 10
+max_connections: 100
+log_level: info
+timeout: 60
+```
+
+`git log --oneline --graph` in `/home/candidate/deploy-configs` shows the same commits in one straight line. When everything matches, send the mission for grading from your own computer:
+
+```sh
+astrona submit -c labs/lab-040
+```

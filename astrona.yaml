@@ -350,8 +350,17 @@ modules:
         title: "Section Overview"
         path: sections/section-040/README.md
       - type: reading
-        title: "Git Fundamentals — Init, Status, Diff, Log, and Remotes"
+        title: "Git Fundamentals: Init, Status, Diff, Log, and Remotes"
         path: sections/section-040/module-01/course.md
+      - type: reading
+        title: "The Three States Of A File"
+        path: sections/section-040/module-01/course-01-the-three-states-of-a-file.md
+      - type: reading
+        title: "Diff, Ignore And Log"
+        path: sections/section-040/module-01/course-02-diff-ignore-and-log.md
+      - type: reading
+        title: "Remotes, Push And Fetch"
+        path: sections/section-040/module-01/course-03-remotes-push-and-fetch.md
       - type: reading
         title: Question
         path: labs/lab-041/docs/question.md
@@ -377,8 +386,17 @@ modules:
           - name: "git push"
             url: https://git-scm.com/docs/git-push
       - type: reading
-        title: "Git Branches — Clone, Inspect, Merge, Commit"
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-040/module-01/course-04-wrap-up.md
+      - type: reading
+        title: "Git Branches: Clone, Inspect, Merge, Commit"
         path: sections/section-040/module-02/course.md
+      - type: reading
+        title: "Clone And Inspect Branches"
+        path: sections/section-040/module-02/course-01-clone-and-inspect-branches.md
+      - type: reading
+        title: "Merge And Commit A New Directory"
+        path: sections/section-040/module-02/course-02-merge-and-commit-a-new-directory.md
       - type: reading
         title: Question
         path: labs/lab-042/docs/question.md
@@ -402,8 +420,17 @@ modules:
           - name: "Pro Git: Basic Branching and Merging"
             url: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
       - type: reading
-        title: "Cloning an Upstream Repo, Working on a Topic Branch, and Reconciling Changes"
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-040/module-02/course-03-wrap-up.md
+      - type: reading
+        title: "Cloning an Upstream Repository, Working on a Topic Branch, and Reconciling Changes"
         path: sections/section-040/module-03/course.md
+      - type: reading
+        title: "A Topic Branch And A Focused Commit"
+        path: sections/section-040/module-03/course-01-a-topic-branch-and-a-focused-commit.md
+      - type: reading
+        title: "Fetch, Rebase Or Merge"
+        path: sections/section-040/module-03/course-02-fetch-rebase-or-merge.md
       - type: reading
         title: Question
         path: labs/lab-043/docs/question.md
@@ -425,6 +452,9 @@ modules:
             url: https://git-scm.com/docs/git-rebase
           - name: "Pro Git: Rebasing"
             url: https://git-scm.com/book/en/v2/Git-Branching-Rebasing
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-040/module-03/course-03-wrap-up.md
       - type: reading
         title: "Section 040 Knowledge Check: Version Control with Git"
         path: sections/section-040/quiz.md

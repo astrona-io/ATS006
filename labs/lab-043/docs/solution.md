@@ -1,6 +1,6 @@
-# Solution Guide: Cloning Upstream and Reconciling a Topic Branch
+# Solution Walkthrough
 
-This guide walks through branching off a clone, making a focused commit, simulating upstream drift, and reconciling with a rebase.
+Astronaut, this mission runs the full cycle of a shared change: branch off, make one focused change, let a teammate push something new, and replay your work on top with a rebase. The grader checks the commit messages word for word, and it checks that your commit has exactly one parent.
 
 ---
 
@@ -12,7 +12,7 @@ cd /home/candidate/repositories/upstream-app
 git branch -vv
 ```
 
-The clone automatically checks out the default branch and sets it up to track `origin/main` with no extra configuration.
+The clone checks out the default branch, `main`, and sets it to track `origin/main` with no extra configuration. `git branch -vv` shows `[origin/main]` next to `main`.
 
 ---
 
@@ -35,6 +35,8 @@ git add config.yaml
 git commit -m "increase timeout to 90s"
 ```
 
+`sed` changes the one line in place. `git diff` confirms that only the `timeout` line changed before you stage it.
+
 ---
 
 ## Step 4: Show exactly what the topic branch changed
@@ -44,11 +46,11 @@ git log main..fix-timeout-value --oneline
 git diff main..fix-timeout-value
 ```
 
-The two-dot range lists commits (and shows the combined diff) reachable from `fix-timeout-value` but not from `main` — exactly what this branch added.
+The two-dot range lists the commits reachable from `fix-timeout-value` but not from `main`, and shows their combined change. Here that is one commit, `increase timeout to 90s`, which turns `timeout: 30` into `timeout: 90`.
 
 ---
 
-## Step 5: Simulate upstream moving on
+## Step 5: Simulate the upstream moving on
 
 ```bash
 git clone /repositories/upstream-app.git /tmp/someone-else
@@ -61,7 +63,7 @@ cd /home/candidate/repositories/upstream-app
 rm -rf /tmp/someone-else
 ```
 
-This models a teammate pushing directly to the shared upstream while your topic branch was in progress. Since it touches a different line (`retries`, not `timeout`), it isn't a conflict by itself.
+This plays a teammate who pushes straight to the shared upstream while your topic branch is in progress. It changes a different line (`retries`, not `timeout`), so it does not conflict with your change.
 
 ---
 
@@ -73,13 +75,43 @@ git log main..origin/main --oneline
 git rebase origin/main
 ```
 
-`git fetch` only updates the `origin/main` remote-tracking ref — your checked-out branch is untouched until you act on it. `git rebase origin/main` (run while on `fix-timeout-value`) detaches your one commit, moves the branch base to the new upstream tip, and replays your commit on top of it.
+`git fetch` only moves the `origin/main` remote-tracking reference; your checked-out branch is untouched until you act. The `git log` range lists the teammate's commit. `git rebase origin/main`, run while you are on `fix-timeout-value`, lifts your one commit off, moves the branch's start to the new upstream tip and replays your commit on top.
+
+If the rebase stops with a conflict, fix the markers, `git add` the file and run `git rebase --continue`. `git rebase --abort` always takes you back to where you started.
+
+---
+
+## Step 7: Check the result and submit
+
+Look at the graph and the file:
 
 ```bash
 git log --oneline --graph --all
 cat config.yaml
 ```
 
-Both `timeout: 90` and `retries: 5` should be present, in a single linear history with no merge commit.
+The graph is one straight line with no merge commit, and the file now holds both changes:
 
-**Note:** if the rebase stops with a conflict, resolve the markers, `git add` the file, and run `git rebase --continue`; `git rebase --abort` is always available as a clean escape hatch.
+```text
+timeout: 90
+max_connections: 100
+log_level: info
+retries: 5
+```
+
+Check that your commit sits directly on top of the teammate's commit:
+
+```bash
+git log -2 --format=%s fix-timeout-value
+```
+
+```text
+increase timeout to 90s
+bump retry count for flaky network
+```
+
+When everything matches, send the mission for grading from your own computer:
+
+```sh
+astrona submit -c labs/lab-043
+```
