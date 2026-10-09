@@ -1,3 +1,15 @@
+# Course manifest for ATS006 - Essential Commands (Linux Foundation
+# Certified System Administrator, LFCS).
+#
+# One entry per section under `modules:`. Each section lists, in order: its
+# README, then for each module the landing page (course.md), its parts
+# (course-0N-*.md), and right after the part a lab tests, the lab's
+# question.md reading and the `type: lab` entry. The module's wrap-up page
+# comes last. The section quiz and the section capstone close the section.
+# There are no playgrounds yet. solution.md files are never listed.
+#
+# Every `path:` is relative to this file.
+
 training:
   id: ATS006
   title: "LFCS: Essential Commands"
@@ -14,6 +26,7 @@ training:
     weight: 20
 
 modules:
+
   - id: module-010
     title: "Section 010: Shell Semantics: Redirection, Exit Codes & Environment"
     description: >
@@ -24,59 +37,80 @@ modules:
 
     content:
       - type: reading
-        title: Section Overview
+        title: "Section Overview"
         path: sections/section-010/README.md
-
       - type: reading
-        title: "Module 1: Shell Redirection, stdout/stderr, and Exit Codes"
+        title: "Shell Redirection, stdout/stderr, and Exit Codes"
         path: sections/section-010/module-01/course.md
-
       - type: reading
         title: Question
         path: labs/lab-011/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-011/docs/solution.md
-
       - type: lab
         title: "Shell Redirection & Exit Code Diagnostics Lab"
         path: labs/lab-011
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: redirection
+        task_kind: build
+        tags: [stdout, stderr, redirection, exit-codes, dev-null]
+        learning_goals:
+          - Send a program's stdout and stderr to separate files
+          - Capture both streams in one file with the redirections in the right order
+          - Record a program's exit code before another command overwrites it
+        resources:
+          - name: "Bash Reference Manual: Redirections"
+            url: https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+          - name: "Bash Reference Manual: Special Parameters"
+            url: https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html
       - type: reading
-        title: "Module 2: Environment Variables and Scope"
+        title: "Environment Variables and Scope"
         path: sections/section-010/module-02/course.md
-
       - type: reading
         title: Question
         path: labs/lab-012/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-012/docs/solution.md
-
       - type: lab
         title: "Environment Variable Scope Lab"
         path: labs/lab-012
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: environment
+        task_kind: build
+        tags: [environment-variables, export, shell-scripts, bashrc]
+        learning_goals:
+          - Write a script that keeps one variable local and exports another to its child processes
+          - Build a new variable from an existing exported one without changing ~/.bashrc
+        resources:
+          - name: "Bash Reference Manual: Shell Parameters"
+            url: https://www.gnu.org/software/bash/manual/html_node/Shell-Parameters.html
+          - name: "Bash Reference Manual: Environment"
+            url: https://www.gnu.org/software/bash/manual/html_node/Environment.html
+          - name: "Bash Reference Manual: Bourne Shell Builtins (export, umask)"
+            url: https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
       - type: reading
         title: "Section 010 Knowledge Check: Shell Semantics"
         path: sections/section-010/quiz.md
-
       - type: reading
         title: Question
         path: labs/lab-010/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-010/docs/solution.md
-
       - type: lab
         title: "Shell Semantics Integration Capstone Lab"
         path: labs/lab-010
         difficulty: advanced
+        estimated_duration: 30m
+        topic: redirection
+        task_kind: build
+        tags: [shell-scripts, export, environment-variables, stdout, stderr, redirection, exit-codes]
+        learning_goals:
+          - Export one variable to a child process while keeping another one local to the script
+          - Capture a child's stdout, stderr, both streams together and its exit code in separate files
+          - Make a wrapper script exit with the same exit code as the program it runs
+        resources:
+          - name: "Bash Reference Manual: Redirections"
+            url: https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+          - name: "Bash Reference Manual: Special Parameters"
+            url: https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html
+          - name: "Bash Reference Manual: Bourne Shell Builtins (export, umask)"
+            url: https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
 
   - id: module-020
     title: "Section 020: Permissions & File Triage"
@@ -87,76 +121,98 @@ modules:
 
     content:
       - type: reading
-        title: Section Overview
+        title: "Section Overview"
         path: sections/section-020/README.md
-
       - type: reading
-        title: "Module 1: chmod — Symbolic vs Octal, and the Three Special Bits"
+        title: "chmod — Symbolic vs Octal, and the Three Special Bits"
         path: sections/section-020/module-01/course.md
-
       - type: reading
         title: Question
         path: labs/lab-021/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-021/docs/solution.md
-
       - type: lab
         title: "chmod Permission Bits Lab"
         path: labs/lab-021
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: permissions
+        task_kind: build
+        tags: [chmod, octal-mode, setgid, sticky-bit, groups]
+        learning_goals:
+          - Lock a shared directory to its owner and group, with new files inheriting the group
+          - Make a script executable by its owner only
+          - Protect a shared drop folder so users can delete only their own files
+        resources:
+          - name: "GNU Coreutils: chmod invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/chmod-invocation.html
+          - name: "GNU Coreutils: File permissions"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/File-permissions.html
       - type: reading
-        title: "Module 2: umask — Why New Files Aren't 777 By Default"
+        title: "umask — Why New Files Aren't 777 By Default"
         path: sections/section-020/module-02/course.md
-
       - type: reading
         title: Question
         path: labs/lab-022/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-022/docs/solution.md
-
       - type: lab
         title: "umask Default Permissions Lab"
         path: labs/lab-022
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: permissions
+        task_kind: build
+        tags: [umask, octal-mode, bashrc, file-permissions]
+        learning_goals:
+          - Predict the mode of a new file and a new directory from the current umask
+          - Set a persistent umask so new files come out 640 and new directories 750 at every login
+        resources:
+          - name: "GNU Coreutils: Umask and Protection"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/Umask-and-Protection.html
+          - name: "Bash Reference Manual: Bourne Shell Builtins (export, umask)"
+            url: https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
       - type: reading
-        title: "Module 3: Find, Filter, and Triage Files by Age, Size, and Permission"
+        title: "Find, Filter, and Triage Files by Age, Size, and Permission"
         path: sections/section-020/module-03/course.md
-
       - type: reading
         title: Question
         path: labs/lab-023/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-023/docs/solution.md
-
       - type: lab
         title: "find Triage by Criteria Lab"
         path: labs/lab-023
         difficulty: intermediate
-
+        estimated_duration: 20m
+        topic: file-search
+        task_kind: build
+        tags: [find, file-age, file-size, file-permissions]
+        learning_goals:
+          - Delete files modified before a given date with find
+          - Move files by size and by exact permission into separate folders, in the order given
+        resources:
+          - name: "GNU Findutils: find manual"
+            url: https://www.gnu.org/software/findutils/manual/html_mono/find.html
       - type: reading
         title: "Section 020 Knowledge Check: Permissions & File Triage"
         path: sections/section-020/quiz.md
-
       - type: reading
         title: Question
         path: labs/lab-020/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-020/docs/solution.md
-
       - type: lab
         title: "Permissions & File Triage Capstone Lab"
         path: labs/lab-020
         difficulty: advanced
+        estimated_duration: 40m
+        topic: permissions
+        task_kind: build
+        tags: [umask, chmod, setgid, sticky-bit, find, file-age, file-size, file-permissions]
+        learning_goals:
+          - Give a user a persistent umask that makes 640 files and 750 directories
+          - Set the setgid, owner-only and sticky permissions on a shared team workspace
+          - Triage a folder with find by age, size and permission, in the order given
+        resources:
+          - name: "GNU Coreutils: chmod invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/chmod-invocation.html
+          - name: "GNU Coreutils: Umask and Protection"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/Umask-and-Protection.html
+          - name: "GNU Findutils: find manual"
+            url: https://www.gnu.org/software/findutils/manual/html_mono/find.html
 
   - id: module-030
     title: "Section 030: Everyday Shell Craft: Text Processing, History & Aliases"
@@ -167,76 +223,99 @@ modules:
 
     content:
       - type: reading
-        title: Section Overview
+        title: "Section Overview"
         path: sections/section-030/README.md
-
       - type: reading
-        title: "Module 1: Text Processing: Targeted Extraction with grep and Redaction with sed"
+        title: "Text Processing: Targeted Extraction with grep and Redaction with sed"
         path: sections/section-030/module-01/course.md
-
       - type: reading
         title: Question
         path: labs/lab-031/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-031/docs/solution.md
-
       - type: lab
         title: "grep & sed Text Processing Lab"
         path: labs/lab-031
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: text-processing
+        task_kind: build
+        tags: [grep, sed, regular-expressions, log-analysis]
+        learning_goals:
+          - Extract only the log lines that match two conditions at once with grep
+          - Replace whole matching lines in place with sed and leave every other line untouched
+        resources:
+          - name: "GNU grep manual"
+            url: https://www.gnu.org/software/grep/manual/grep.html
+          - name: "GNU sed manual"
+            url: https://www.gnu.org/software/sed/manual/sed.html
       - type: reading
-        title: "Module 2: Shell Command History: Recall, Search, and Control What Gets Remembered"
+        title: "Shell Command History: Recall, Search, and Control What Gets Remembered"
         path: sections/section-030/module-02/course.md
-
       - type: reading
         title: Question
         path: labs/lab-032/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-032/docs/solution.md
-
       - type: lab
         title: "Shell History Recall Lab"
         path: labs/lab-032
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: shell-usage
+        task_kind: build
+        tags: [history, bashrc, environment-variables, grep]
+        learning_goals:
+          - Persist history size, ignore rules and timestamps in ~/.bashrc
+          - Recover an exact earlier command and the command that ran just before it
+        resources:
+          - name: "Bash Reference Manual: Bash Variables (HISTSIZE, HISTCONTROL)"
+            url: https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
+          - name: "Bash Reference Manual: Bash History Facilities"
+            url: https://www.gnu.org/software/bash/manual/html_node/Bash-History-Facilities.html
       - type: reading
-        title: "Module 3: Command Aliases: Safe Shortcuts Without Surprising Anyone"
+        title: "Command Aliases: Safe Shortcuts Without Surprising Anyone"
         path: sections/section-030/module-03/course.md
-
       - type: reading
         title: Question
         path: labs/lab-033/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-033/docs/solution.md
-
       - type: lab
         title: "Command Aliases Lab"
         path: labs/lab-033
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: shell-usage
+        task_kind: build
+        tags: [aliases, bashrc, alias-bypass, non-interactive-shell, ip-address]
+        learning_goals:
+          - Persist ll, rm and myip aliases for interactive shells
+          - Run the real rm once without removing the safety alias
+        resources:
+          - name: "Bash Reference Manual: Aliases"
+            url: https://www.gnu.org/software/bash/manual/html_node/Aliases.html
       - type: reading
         title: "Section 030 Knowledge Check: Everyday Shell Craft"
         path: sections/section-030/quiz.md
-
       - type: reading
         title: Question
         path: labs/lab-030/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-030/docs/solution.md
-
       - type: lab
         title: "Everyday Shell Craft Capstone Lab"
         path: labs/lab-030
         difficulty: advanced
+        estimated_duration: 40m
+        topic: text-processing
+        task_kind: build
+        tags: [grep, sed, regular-expressions, log-analysis, history, aliases, bashrc, non-interactive-shell]
+        learning_goals:
+          - Extract and redact incident log lines with grep and sed, leaving every other line untouched
+          - Recover exact commands from another responder's shell history
+          - Persist aliases that work at the prompt but never reach a non-interactive shell
+        resources:
+          - name: "GNU grep manual"
+            url: https://www.gnu.org/software/grep/manual/grep.html
+          - name: "GNU sed manual"
+            url: https://www.gnu.org/software/sed/manual/sed.html
+          - name: "Bash Reference Manual: Bash History Facilities"
+            url: https://www.gnu.org/software/bash/manual/html_node/Bash-History-Facilities.html
+          - name: "Bash Reference Manual: Aliases"
+            url: https://www.gnu.org/software/bash/manual/html_node/Aliases.html
 
   - id: module-040
     title: "Section 040: Version Control with Git"
@@ -247,76 +326,111 @@ modules:
 
     content:
       - type: reading
-        title: Section Overview
+        title: "Section Overview"
         path: sections/section-040/README.md
-
       - type: reading
-        title: "Module 1: Git Fundamentals — Init, Status, Diff, Log, and Remotes"
+        title: "Git Fundamentals — Init, Status, Diff, Log, and Remotes"
         path: sections/section-040/module-01/course.md
-
       - type: reading
         title: Question
         path: labs/lab-041/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-041/docs/solution.md
-
       - type: lab
         title: "Git Fundamentals Lab"
         path: labs/lab-041
         difficulty: intermediate
-
+        estimated_duration: 25m
+        topic: git
+        task_kind: build
+        tags: [git-commit, git-diff, gitignore, git-remote, git-log]
+        learning_goals:
+          - Create a repository and commit files in small, focused steps
+          - Keep build output out of the repository with a .gitignore
+          - Add a bare repository as origin and push with upstream tracking
+        resources:
+          - name: "git init"
+            url: https://git-scm.com/docs/git-init
+          - name: "Pro Git: Recording Changes to the Repository"
+            url: https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository
+          - name: "gitignore"
+            url: https://git-scm.com/docs/gitignore
+          - name: "git push"
+            url: https://git-scm.com/docs/git-push
       - type: reading
-        title: "Module 2: Git Branches — Clone, Inspect, Merge, Commit"
+        title: "Git Branches — Clone, Inspect, Merge, Commit"
         path: sections/section-040/module-02/course.md
-
       - type: reading
         title: Question
         path: labs/lab-042/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-042/docs/solution.md
-
       - type: lab
         title: "Git Branch Inspection & Merge Lab"
         path: labs/lab-042
         difficulty: intermediate
-
+        estimated_duration: 20m
+        topic: git
+        task_kind: build
+        tags: [git-clone, git-branch, git-merge, git-commit]
+        learning_goals:
+          - Read a file on several branches without checking them out
+          - Merge only the matching branch into main
+          - Commit an otherwise empty directory with a placeholder file
+        resources:
+          - name: "git show"
+            url: https://git-scm.com/docs/git-show
+          - name: "git merge"
+            url: https://git-scm.com/docs/git-merge
+          - name: "Pro Git: Basic Branching and Merging"
+            url: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
       - type: reading
-        title: "Module 3: Cloning an Upstream Repo, Working on a Topic Branch, and Reconciling Changes"
+        title: "Cloning an Upstream Repo, Working on a Topic Branch, and Reconciling Changes"
         path: sections/section-040/module-03/course.md
-
       - type: reading
         title: Question
         path: labs/lab-043/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-043/docs/solution.md
-
       - type: lab
         title: "Git Upstream Reconciliation Lab"
         path: labs/lab-043
         difficulty: intermediate
-
+        estimated_duration: 25m
+        topic: git
+        task_kind: build
+        tags: [git-clone, git-branch, git-rebase, git-diff, git-remote, git-log]
+        learning_goals:
+          - Make one focused commit on a topic branch and show exactly what it changed
+          - Fetch new upstream work and rebase the topic branch on top of it
+        resources:
+          - name: "git fetch"
+            url: https://git-scm.com/docs/git-fetch
+          - name: "git rebase"
+            url: https://git-scm.com/docs/git-rebase
+          - name: "Pro Git: Rebasing"
+            url: https://git-scm.com/book/en/v2/Git-Branching-Rebasing
       - type: reading
         title: "Section 040 Knowledge Check: Version Control with Git"
         path: sections/section-040/quiz.md
-
       - type: reading
         title: Question
         path: labs/lab-040/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-040/docs/solution.md
-
       - type: lab
         title: "Git Operations Capstone Lab"
         path: labs/lab-040
         difficulty: advanced
+        estimated_duration: 45m
+        topic: git
+        task_kind: build
+        tags: [git-clone, git-branch, git-merge, git-commit, git-rebase, git-remote, git-log]
+        learning_goals:
+          - Find and merge the one branch with the right setting without checking the candidates out
+          - Push with upstream tracking and rebase a topic branch onto an upstream that moved
+          - Keep main's history linear with fast-forward merges
+        resources:
+          - name: "git merge"
+            url: https://git-scm.com/docs/git-merge
+          - name: "git rebase"
+            url: https://git-scm.com/docs/git-rebase
+          - name: "git push"
+            url: https://git-scm.com/docs/git-push
+          - name: "Pro Git: Rebasing"
+            url: https://git-scm.com/book/en/v2/Git-Branching-Rebasing
 
   - id: module-050
     title: "Section 050: Archiving, Compression & Backup Strategy"
@@ -327,59 +441,78 @@ modules:
 
     content:
       - type: reading
-        title: Section Overview
+        title: "Section Overview"
         path: sections/section-050/README.md
-
       - type: reading
-        title: "Module 1: Archive Conversion: bzip2 to gzip with Content Verification"
+        title: "Archive Conversion: bzip2 to gzip with Content Verification"
         path: sections/section-050/module-01/course.md
-
       - type: reading
         title: Question
         path: labs/lab-051/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-051/docs/solution.md
-
       - type: lab
         title: "Archive Conversion & Verification Lab"
         path: labs/lab-051
         difficulty: intermediate
-
+        estimated_duration: 15m
+        topic: archiving
+        task_kind: migration
+        tags: [tar, gzip, bzip2, archive-verification]
+        learning_goals:
+          - Convert a bzip2 tar archive to gzip at the best compression level without touching the original
+          - Prove both archives hold the same files with sorted listings
+        resources:
+          - name: "GNU tar manual"
+            url: https://www.gnu.org/software/tar/manual/tar.html
+          - name: "GNU gzip manual"
+            url: https://www.gnu.org/software/gzip/manual/gzip.html
       - type: reading
-        title: "Module 2: Backup Strategy with tar: Full, Excluded, Incremental, and Verified Restore"
+        title: "Backup Strategy with tar: Full, Excluded, Incremental, and Verified Restore"
         path: sections/section-050/module-02/course.md
-
       - type: reading
         title: Question
         path: labs/lab-052/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-052/docs/solution.md
-
       - type: lab
         title: "tar Backup Strategy Lab"
         path: labs/lab-052
         difficulty: intermediate
-
+        estimated_duration: 30m
+        topic: backup
+        task_kind: build
+        tags: [tar, gzip, incremental-backup, exclude, restore]
+        learning_goals:
+          - Take a full backup with a snapshot file, permissions kept and a cache directory excluded
+          - Take a true incremental backup and layer it over the full backup on restore
+          - Prove both restores with an explicit comparison
+        resources:
+          - name: "GNU tar: Using tar to Perform Incremental Dumps"
+            url: https://www.gnu.org/software/tar/manual/html_node/Incremental-Dumps.html
+          - name: "GNU tar manual"
+            url: https://www.gnu.org/software/tar/manual/tar.html
       - type: reading
         title: "Section 050 Knowledge Check: Archiving & Backup Strategy"
         path: sections/section-050/quiz.md
-
       - type: reading
         title: Question
         path: labs/lab-050/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-050/docs/solution.md
-
       - type: lab
         title: "Archiving & Backup Capstone Lab"
         path: labs/lab-050
         difficulty: advanced
+        estimated_duration: 45m
+        topic: backup
+        task_kind: build
+        tags: [tar, gzip, bzip2, archive-verification, incremental-backup, exclude, restore]
+        learning_goals:
+          - Convert a bzip2 archive to gzip at the best level and prove both hold the same files
+          - Take a full and a true incremental tar backup with a snapshot file and an exclude
+          - Restore the full backup alone and with the increment, and prove both restores
+        resources:
+          - name: "GNU tar manual"
+            url: https://www.gnu.org/software/tar/manual/tar.html
+          - name: "GNU tar: Using tar to Perform Incremental Dumps"
+            url: https://www.gnu.org/software/tar/manual/html_node/Incremental-Dumps.html
+          - name: "GNU gzip manual"
+            url: https://www.gnu.org/software/gzip/manual/gzip.html
 
   - id: module-060
     title: "Section 060: Diskspace Management & Remote Sync"
@@ -390,59 +523,77 @@ modules:
 
     content:
       - type: reading
-        title: Section Overview
+        title: "Section Overview"
         path: sections/section-060/README.md
-
       - type: reading
-        title: "Module 1: Diskspace Troubleshooting: The Full Filesystem That du Can't Explain"
+        title: "Diskspace Troubleshooting: The Full Filesystem That du Can't Explain"
         path: sections/section-060/module-01/course.md
-
       - type: reading
         title: Question
         path: labs/lab-061/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-061/docs/solution.md
-
       - type: lab
         title: "Diskspace Troubleshooting Lab"
         path: labs/lab-061
         difficulty: intermediate
-
+        estimated_duration: 20m
+        topic: disk-space
+        task_kind: troubleshooting
+        tags: [df, du, lsof, deleted-open-files, systemctl]
+        learning_goals:
+          - Show that df and du disagree on the same filesystem
+          - Find the process holding a deleted file open
+          - Reclaim the space without deleting the application's legitimate logs
+        resources:
+          - name: "GNU Coreutils: df invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/df-invocation.html
+          - name: "GNU Coreutils: du invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/du-invocation.html
+          - name: "proc(5): the /proc filesystem"
+            url: https://man7.org/linux/man-pages/man5/proc.5.html
       - type: reading
-        title: "Module 2: Mirroring and Space-Efficient Incremental Snapshots with rsync"
+        title: "Mirroring and Space-Efficient Incremental Snapshots with rsync"
         path: sections/section-060/module-02/course.md
-
       - type: reading
         title: Question
         path: labs/lab-062/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-062/docs/solution.md
-
       - type: lab
         title: "rsync Mirroring & Snapshots Lab"
         path: labs/lab-062
         difficulty: intermediate
-
+        estimated_duration: 25m
+        topic: remote-sync
+        task_kind: build
+        tags: [rsync, ssh, exclude, link-dest]
+        learning_goals:
+          - Preview a sync with a dry run, then mirror a directory to another machine over SSH with an exclude and --delete
+          - Take a snapshot with --link-dest that hard-links unchanged files
+        resources:
+          - name: "rsync manual page"
+            url: https://download.samba.org/pub/rsync/rsync.1
       - type: reading
         title: "Section 060 Knowledge Check: Diskspace & Remote Sync"
         path: sections/section-060/quiz.md
-
       - type: reading
         title: Question
         path: labs/lab-060/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-060/docs/solution.md
-
       - type: lab
         title: "Diskspace & Sync Capstone Lab"
         path: labs/lab-060
         difficulty: advanced
+        estimated_duration: 40m
+        topic: disk-space
+        task_kind: troubleshooting
+        tags: [df, du, lsof, deleted-open-files, rsync, link-dest]
+        learning_goals:
+          - Find the process holding a deleted file open and reclaim the space without deleting legitimate logs
+          - Back up a directory with rsync and take a hard-linked snapshot with --link-dest
+        resources:
+          - name: "GNU Coreutils: df invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/df-invocation.html
+          - name: "proc(5): the /proc filesystem"
+            url: https://man7.org/linux/man-pages/man5/proc.5.html
+          - name: "rsync manual page"
+            url: https://download.samba.org/pub/rsync/rsync.1
 
   - id: module-070
     title: "Section 070: Service Configuration: systemd Units & SSL Certificates"
@@ -453,76 +604,109 @@ modules:
 
     content:
       - type: reading
-        title: Section Overview
+        title: "Section Overview"
         path: sections/section-070/README.md
-
       - type: reading
-        title: "Module 1: Wrapping a Script as a systemd Service: Unit Creation and Troubleshooting"
+        title: "Wrapping a Script as a systemd Service: Unit Creation and Troubleshooting"
         path: sections/section-070/module-01/course.md
-
       - type: reading
         title: Question
         path: labs/lab-071/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-071/docs/solution.md
-
       - type: lab
         title: "systemd Unit Creation Lab"
         path: labs/lab-071
         difficulty: intermediate
-
+        estimated_duration: 20m
+        topic: services
+        task_kind: build
+        tags: [systemd, unit-files, daemon-reload, systemctl, restart-policy]
+        learning_goals:
+          - Create a non-root system user and give it the log directory
+          - Write a unit file that runs a script as that user and restarts it on failure
+          - Enable and start the service so it runs now and after a reboot
+        resources:
+          - name: "systemd.service"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+          - name: "systemd.unit"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html
+          - name: "systemctl"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemctl.html
       - type: reading
-        title: "Module 2: Overriding a Vendor systemd Unit with systemctl edit"
+        title: "Overriding a Vendor systemd Unit with systemctl edit"
         path: sections/section-070/module-02/course.md
-
       - type: reading
         title: Question
         path: labs/lab-072/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-072/docs/solution.md
-
       - type: lab
         title: "systemd Unit Override Lab"
         path: labs/lab-072
         difficulty: intermediate
-
+        estimated_duration: 20m
+        topic: services
+        task_kind: build
+        tags: [systemd, drop-in-override, daemon-reload, systemctl, restart-policy, environment-variables]
+        learning_goals:
+          - Change a packaged service's restart policy and environment with a drop-in override
+          - Prove the merged configuration with systemctl show while the vendor unit file stays unchanged
+        resources:
+          - name: "systemd.unit"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html
+          - name: "systemctl"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemctl.html
+          - name: "systemd.service"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
       - type: reading
-        title: "Module 3: Working with SSL Certificates: Keys, Self-Signed Certs, CSRs, and Verification"
+        title: "Working with SSL Certificates: Keys, Self-Signed Certs, CSRs, and Verification"
         path: sections/section-070/module-03/course.md
-
       - type: reading
         title: Question
         path: labs/lab-073/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-073/docs/solution.md
-
       - type: lab
         title: "SSL Certificate Generation Lab"
         path: labs/lab-073
         difficulty: intermediate
-
+        estimated_duration: 20m
+        topic: certificates
+        task_kind: build
+        tags: [openssl, private-key, self-signed-certificate, csr, subject-alt-name, key-certificate-match]
+        learning_goals:
+          - Generate an RSA key with tight permissions and a self-signed certificate with a SAN
+          - Create a CSR for the same key and hostname
+          - Prove the key and the certificate are a matching pair
+        resources:
+          - name: "openssl-req"
+            url: https://docs.openssl.org/3.0/man1/openssl-req/
+          - name: "openssl-x509"
+            url: https://docs.openssl.org/3.0/man1/openssl-x509/
+          - name: "openssl-rsa"
+            url: https://docs.openssl.org/3.0/man1/openssl-rsa/
       - type: reading
         title: "Section 070 Knowledge Check: Service Configuration"
         path: sections/section-070/quiz.md
-
       - type: reading
         title: Question
         path: labs/lab-070/docs/question.md
-
-      - type: reading
-        title: Solution Walkthrough
-        path: labs/lab-070/docs/solution.md
-
       - type: lab
         title: "Service Configuration Capstone Lab"
         path: labs/lab-070
         difficulty: advanced
+        estimated_duration: 45m
+        topic: services
+        task_kind: build
+        tags: [systemd, unit-files, drop-in-override, restart-policy, openssl, private-key, self-signed-certificate, key-certificate-match]
+        learning_goals:
+          - Wrap a script as a systemd service that runs as its own non-root user
+          - Change the restart delay with a drop-in override, not by editing the unit file
+          - Issue a key and a self-signed certificate with a SAN and prove they match
+        resources:
+          - name: "systemd.service"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
+          - name: "systemd.unit"
+            url: https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html
+          - name: "openssl-req"
+            url: https://docs.openssl.org/3.0/man1/openssl-req/
+          - name: "openssl-x509"
+            url: https://docs.openssl.org/3.0/man1/openssl-x509/
 
   - id: module-080
     title: "LFCS Essential Commands Domain Certification Quiz"

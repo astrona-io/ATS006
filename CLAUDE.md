@@ -453,7 +453,8 @@ this order:
 
 - Shell: `stdout`, `stderr`, `redirection`, `exit-codes`, `dev-null`,
   `environment-variables`, `export`, `bashrc`, `shell-scripts`,
-  `history`, `aliases`, `shell-functions`, `non-interactive-shell`
+  `history`, `aliases`, `alias-bypass`, `shell-functions`,
+  `non-interactive-shell`, `ip-address`
 - Permissions: `chmod`, `octal-mode`, `symbolic-mode`, `setuid`, `setgid`,
   `sticky-bit`, `umask`, `chown`, `groups`
 - Finding and text: `find`, `file-age`, `file-size`, `file-permissions`,
