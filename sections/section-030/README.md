@@ -1,65 +1,66 @@
-# Section 030: Everyday Shell Craft: Text Processing, History & Aliases
+# Everyday Shell Craft: Text Processing, History & Aliases
 
-Welcome to Section 030. The commands you've learned so far let you move around the filesystem and inspect the system. This section is about working *faster and more precisely* inside the shell you already have — the difference between a sysadmin who re-types a fifteen-word command they got right two minutes ago, and one who recalls it with two keystrokes.
+Astronaut, this section is about working *faster and more precisely* at the bridge console you already have. It is the difference between an administrator who retypes a fifteen-word command they got right two minutes ago, and one who recalls it with two keystrokes.
 
-Three everyday habits separate a fluent shell user from someone still fighting the terminal: surgically pulling exact lines out of a wall of log text instead of scrolling and squinting, recalling and reusing commands you've already run instead of retyping them, and compressing repetitive typing into short, predictable shortcuts that never surprise you later. None of these are exotic — they are used constantly, under time pressure, on the LFCS exam and on every real incident call that follows it.
+Three everyday habits separate a fluent shell user from someone still fighting the terminal. First, pulling exact lines out of a wall of log text with a signal pattern, instead of scrolling and squinting. Second, recalling and reusing orders from the bridge's order log, instead of retyping them. Third, turning repeated typing into short nicknames for orders that never surprise anyone later. None of these are exotic. You use them all the time, under time pressure, on the exam and on every real incident call after it.
+
+**Exam topics covered:** analysing text with regular expressions, and using the shell efficiently
 
 ---
 
 ## What You Will Master
 
-By completing this section, you will acquire three core shell-fluency capabilities:
-*   **Targeted Log Extraction & Redaction:** How to pull lines matching multiple simultaneous conditions out of a log file with `grep`, and how to rewrite lines matching a shape — starts with X, ends with Y, contains Z in between — with `sed`, safely and precisely.
-*   **Command Recall & History Control:** How to re-run and search past commands instantly with `!!`, `!n`, and `Ctrl+R`, and how to configure exactly what your shell remembers, for how long, and in what format.
-*   **Safe, Predictable Aliases:** How to build persistent shortcuts that save keystrokes without silently changing how a familiar command behaves out from under you — or anyone else who inherits your shell.
+- Regular expressions as signal patterns: anchors (`^`, `$`), wildcards (`.`, `.*`), escaping a real dot (`\.`), and basic versus extended expressions (`-E`).
+- Pulling out lines that meet two independent conditions by chaining two `grep` commands with a pipe.
+- Replacing whole lines with `sed`, previewing first, then writing with `sed -i`, and avoiding the redirect-into-the-source trap.
+- Recalling commands with `!!`, `!n`, `!string` and the reverse search, `Ctrl+R`.
+- Controlling history with `HISTSIZE`, `HISTFILESIZE`, `HISTCONTROL` and `HISTTIMEFORMAT`, and making it last in `~/.bashrc`.
+- Why two open terminals do not share history live, and the `history -a`, `-c`, `-r` and `-w` options.
+- Where aliases sit in `bash`'s lookup order, checking a name with `type`, and making aliases permanent.
+- When a shell function is the right tool instead of an alias.
+- Running the real command once with `\rm`, and why aliases never reach scripts or scheduled jobs.
 
 ---
 
-## The Learning & Lab Path
+## Modules In This Section
 
-This section is divided into three modules, each paired with a hands-on practice lab:
+Work through the modules in this order. Each part teaches one idea. A mission (a graded lab) comes right after the part it practises, and the last page of each module is a wrap-up. The capstone at the end uses everything in the section at once.
 
-### 1. Text Processing: Targeted Extraction with grep and Redaction with sed
-*   **Module Reader:** **[Module 1: Text Processing: Targeted Extraction with grep and Redaction with sed](./module-01/course.md)**
-*   **Associated Lab:** **[lab-031](../../labs/lab-031)**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-031
-    ```
-*   **Hands-on Objective:** Extract every log line satisfying two independent conditions at once into a new file, and redact every line matching a start/contains/end shape with a whole-line `sed` substitution — without disturbing anything else in either file.
+### [Text Processing: Targeted Extraction with grep and Redaction with sed](module-01/course.md)
 
-### 2. Shell Command History: Recall, Search, and Control What Gets Remembered
-*   **Module Reader:** **[Module 2: Shell Command History: Recall, Search, and Control What Gets Remembered](./module-02/course.md)**
-*   **Associated Lab:** **[lab-032](../../labs/lab-032)**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-032
-    ```
-*   **Hands-on Objective:** Persist `HISTSIZE`, `HISTFILESIZE`, `HISTCONTROL`, and `HISTTIMEFORMAT` behavior for future sessions, then reconstruct a specific prior command sequence by searching an existing shell history.
+2 parts and 1 mission:
 
-### 3. Command Aliases: Safe Shortcuts Without Surprising Anyone
-*   **Module Reader:** **[Module 3: Command Aliases: Safe Shortcuts Without Surprising Anyone](./module-03/course.md)**
-*   **Associated Lab:** **[lab-033](../../labs/lab-033)**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-033
-    ```
-*   **Hands-on Objective:** Persist a long-listing shortcut, a confirm-before-delete safety alias, and a single-purpose IP-printing alias, then prove each resolves correctly and bypass the safety alias for exactly one invocation without weakening it.
+1. [Patterns: Describing A Shape](module-01/course-01-patterns-describing-a-shape.md)
+2. [Extract With grep, Redact With sed](module-01/course-02-extract-with-grep-redact-with-sed.md)
+   - Mission: [grep & sed Text Processing Lab](../../labs/lab-031/docs/question.md)
+3. [Wrap-Up: Mission Debrief](module-01/course-03-wrap-up.md)
 
----
+### [Shell Command History: Recall, Search, and Control What Gets Remembered](module-02/course.md)
 
-## Capstone: Everyday Shell Craft Capstone Lab
+2 parts and 1 mission:
 
-Once all three modules are complete, **[lab-030](../../labs/lab-030)** combines them into a single incident-handoff scenario: mine and redact a compromised host's logs with `grep`/`sed`, reconstruct a previous responder's exact command sequence from shell history, and leave behind a set of safe, working aliases for the next engineer.
+1. [Recall Commands Without Retyping](module-02/course-01-recall-commands-without-retyping.md)
+2. [Control What History Remembers](module-02/course-02-control-what-history-remembers.md)
+   - Mission: [Shell History Recall Lab](../../labs/lab-032/docs/question.md)
+3. [Wrap-Up: Mission Debrief](module-02/course-03-wrap-up.md)
 
-```bash
-astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-030
+### [Command Aliases: Safe Shortcuts Without Surprising Anyone](module-03/course.md)
+
+2 parts and 1 mission:
+
+1. [How Bash Expands An Alias](module-03/course-01-how-bash-expands-an-alias.md)
+2. [Bypass, Scripts, And Safe Aliases](module-03/course-02-bypass-scripts-and-safe-aliases.md)
+   - Mission: [Command Aliases Lab](../../labs/lab-033/docs/question.md)
+3. [Wrap-Up: Mission Debrief](module-03/course-03-wrap-up.md)
+
+### Knowledge check
+
+Test your reasoning before the capstone: **[Section 030 Knowledge Check: Everyday Shell Craft](./quiz.md)**.
+
+### Capstone
+
+Your final mission for this section: **[Everyday Shell Craft Capstone Lab](../../labs/lab-030/docs/question.md)**. It combines all three modules in one incident handoff: mine and redact a compromised host's logs with `grep` and `sed`, recover a previous responder's exact commands from shell history, and leave safe, working aliases for the next shift.
+
+```sh
+astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-030
 ```
-
----
-
-## Ready for Assessment?
-
-Test your theoretical knowledge and diagnostic reasoning before tackling the section's capstone lab mission:
-
-*   **[Take the Section 030 Knowledge Check Quiz](./quiz.md)**

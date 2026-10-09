@@ -250,6 +250,12 @@ modules:
         title: "Text Processing: Targeted Extraction with grep and Redaction with sed"
         path: sections/section-030/module-01/course.md
       - type: reading
+        title: "Patterns: Describing A Shape"
+        path: sections/section-030/module-01/course-01-patterns-describing-a-shape.md
+      - type: reading
+        title: "Extract With grep, Redact With sed"
+        path: sections/section-030/module-01/course-02-extract-with-grep-redact-with-sed.md
+      - type: reading
         title: Question
         path: labs/lab-031/docs/question.md
       - type: lab
@@ -269,8 +275,17 @@ modules:
           - name: "GNU sed manual"
             url: https://www.gnu.org/software/sed/manual/sed.html
       - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-030/module-01/course-03-wrap-up.md
+      - type: reading
         title: "Shell Command History: Recall, Search, and Control What Gets Remembered"
         path: sections/section-030/module-02/course.md
+      - type: reading
+        title: "Recall Commands Without Retyping"
+        path: sections/section-030/module-02/course-01-recall-commands-without-retyping.md
+      - type: reading
+        title: "Control What History Remembers"
+        path: sections/section-030/module-02/course-02-control-what-history-remembers.md
       - type: reading
         title: Question
         path: labs/lab-032/docs/question.md
@@ -291,8 +306,17 @@ modules:
           - name: "Bash Reference Manual: Bash History Facilities"
             url: https://www.gnu.org/software/bash/manual/html_node/Bash-History-Facilities.html
       - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-030/module-02/course-03-wrap-up.md
+      - type: reading
         title: "Command Aliases: Safe Shortcuts Without Surprising Anyone"
         path: sections/section-030/module-03/course.md
+      - type: reading
+        title: "How Bash Expands An Alias"
+        path: sections/section-030/module-03/course-01-how-bash-expands-an-alias.md
+      - type: reading
+        title: "Bypass, Scripts, And Safe Aliases"
+        path: sections/section-030/module-03/course-02-bypass-scripts-and-safe-aliases.md
       - type: reading
         title: Question
         path: labs/lab-033/docs/question.md
@@ -310,6 +334,9 @@ modules:
         resources:
           - name: "Bash Reference Manual: Aliases"
             url: https://www.gnu.org/software/bash/manual/html_node/Aliases.html
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-030/module-03/course-03-wrap-up.md
       - type: reading
         title: "Section 030 Knowledge Check: Everyday Shell Craft"
         path: sections/section-030/quiz.md
