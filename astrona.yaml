@@ -465,8 +465,14 @@ modules:
         title: "Section Overview"
         path: sections/section-050/README.md
       - type: reading
-        title: "Archive Conversion: bzip2 to gzip with Content Verification"
+        title: "Archive Conversion & Content Verification"
         path: sections/section-050/module-01/course.md
+      - type: reading
+        title: "Archives And Compressors"
+        path: sections/section-050/module-01/course-01-archives-and-compressors.md
+      - type: reading
+        title: "Convert And Prove"
+        path: sections/section-050/module-01/course-02-convert-and-prove.md
       - type: reading
         title: Question
         path: labs/lab-051/docs/question.md
@@ -487,8 +493,20 @@ modules:
           - name: "GNU gzip manual"
             url: https://www.gnu.org/software/gzip/manual/gzip.html
       - type: reading
-        title: "Backup Strategy with tar: Full, Excluded, Incremental, and Verified Restore"
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-050/module-01/course-03-wrap-up.md
+      - type: reading
+        title: "Backup Strategy with tar"
         path: sections/section-050/module-02/course.md
+      - type: reading
+        title: "Permissions And Excludes"
+        path: sections/section-050/module-02/course-01-permissions-and-excludes.md
+      - type: reading
+        title: "Full And Incremental Backups"
+        path: sections/section-050/module-02/course-02-full-and-incremental-backups.md
+      - type: reading
+        title: "Restore And Prove"
+        path: sections/section-050/module-02/course-03-restore-and-prove.md
       - type: reading
         title: Question
         path: labs/lab-052/docs/question.md
@@ -509,6 +527,9 @@ modules:
             url: https://www.gnu.org/software/tar/manual/html_node/Incremental-Dumps.html
           - name: "GNU tar manual"
             url: https://www.gnu.org/software/tar/manual/tar.html
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-050/module-02/course-04-wrap-up.md
       - type: reading
         title: "Section 050 Knowledge Check: Archiving & Backup Strategy"
         path: sections/section-050/quiz.md
