@@ -601,6 +601,12 @@ modules:
         title: "Diskspace Troubleshooting: The Full Filesystem That du Can't Explain"
         path: sections/section-060/module-01/course.md
       - type: reading
+        title: "Two Ways Of Counting Space"
+        path: sections/section-060/module-01/course-01-two-ways-of-counting-space.md
+      - type: reading
+        title: "Find And Reclaim The Lost Space"
+        path: sections/section-060/module-01/course-02-find-and-reclaim-the-lost-space.md
+      - type: reading
         title: Question
         path: labs/lab-061/docs/question.md
       - type: lab
@@ -623,8 +629,17 @@ modules:
           - name: "proc(5): the /proc filesystem"
             url: https://man7.org/linux/man-pages/man5/proc.5.html
       - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-060/module-01/course-03-wrap-up.md
+      - type: reading
         title: "Mirroring and Space-Efficient Incremental Snapshots with rsync"
         path: sections/section-060/module-02/course.md
+      - type: reading
+        title: "Mirror A Directory Safely"
+        path: sections/section-060/module-02/course-01-mirror-a-directory-safely.md
+      - type: reading
+        title: "Space-Efficient Snapshots With Link Dest"
+        path: sections/section-060/module-02/course-02-space-efficient-snapshots-with-link-dest.md
       - type: reading
         title: Question
         path: labs/lab-062/docs/question.md
@@ -642,6 +657,9 @@ modules:
         resources:
           - name: "rsync manual page"
             url: https://download.samba.org/pub/rsync/rsync.1
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-060/module-02/course-03-wrap-up.md
       - type: reading
         title: "Section 060 Knowledge Check: Diskspace & Remote Sync"
         path: sections/section-060/quiz.md

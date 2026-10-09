@@ -1,57 +1,54 @@
-# Solution Guide: Diskspace Troubleshooting
+# Solution Walkthrough
 
-This guide shows you how to confirm a `df`-versus-`du` mismatch and reclaim space from a deleted-but-open file without losing real data.
+The fuel gauge (`df`) says the log deck is full, but counting the crates you can see (`du`) finds almost nothing. A crate was taken off the manifest while a crew member still holds it. Find that crew member, then free the space without touching the real logs.
 
----
-
-## Step 1: Confirm which filesystem is actually full
+## Step 1: Confirm which filesystem is full
 
 ```bash
 df -h /var/log/reporting-app
 ```
 
-This resolves to the mount point backing that directory. Note the used percentage before doing anything else — you'll compare against it later to prove your fix worked.
+`df` reports the filesystem that holds this directory. Write down the "Use%" value. You compare against it later to prove that the fix worked.
 
----
-
-## Step 2: Confirm du disagrees with df on the same filesystem
+## Step 2: Confirm that du disagrees with df on the same filesystem
 
 ```bash
 du -xsh /var/log/reporting-app
 ```
 
-`-x` keeps the walk on this one filesystem, `-s` collapses it to a single total. If this number is dramatically smaller than the "used" figure `df` reported, that gap is your signal to stop looking at the visible tree and start hunting for a held-open deleted file.
+`-x` keeps the walk on this one filesystem, and `-s` prints one total. The three legitimate log files are 4 MB each, so `du` reports a total of roughly that size. If this number is far smaller than the "Used" value from `df`, stop looking at the visible files and look for a deleted file that is still open.
 
----
-
-## Step 3: Find the process holding a deleted file open
+## Step 3: Find the process that holds a deleted file open
 
 ```bash
 sudo lsof +L1
 ```
 
-`+L1` lists open files with a link count under 1 — deleted from the directory tree, but still referenced by a running process. Look for an entry under `/var/log/reporting-app`; note its PID and file descriptor number.
+`+L1` lists open files with a link count below 1: deleted from the directory tree, but still held by a running process. Look for the entry under `/var/log/reporting-app`. Its file name is `current.log`, and the command belongs to the `reporting-app` service. Write down its PID and its file descriptor number (the `FD` column, the number without the letter after it).
 
----
+## Step 4: Reclaim the space without a restart
 
-## Step 4: Reclaim the space live, without restarting
+Replace `<PID>` and `<N>` with the numbers from Step 3. First check that the descriptor really points at the deleted file:
 
 ```bash
 sudo ls -l /proc/<PID>/fd/<N>
+```
+
+The link target ends with `(deleted)`. Now empty the file through the process's own descriptor:
+
+```bash
 sudo truncate -s 0 /proc/<PID>/fd/<N>
 ```
 
-Truncating through the process's own open file descriptor zeroes the file's content while the process keeps running uninterrupted — its next write starts appending from a now-empty file.
+The process keeps running. Its next write lands in a file that is now empty.
 
-**Alternative (if a restart is acceptable):**
+If a restart is acceptable, this fixes it as well:
 
 ```bash
 sudo systemctl restart reporting-app
 ```
 
-Restarting closes the old file descriptor entirely, which drops the inode's reference count to zero on both sides and frees the blocks automatically.
-
----
+`systemd` stops the process, which closes the old descriptor. With no name and no open descriptor left, the kernel frees the blocks.
 
 ## Step 5: Confirm the fix
 
@@ -61,6 +58,16 @@ sudo lsof +L1 | grep -i reporting
 ls -la /var/log/reporting-app
 ```
 
-Usage should have dropped substantially, `lsof +L1` should show no more reporting-app entries, and `reporting-app.log.1`/`.2`/`.3` should still be present.
+Check three things:
 
-**Note:** never solve this by deleting more files in the visible directory — there's nothing left there that the missing space is attached to. The whole problem is that the space belongs to an inode with no name left in the filesystem.
+- `df -h` shows usage far below the value from Step 1. The grader wants 50% or less.
+- `lsof +L1` shows no more large deleted `reporting-app` file.
+- `reporting-app.log.1`, `.2` and `.3` are still there.
+
+Never fix this by deleting more files in the directory. The lost space belongs to an inode with no name left, so `rm` cannot reach it.
+
+## Step 6: Submit
+
+```sh
+astrona submit -c labs/lab-061
+```

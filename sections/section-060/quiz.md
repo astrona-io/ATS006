@@ -6,6 +6,8 @@ Test your understanding of the `df`-versus-`du` diagnostic pattern, deleted-but-
 
 ## Scenario-Based Questions
 
+Each question describes a real situation. Pick an answer before you open the explanation.
+
 ### Question 1
 A production filesystem is reported by `df -h` as 97% full. You run `du -xsh` against the exact same mount point and it reports only a few hundred megabytes of visible data — nowhere close to accounting for the used space `df` reports. You've already confirmed you're scoping both commands to the same mount. What should you investigate next?
 *   **A)** Assume `du` has a bug and file an issue against your distribution's coreutils package.
@@ -30,7 +32,7 @@ A production filesystem is reported by `df -h` as 97% full. You run `du -xsh` ag
 ### Question 2
 You run `sudo lsof +L1` while investigating a full filesystem. What exactly does the `+L1` option tell `lsof` to list?
 *   **A)** Every file opened by processes owned by UID 1.
-*   **B)** Every open file whose link count is less than 1 — i.e., deleted from the directory tree but still referenced by an open file descriptor.
+*   **B)** Every open file whose link count is less than 1 — that is, deleted from the directory tree but still referenced by an open file descriptor.
 *   **C)** Every file larger than 1 gigabyte currently open on the system.
 *   **D)** Every listening network socket with fewer than 1 active connection.
 
