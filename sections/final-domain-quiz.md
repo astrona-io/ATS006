@@ -35,7 +35,7 @@ You run a script as `./deploy.sh > /var/log/deploy.log`, but when it fails you f
 ### Question 2
 A monitoring script runs `some_check.sh; echo $?` and needs to distinguish between three outcomes: success, a warning, and a hard failure. Which exit-code design is correct LFCS practice?
 *   **A)** Always exit `0` and rely on stdout text for the status.
-*   **B)** Exit `0` for success, and any non-zero code (e.g. `1` for warning, `2` for hard failure) for the other states, checked immediately via `$?`.
+*   **B)** Exit `0` for success, and any non-zero code (for example `1` for warning, `2` for hard failure) for the other states, checked immediately via `$?`.
 *   **C)** Exit `-1` for warnings and `-2` for hard failures.
 *   **D)** Use `exit true` and `exit false` as the two possible states.
 
@@ -422,7 +422,7 @@ While troubleshooting a failed `find -exec mv {} dir/ \;` cleanup pass that appe
 
 **Correct Answer: B**
 
-*   **Why B is correct:** Because `find`'s default action (when no `-exec`/`-delete` is given) is simply to print matching paths, swapping out the destructive action for a dry-run listing costs nothing and lets you confirm exactly which files match the expression's predicates before anything irreversible happens — critical when an earlier pass already changed the directory's state (e.g. by moving files into a subdirectory that a later, badly-scoped pass might now recurse into).
+*   **Why B is correct:** Because `find`'s default action (when no `-exec`/`-delete` is given) is simply to print matching paths, swapping out the destructive action for a dry-run listing costs nothing and lets you confirm exactly which files match the expression's predicates before anything irreversible happens — critical when an earlier pass already changed the directory's state (for example by moving files into a subdirectory that a later, badly-scoped pass might now recurse into).
 *   **Why others are incorrect:**
     *   *Option A* is incorrect because it repeats the same mistake without any verification, likely compounding the problem if the expression is over-broad.
     *   *Option C* is incorrect because it is destructive and unnecessary when a simple dry run tells you what's wrong.
