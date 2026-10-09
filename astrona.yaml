@@ -724,8 +724,14 @@ modules:
         title: "Section Overview"
         path: sections/section-070/README.md
       - type: reading
-        title: "Wrapping a Script as a systemd Service: Unit Creation and Troubleshooting"
+        title: "Wrapping a Script as a systemd Service"
         path: sections/section-070/module-01/course.md
+      - type: reading
+        title: "Anatomy of a Unit File"
+        path: sections/section-070/module-01/course-01-anatomy-of-a-unit-file.md
+      - type: reading
+        title: "Load, Start and Enable a Service"
+        path: sections/section-070/module-01/course-02-load-start-and-enable-a-service.md
       - type: reading
         title: Question
         path: labs/lab-071/docs/question.md
@@ -749,8 +755,20 @@ modules:
           - name: "systemctl"
             url: https://www.freedesktop.org/software/systemd/man/latest/systemctl.html
       - type: reading
+        title: "Diagnose a Unit That Will Not Start"
+        path: sections/section-070/module-01/course-03-diagnose-a-unit-that-will-not-start.md
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-070/module-01/course-04-wrap-up.md
+      - type: reading
         title: "Overriding a Vendor systemd Unit with systemctl edit"
         path: sections/section-070/module-02/course.md
+      - type: reading
+        title: "Write a Drop-In Override"
+        path: sections/section-070/module-02/course-01-write-a-drop-in-override.md
+      - type: reading
+        title: "Apply, Prove and Revert an Override"
+        path: sections/section-070/module-02/course-02-apply-prove-and-revert-an-override.md
       - type: reading
         title: Question
         path: labs/lab-072/docs/question.md
@@ -773,8 +791,20 @@ modules:
           - name: "systemd.service"
             url: https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html
       - type: reading
-        title: "Working with SSL Certificates: Keys, Self-Signed Certs, CSRs, and Verification"
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-070/module-02/course-03-wrap-up.md
+      - type: reading
+        title: "Working with SSL Certificates"
         path: sections/section-070/module-03/course.md
+      - type: reading
+        title: "Private Keys and Subject Alternative Names"
+        path: sections/section-070/module-03/course-01-private-keys-and-subject-alternative-names.md
+      - type: reading
+        title: "Self-Signed Certificates and Signing Requests"
+        path: sections/section-070/module-03/course-02-self-signed-certificates-and-signing-requests.md
+      - type: reading
+        title: "Read and Verify a Certificate"
+        path: sections/section-070/module-03/course-03-read-and-verify-a-certificate.md
       - type: reading
         title: Question
         path: labs/lab-073/docs/question.md
@@ -797,6 +827,9 @@ modules:
             url: https://docs.openssl.org/3.0/man1/openssl-x509/
           - name: "openssl-rsa"
             url: https://docs.openssl.org/3.0/man1/openssl-rsa/
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-070/module-03/course-04-wrap-up.md
       - type: reading
         title: "Section 070 Knowledge Check: Service Configuration"
         path: sections/section-070/quiz.md

@@ -1,57 +1,68 @@
-# Section 070: Service Configuration: systemd Units & SSL Certificates
+# Service Configuration: systemd Units & SSL Certificates
 
-Welcome to Section 070. Two very different administrative problems live in this section, and the LFCS exam expects fluency in both.
+Astronaut, this section is about the stations on your ship that must always be staffed, and the badges they wear when they talk to the outside. Two very different jobs live here, and the exam expects you to be fluent in both.
 
-The first problem: you have been handed a plain, unmanaged script — no restart-on-crash, no boot persistence, no clean way to see whether it's even alive. Turning that script into a real systemd service, and troubleshooting it when it refuses to start, is one of the single most common tasks a working Linux administrator performs. The second problem: a vendor package ships its own systemd unit, and you need to change its runtime behavior without editing the file the package manager owns — because a hand-edit is a landmine waiting for the next `apt upgrade`. And running alongside both: nearly every service you stand up eventually needs TLS, and `openssl` is the tool that generates the private key, the certificate, and the CSR that make that possible.
+The first job belongs to **systemd**, the ship's duty officer: it starts every station, watches it and restarts it. You will turn a plain, unwatched script into a real **service** with its own duty card, the **unit file**, and you will change a packaged service's behaviour with a sticky note on its card, a **drop-in override**, instead of editing the file the package owns. The second job belongs to `openssl`: almost every service you set up will one day need TLS (Transport Layer Security), and `openssl` makes the private key (the ship's secret seal), the certificate (its ID badge) and the CSR (certificate signing request, the badge application form).
 
-None of this is optional exam trivia. A unit file with the wrong `Restart=` value or an `After=` that doesn't actually create a dependency will pass a casual glance and fail the very first time the network is slow. A drop-in override applied incorrectly (the `ExecStart=` clearing gotcha, chief among them) can silently duplicate a directive rather than replace it. And a certificate generated without a SAN entry will be silently rejected by any TLS client that ignores the legacy CN field — which is effectively all of them today.
+None of this is trivia. A unit file with the wrong `Restart=` value, or an `After=` line that does not really pull in the network, passes a quick look and fails the first time the network is slow. A drop-in applied the wrong way (the `ExecStart=` trap above all) can add a second command instead of replacing the first. And a certificate without a SAN (Subject Alternative Name) entry is quietly rejected by almost every client today.
+
+**Exam topics covered:** Create, configure and troubleshoot services; work with SSL certificates
 
 ---
 
 ## What You Will Master
 
-By completing this section, you will acquire three core service-configuration capabilities:
-*   **Unit File Authorship:** How to write a correct `[Unit]`/`[Service]`/`[Install]` unit file from scratch to wrap an arbitrary script, and how to read `systemctl status` and `journalctl` to diagnose why a unit won't start.
-*   **Safe Vendor Unit Overrides:** How to use `systemctl edit` to layer a drop-in override on top of a package-owned unit without ever touching the vendor file, including the non-obvious `ExecStart=` clearing behavior.
-*   **SSL/TLS Certificate Lifecycle:** How to generate an RSA private key, a self-signed X.509 certificate with a proper SAN entry, and a CSR, and how to cryptographically prove a key and certificate are a matching pair.
+- Writing a unit file from scratch with `[Unit]`, `[Service]` and `[Install]` sections to wrap a script.
+- Why `After=` only orders units, and why it needs `Wants=` to pull in `network-online.target`.
+- Running a service as a dedicated system user, and choosing a `Restart=` policy and a `RestartSec=` delay.
+- The difference between `start`, `enable` and `enable --now`, and why every unit file change needs `daemon-reload`.
+- Diagnosing a unit that will not start with `journalctl -u <unit> -b`, including `status=203/EXEC` and a start rate limit.
+- Changing a vendor unit with `systemctl edit` without touching the package-owned file, and when to use `--full`.
+- How drop-ins merge: single values, additive `Environment=`, and clearing `ExecStart=` with an empty line.
+- Applying an override with `restart`, proving it with `systemctl cat` and `systemctl show`, and undoing it with `systemctl revert`.
+- Generating an RSA private key and locking it down with `chmod 600`.
+- Writing an OpenSSL configuration file that carries a SAN, and making a self-signed certificate and a CSR from it.
+- Reading a certificate's dates, subject and SAN, and proving a key and certificate match by their modulus.
 
 ---
 
-## The Learning & Lab Path
+## Modules In This Section
 
-This section is divided into three modules, each paired with a hands-on practice lab:
+Work through the modules in this order. Each part teaches one idea. A mission (a graded lab) comes right after the part it practises, and the last page of each module is a wrap-up. The capstone at the end uses everything in the section at once.
 
-### 1. Wrapping a Script as a systemd Service
-*   **Module Reader:** **[Module 1: Wrapping a Script as a systemd Service — Unit Creation and Troubleshooting](./module-01/course.md)**
-*   **Associated Lab:** **[lab-071](../../labs/lab-071)**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-071
-    ```
-*   **Hands-on Objective:** Wrap an existing script as `metrics-collector.service`, running as a dedicated non-root user, restarting on failure, ordered correctly after real network availability, and enabled to survive a reboot.
+### [Wrapping a Script as a systemd Service](module-01/course.md)
 
-### 2. Overriding a Vendor systemd Unit with systemctl edit
-*   **Module Reader:** **[Module 2: Overriding a Vendor systemd Unit with systemctl edit](./module-02/course.md)**
-*   **Associated Lab:** **[lab-072](../../labs/lab-072)**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-072
-    ```
-*   **Hands-on Objective:** Change a package-installed `nginx.service`'s restart behavior and inject an environment variable via a drop-in override, without editing the vendor-shipped unit file, then confirm the merge with `systemctl cat`.
+3 parts and 1 mission:
 
-### 3. Working with SSL Certificates
-*   **Module Reader:** **[Module 3: Working with SSL Certificates — Keys, Self-Signed Certs, CSRs, and Verification](./module-03/course.md)**
-*   **Associated Lab:** **[lab-073](../../labs/lab-073)**
-*   **Lab Run Command:**
-    ```bash
-    astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-073
-    ```
-*   **Hands-on Objective:** Generate a 2048-bit RSA key, a SAN-bearing self-signed certificate, and a matching CSR for an internal hostname, then cryptographically verify the key/certificate pairing.
+1. [Anatomy of a Unit File](module-01/course-01-anatomy-of-a-unit-file.md)
+2. [Load, Start and Enable a Service](module-01/course-02-load-start-and-enable-a-service.md)
+   - Mission: [systemd Unit Creation Lab](../../labs/lab-071/docs/question.md)
+3. [Diagnose a Unit That Will Not Start](module-01/course-03-diagnose-a-unit-that-will-not-start.md)
+4. [Wrap-Up: Mission Debrief](module-01/course-04-wrap-up.md)
 
----
+### [Overriding a Vendor systemd Unit with systemctl edit](module-02/course.md)
 
-## Ready for Assessment?
+2 parts and 1 mission:
 
-Test your theoretical knowledge and diagnostic reasoning before tackling the capstone lab mission:
+1. [Write a Drop-In Override](module-02/course-01-write-a-drop-in-override.md)
+2. [Apply, Prove and Revert an Override](module-02/course-02-apply-prove-and-revert-an-override.md)
+   - Mission: [systemd Unit Override Lab](../../labs/lab-072/docs/question.md)
+3. [Wrap-Up: Mission Debrief](module-02/course-03-wrap-up.md)
 
-*   **[Take the Section 070 Knowledge Check Quiz](./quiz.md)**
+### [Working with SSL Certificates](module-03/course.md)
+
+3 parts and 1 mission:
+
+1. [Private Keys and Subject Alternative Names](module-03/course-01-private-keys-and-subject-alternative-names.md)
+2. [Self-Signed Certificates and Signing Requests](module-03/course-02-self-signed-certificates-and-signing-requests.md)
+3. [Read and Verify a Certificate](module-03/course-03-read-and-verify-a-certificate.md)
+   - Mission: [SSL Certificate Generation Lab](../../labs/lab-073/docs/question.md)
+4. [Wrap-Up: Mission Debrief](module-03/course-04-wrap-up.md)
+
+### Knowledge check
+
+Test your reasoning before the capstone: **[Section 070 Knowledge Check: Service Configuration](./quiz.md)**.
+
+### Capstone
+
+Your final mission for this section: **[Service Configuration Capstone Lab](../../labs/lab-070/docs/question.md)**. You wrap a health-check script as a service, change its restart delay with a drop-in, and give it a key and a self-signed certificate with a SAN.

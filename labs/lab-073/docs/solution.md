@@ -1,25 +1,24 @@
-# Solution Guide: SSL Certificate Generation
+# Solution Walkthrough
 
-This guide generates a key, a SAN-bearing self-signed certificate, and a CSR for `internal.web-srv1.local`.
+You make a key, a self-signed certificate with a SAN (Subject Alternative Name) and a CSR (certificate signing request) for `internal.web-srv1.local`, then prove the key and certificate belong together. The grader checks the key's size and mode, the certificate's validity, subject and SAN, the SAN in the CSR, and that the key and certificate share one modulus.
 
----
+## Step 1: Generate the key and lock it down
 
-## Step 1: Move into the working directory and generate the key
+Move into the working folder, generate a 2048-bit RSA key, and restrict it at once:
 
-```bash
+```sh
 cd /opt/tls/internal-web-srv1
 openssl genrsa -out internal.web-srv1.local.key 2048
 chmod 600 internal.web-srv1.local.key
 ```
 
-Locking down permissions immediately matters — a world-readable private key defeats the entire point of having one.
+A private key that other users can read defeats the point of having one, so `chmod 600` comes straight after the key.
 
----
+## Step 2: Write a configuration file that carries the SAN
 
-## Step 2: Write a config file to carry the SAN extension
+The SAN is an X.509 extension, not a Distinguished Name field, so `-subj` can never set it. A configuration file can. Save this as `openssl-internal.cnf` in `/opt/tls/internal-web-srv1`:
 
-```bash
-cat > openssl-internal.cnf << 'EOF'
+```ini
 [req]
 default_bits       = 2048
 prompt             = no
@@ -38,16 +37,15 @@ subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = internal.web-srv1.local
-EOF
 ```
 
-SAN is an X.509 extension, not a Distinguished Name field, so `-subj` alone can never set it — a config file (or `-addext`) is required. `req_extensions` is read for CSRs, `x509_extensions` for self-signed certs; setting both covers both steps below from one file.
-
----
+`req_extensions` is read when `openssl req` makes a CSR, and `x509_extensions` when it makes a self-signed certificate. Setting both lets one file serve the next two steps.
 
 ## Step 3: Generate the self-signed certificate
 
-```bash
+Use the file:
+
+```sh
 openssl req -new -x509 \
   -key internal.web-srv1.local.key \
   -out internal.web-srv1.local.crt \
@@ -55,38 +53,49 @@ openssl req -new -x509 \
   -config openssl-internal.cnf
 ```
 
-`-x509` is what turns this into a finished, usable certificate instead of a request. Always pass `-days` explicitly — the OpenSSL default validity window varies by build and is often far shorter than intended.
-
----
+`-x509` makes `openssl` sign the request itself and write a finished certificate instead of a request. Always pass `-days`: the default validity differs between builds and is often much shorter than you want.
 
 ## Step 4: Generate the CSR
 
-```bash
+Use the same key and the same file, without `-x509`:
+
+```sh
 openssl req -new \
   -key internal.web-srv1.local.key \
   -out internal.web-srv1.local.csr \
   -config openssl-internal.cnf
 ```
 
-Same key, same config — dropping only `-x509` produces an unsigned request instead of a finished certificate.
+Dropping only `-x509` gives you an unsigned request instead of a finished certificate.
 
----
+## Step 5: Check the certificate and the CSR
 
-## Step 5: Verify the certificate's fields
+Then check the result:
 
-```bash
+```sh
 openssl x509 -in internal.web-srv1.local.crt -noout -dates
 openssl x509 -in internal.web-srv1.local.crt -noout -subject
 openssl x509 -in internal.web-srv1.local.crt -noout -text | grep -A1 "Subject Alternative Name"
+openssl req -in internal.web-srv1.local.csr -noout -text | grep -A1 "Subject Alternative Name"
 ```
 
----
+`notBefore` and `notAfter` should be about 365 days apart. The subject should contain `internal.web-srv1.local`, and both the certificate and the CSR should show `DNS:internal.web-srv1.local` under `Subject Alternative Name`. Also check the key's mode with `stat -c '%a' internal.web-srv1.local.key`: it must print `600`.
 
 ## Step 6: Prove the key and certificate match
 
-```bash
+Compare the modulus of both files:
+
+```sh
 openssl x509 -noout -modulus -in internal.web-srv1.local.crt | openssl md5
 openssl rsa   -noout -modulus -in internal.web-srv1.local.key | openssl md5
 ```
 
-> **Note:** Identical hashes here are what prove a real pairing — visually comparing two PEM blocks tells you nothing. If the hashes ever don't match, the most common cause is the key having been regenerated after the certificate was created; the fix is to regenerate the certificate from the *current* key, not to generate a new key.
+The two hashes must be identical: that proves a real pair. Comparing two encoded blocks by eye tells you nothing. If the hashes ever differ, the usual cause is a key generated again after the certificate was made. Make the certificate again from the *current* key, not a new key.
+
+## Step 7: Submit
+
+When every check looks right, send the lab for grading from your own machine:
+
+```sh
+astrona submit -c labs/lab-073
+```

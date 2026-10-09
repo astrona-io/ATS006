@@ -1,11 +1,11 @@
 # Question
 
-Solve this question on: `terminal` (playing the role of `app-srv1` from the scenario)
+Solve this question on: `terminal`
 
-This host runs a vendor-packaged `nginx.service`. You're asked to change its runtime behavior:
+Astronaut, this ship runs `nginx.service`, installed by a package. The package owns its unit file, its duty card, and will reprint that file at the next upgrade. Change how the service behaves without touching the package's file:
 
-1. Make it restart automatically on failure (`Restart=on-failure`, `RestartSec=5`) — it currently does not restart at all.
-2. Add an extra environment variable, `APP_ENV=production`, that the service process should see.
-3. Apply both changes as a proper drop-in override under `/etc/systemd/system/nginx.service.d/`, without editing the vendor-shipped unit file at `/usr/lib/systemd/system/nginx.service` directly — that file gets silently overwritten on the next package upgrade.
-4. Reload systemd and restart `nginx` so the changes actually take effect on the running process.
-5. Confirm with `systemctl show` that the merged, effective configuration reflects both changes, and that the vendor unit file itself remains byte-for-byte unmodified.
+1. Make the service restart automatically on failure: `Restart=on-failure` and `RestartSec=5`. Right now it does not restart at all.
+2. Add an environment variable, `APP_ENV=production`, that the service process can see.
+3. Apply both changes as a drop-in override under `/etc/systemd/system/nginx.service.d/`. Do **not** edit the vendor-shipped unit file at `/usr/lib/systemd/system/nginx.service`: it must stay byte-for-byte unchanged.
+4. Reload systemd and restart `nginx`, so the changes take effect on the running process. The service must be running when you finish.
+5. Confirm with `systemctl show` that the merged, effective configuration has both changes.
