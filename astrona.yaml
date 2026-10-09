@@ -145,8 +145,14 @@ modules:
         title: "Section Overview"
         path: sections/section-020/README.md
       - type: reading
-        title: "chmod — Symbolic vs Octal, and the Three Special Bits"
+        title: "chmod: Symbolic vs Octal, and the Three Special Bits"
         path: sections/section-020/module-01/course.md
+      - type: reading
+        title: "Reading And Setting Permission Bits"
+        path: sections/section-020/module-01/course-01-reading-and-setting-permission-bits.md
+      - type: reading
+        title: "The Three Special Bits"
+        path: sections/section-020/module-01/course-02-the-three-special-bits.md
       - type: reading
         title: Question
         path: labs/lab-021/docs/question.md
@@ -168,8 +174,17 @@ modules:
           - name: "GNU Coreutils: File permissions"
             url: https://www.gnu.org/software/coreutils/manual/html_node/File-permissions.html
       - type: reading
-        title: "umask — Why New Files Aren't 777 By Default"
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-020/module-01/course-03-wrap-up.md
+      - type: reading
+        title: "umask: Why New Files Are Not 777 By Default"
         path: sections/section-020/module-02/course.md
+      - type: reading
+        title: "How The umask Shapes New Files"
+        path: sections/section-020/module-02/course-01-how-the-umask-shapes-new-files.md
+      - type: reading
+        title: "Making The umask Stick"
+        path: sections/section-020/module-02/course-02-making-the-umask-stick.md
       - type: reading
         title: Question
         path: labs/lab-022/docs/question.md
@@ -190,8 +205,17 @@ modules:
           - name: "Bash Reference Manual: Bourne Shell Builtins (export, umask)"
             url: https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
       - type: reading
-        title: "Find, Filter, and Triage Files by Age, Size, and Permission"
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-020/module-02/course-03-wrap-up.md
+      - type: reading
+        title: "Find, Filter, And Triage Files By Age, Size, And Permission"
         path: sections/section-020/module-03/course.md
+      - type: reading
+        title: "Matching Files By Age, Size And Permission"
+        path: sections/section-020/module-03/course-01-matching-files-by-age-size-and-permission.md
+      - type: reading
+        title: "Triage In The Right Order"
+        path: sections/section-020/module-03/course-02-triage-in-the-right-order.md
       - type: reading
         title: Question
         path: labs/lab-023/docs/question.md
@@ -209,6 +233,9 @@ modules:
         resources:
           - name: "GNU Findutils: find manual"
             url: https://www.gnu.org/software/findutils/manual/html_mono/find.html
+      - type: reading
+        title: "Wrap-Up: Mission Debrief"
+        path: sections/section-020/module-03/course-03-wrap-up.md
       - type: reading
         title: "Section 020 Knowledge Check: Permissions & File Triage"
         path: sections/section-020/quiz.md
