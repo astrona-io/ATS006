@@ -109,3 +109,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-010/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Read redirections from left to right, and read `$?` straight away.*
+
+<!-- astrona:playground:destroy -->

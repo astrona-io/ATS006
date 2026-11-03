@@ -110,3 +110,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-060/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *`df` reads the gauge, `du` counts the crates; when they disagree, look for a crate someone still holds.*
+
+<!-- astrona:playground:destroy -->

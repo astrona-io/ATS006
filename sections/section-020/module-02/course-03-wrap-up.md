@@ -122,3 +122,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-020/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *The umask is a stencil: it only blocks bits, so type what to block, and put it where every login reads it.*
+
+<!-- astrona:playground:destroy -->

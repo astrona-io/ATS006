@@ -122,3 +122,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-030/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Describe the shape, preview with the scanner, and only then let the redaction officer write.*
+
+<!-- astrona:playground:destroy -->

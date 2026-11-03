@@ -110,3 +110,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-030/module-03/playground`. It always starts clean, so nothing you broke carries over.
 
 > *A nickname saves keystrokes at the console. It never travels into a script, and it never makes an order less predictable.*
+
+<!-- astrona:playground:destroy -->

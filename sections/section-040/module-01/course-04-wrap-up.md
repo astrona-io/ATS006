@@ -127,3 +127,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-040/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Write in the logbook, check the tray, seal the entry, and keep a second copy at mission control.*
+
+<!-- astrona:playground:destroy -->
