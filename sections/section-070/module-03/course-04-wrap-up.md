@@ -128,3 +128,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-070/module-03/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Seal first, names in the configuration file, and the modulus to prove the pair.*
+
+<!-- astrona:playground:destroy -->

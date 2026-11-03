@@ -122,3 +122,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-020/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Nine bits say who may look, change and run; the fourth digit adds the team tag, the owner's rank and the shared locker.*
+
+<!-- astrona:playground:destroy -->

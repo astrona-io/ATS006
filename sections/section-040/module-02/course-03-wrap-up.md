@@ -121,3 +121,5 @@ No astrona labs running.
 You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-040/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Read every flight path from the chart, join only the right one, and remember that Git carries crates, not empty compartments.*
+
+<!-- astrona:playground:destroy -->
