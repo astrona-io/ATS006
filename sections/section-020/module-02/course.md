@@ -27,7 +27,26 @@ Check these few things before your first mission.
 
 ### What you need
 
-A terminal on an Ubuntu 24.04 machine with `bash`. A running lab machine works too: start a lab and open a terminal on it with `astrona ssh <lab name>`. The examples create their test files under `/tmp`.
+A playground: one Ubuntu 24.04 training ship in the simulator, with the `bash` shell. Everything the examples use is already on it, so you do not need to install anything.
+
+### What is in your playground
+
+Your playground is a virtual machine on your computer. It already has:
+
+- The default `umask` of the `candidate` user, with no override in any start-up file.
+- An empty folder `~/umask-practice`.
+
+Launch your playground now, and keep it running next to you while you read the parts:
+
+<!-- astrona:playground -->
+
+Open a terminal on it:
+
+```sh
+astrona ssh umask-playground
+```
+
+Every command block in the parts runs **inside that virtual machine**, as the user `candidate`, who can use `sudo`.
 
 ## How this module is laid out
 

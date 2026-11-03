@@ -15,6 +15,8 @@ These two sound like the same thing, and they are not:
 - `HISTSIZE` sets how many commands the **running shell** keeps in memory right now. That is what a bare `history` shows you during this session.
 - `HISTFILESIZE` sets how many lines are kept in the **history file on disk** (`~/.bash_history`) once a session's history is written out.
 
+<!-- astrona:playground:renew -->
+
 ```bash
 export HISTSIZE=2000
 export HISTFILESIZE=8000
@@ -136,7 +138,13 @@ Open a second terminal to the same machine. In the first terminal, run a command
 
 You can now set up history so it keeps what you need, and recall any earlier command exactly. The mission asks you to make your history settings permanent and to recover two exact commands from an earlier investigation session.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop history-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-032
@@ -154,8 +162,9 @@ Read the task in [the question](../../../labs/lab-032/docs/question.md) and solv
 astrona submit -c labs/lab-032
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-032
+astrona start history-playground
 ```

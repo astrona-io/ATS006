@@ -12,6 +12,8 @@ The examples in this part all run against one small test folder. Build it first,
 
 `head -c 1024 /dev/zero` writes 1024 zero bytes, so each file gets an exact size. `touch -d` sets a file's modification time to a date you choose:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 mkdir -p /tmp/triage-demo
 cd /tmp/triage-demo

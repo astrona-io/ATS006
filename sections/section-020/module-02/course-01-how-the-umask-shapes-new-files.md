@@ -50,6 +50,8 @@ Two commands show you the current mask, in two different formats. This section s
 
 ### Two ways to read the mask
 
+<!-- astrona:playground:renew -->
+
 ```bash
 umask
 umask -S

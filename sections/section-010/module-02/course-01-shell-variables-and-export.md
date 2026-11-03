@@ -28,6 +28,8 @@ By default, bash keeps a new variable to itself. You can see this with one varia
 
 ### Set a variable and read it
 
+<!-- astrona:playground:renew -->
+
 ```bash
 GREETING="hello"
 echo "$GREETING"        # prints: hello

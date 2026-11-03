@@ -8,6 +8,8 @@ Linux has two tools that answer "how much space is used?", and they count in dif
 
 Run both on the same directory:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 df -h /var/log
 du -xsh /var/log

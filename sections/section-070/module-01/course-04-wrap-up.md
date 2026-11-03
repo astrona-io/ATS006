@@ -85,9 +85,9 @@ That systemd could run the `ExecStart=` command at all: the script's execute per
 The journal holds the error the application printed, which `systemctl status` often cuts off. The fault is usually in the application, not the unit file.
 </details>
 
-## Clean up
+## Clean up the playground
 
-Each mission runs in its own training ship. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -95,7 +95,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy service-unit-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-071
@@ -111,6 +117,6 @@ astrona list
 No astrona labs running.
 ```
 
-If you practised on a test machine of your own, you can remove the example with `sudo systemctl disable --now backup-agent.service`, then delete `/etc/systemd/system/backup-agent.service` and run `sudo systemctl daemon-reload`.
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-070/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *A duty card for every station, a reload after every change, and the journal before the editor.*

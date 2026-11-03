@@ -92,9 +92,9 @@ It records that your local `main` follows `origin/main`. After that, plain `git 
 `git fetch`. It only updates the remote-tracking reference. `git pull` would also merge the changes into your current branch.
 </details>
 
-## Clean up
+## Clean up the playground
 
-The lab is a whole virtual machine running on your computer. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -102,7 +102,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy git-basics-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-041
@@ -117,5 +123,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-040/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Write in the logbook, check the tray, seal the entry, and keep a second copy at mission control.*

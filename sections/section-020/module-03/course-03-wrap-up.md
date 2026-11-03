@@ -87,9 +87,9 @@ Repeat the full method without help:
 4. Sort by size into two folders using `-maxdepth 1`, then by permission into a third. Confirm with a final `find -maxdepth 1 -type f` that nothing wrongly sorted is left at the top level.
 5. Create one file that fits two rules, for example small and `777`. Run the passes in order and confirm it lands where the first matching pass puts it.
 
-## Clean up
+## Clean up the playground
 
-When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -97,7 +97,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the lab. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy find-triage-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-023
@@ -113,6 +119,6 @@ astrona list
 No astrona labs running.
 ```
 
-You can start the mission again at any time with the `astrona run` command. It always starts clean, so nothing you broke carries over.
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-020/module-03/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Preview, delete, then sort: and let the first pass that matches a file keep it.*

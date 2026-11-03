@@ -14,6 +14,8 @@ Typing `umask 027` at a prompt changes the mask for that one interactive shell s
 
 Pick a target result, for example new files at `600` and new directories at `700`. Work backwards: which bits must be switched off? For the directory, `777` must become `700`, so the group and others lose everything: mask `077`. For the file, `666` with `077` switched off also gives `600`. Set it in a subshell and check:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 rm -rf /tmp/target-file /tmp/target-dir
 ( umask 077; touch /tmp/target-file; mkdir /tmp/target-dir )
@@ -96,7 +98,13 @@ So a loose mask alone does not give a team shared access: the files still land i
 
 You can now predict what a mask produces, work backwards from a required result, and make the mask last for every login. The mission asks you to do this for the user `candidate`, so that a brand-new login creates `640` files and `750` directories with no `chmod` at all.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop umask-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-022
@@ -114,8 +122,9 @@ Read the task in [the question](../../../labs/lab-022/docs/question.md) and solv
 astrona submit -c labs/lab-022
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-022
+astrona start umask-playground
 ```

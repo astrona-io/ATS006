@@ -75,9 +75,9 @@ No. A script runs in a non-interactive shell, which does not expand aliases by d
 No. It silently removes confirmation and makes `rm` more destructive than anyone typing it expects. A safe alias adds expected behaviour, like `rm -i` or `cp -i`.
 </details>
 
-## Clean up
+## Clean up the playground
 
-If a mission is still running, remove it now so it does not use memory on your machine.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -85,7 +85,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy alias-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-033
@@ -100,5 +106,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-030/module-03/playground`. It always starts clean, so nothing you broke carries over.
 
 > *A nickname saves keystrokes at the console. It never travels into a script, and it never makes an order less predictable.*

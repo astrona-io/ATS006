@@ -8,6 +8,8 @@ By default, a pattern matches anywhere on a line. Two special characters change 
 
 ### See an unanchored match
 
+<!-- astrona:playground:renew -->
+
 Make a small practice log first. Save this as `status.log`:
 
 ```text

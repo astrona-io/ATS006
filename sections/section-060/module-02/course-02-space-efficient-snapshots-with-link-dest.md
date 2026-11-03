@@ -6,6 +6,8 @@ A mirror keeps one destination up to date. Sometimes you want something else: a 
 
 Here is a snapshot of the photo folder, taken next to an existing mirror at `/backup/current`:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 rsync -avz --exclude=cache/ -e ssh \
   --link-dest=/backup/current \
@@ -53,17 +55,13 @@ Hard links cannot cross from one filesystem to another, because an inode belongs
 
 Two checks prove that the snapshot shares its unchanged files.
 
-### Compare the real size and the apparent size
+### Count the shared files only once
 
 ```bash
-du -sh /backup/snapshots/2024-06-01
-du -sh --apparent-size /backup/snapshots/2024-06-01
+du -sh /backup/current /backup/snapshots/2024-06-01
 ```
 
-- `du -sh` reports the real disk usage. It is small, because unchanged files share inodes with the reference.
-- `du -sh --apparent-size` reports the size the files would take if each one were a separate copy.
-
-The gap between the two numbers is what `--link-dest` saved you.
+`du` counts each inode once per run. It charges a shared file to the first folder it sees, so list the reference first. The second line then shows only the space that the new or changed files take. If you run `du -sh` on the snapshot alone, it counts every file in it and shows nearly the full size, even when the files are shared.
 
 ### Read the link count
 
@@ -76,21 +74,27 @@ You can build a snapshot chain on one machine:
 1. Take a first full copy with `rsync -a` to `backup/full/`.
 2. Take a second copy to `backup/snap2/` with `--link-dest=backup/full`.
 3. Check that the hard links are real: `stat -c '%n %h' backup/snap2/*`. An unchanged file shows a link count greater than 1.
-4. Compare `du -sh backup/snap2` with `du -sh --apparent-size backup/snap2`, and explain the gap in your own words.
+4. Run `du -sh backup/full backup/snap2` and explain, in your own words, why the second line is so small.
 
 ## Common pitfalls
 
 > [!WARNING]
 > - **Reference on another filesystem.** Hard links cannot cross filesystems. `rsync` silently copies every file in full, and you save nothing.
 > - **Treating a snapshot like a `tar` increment.** A `--link-dest` snapshot is complete on its own. You do not need to replay older snapshots to restore from it.
-> - **Judging the savings with `ls`.** `ls` shows a full copy either way. Use `stat -c '%n %h'` and compare `du -sh` with `du -sh --apparent-size`.
+> - **Judging the savings with `ls`.** `ls` shows a full copy either way. Use `stat -c '%n %h'`, and run `du -sh` on the reference and the snapshot together.
 > - **A different exclude list for the snapshot.** Use the same excludes as the mirror, so the snapshot holds the same set of files.
 
 ## Your mission: rsync Mirroring & Snapshots Lab
 
 You can now mirror a directory safely with a dry run, `--delete` and `--exclude`, and take a snapshot that hard-links unchanged files. The mission gives you two ships flying in formation: mirror the working tree from `data-001` to `data-002` over SSH, then take a hard-linked snapshot on `data-002`.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop rsync-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-062
@@ -110,8 +114,9 @@ Read the task in [question.md](../../../labs/lab-062/docs/question.md) and solve
 astrona submit -c labs/lab-062
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-062
+astrona start rsync-playground
 ```

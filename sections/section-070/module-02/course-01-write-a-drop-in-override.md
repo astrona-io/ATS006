@@ -23,6 +23,8 @@ Either way, your change does not survive. Think of the vendor unit file like the
 
 Run:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 sudo systemctl edit cups.service
 ```

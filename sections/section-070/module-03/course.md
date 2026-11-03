@@ -28,7 +28,26 @@ Every mission starts with a pre-flight check, astronaut. Make sure you have the 
 
 ### What you need
 
-A terminal on an Ubuntu 24.04 machine with bash and `openssl`. A running lab machine works too: start one with `astrona run` and open a terminal on it with `astrona ssh`. Work in an empty folder of your own, so the files you create are easy to find and remove.
+A playground: one Ubuntu 24.04 training ship in the simulator, with the `bash` shell. Everything the examples use is already on it, so you do not need to install anything.
+
+### What is in your playground
+
+Your playground is a virtual machine on your computer. It already has:
+
+- `openssl` installed.
+- An empty folder `~/tls-practice`.
+
+Launch your playground now, and keep it running next to you while you read the parts:
+
+<!-- astrona:playground -->
+
+Open a terminal on it:
+
+```sh
+astrona ssh tls-playground
+```
+
+Every command block in the parts runs **inside that virtual machine**, as the user `candidate`, who can use `sudo`.
 
 ## How this module is laid out
 

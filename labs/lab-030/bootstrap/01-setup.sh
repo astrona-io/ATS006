@@ -2,8 +2,8 @@
 # Bootstrap: builds the capstone's starting state -- the two incident log
 # files with a mix of matching/decoy lines, and a seeded shell history
 # recording the previous responder's session. Bootstrap does NOT perform
-# any of the extraction, redaction, history recovery, or alias tasks
-# themselves.
+# any of the extraction, redaction, history recovery, alias, report, editing
+# or manual-page tasks themselves.
 
 set -eu
 
@@ -42,3 +42,12 @@ exit
 EOF
 
 chmod 600 "$HOME/.bash_history"
+
+# The handover note for the editor task. The student edits it; bootstrap
+# does not fill in any value.
+cat > "$HOME/handover.conf" << 'EOF'
+# handover draft - fill in before the shift ends
+blocked_ip=PLACEHOLDER
+reviewed=no
+mode=lockdown
+EOF

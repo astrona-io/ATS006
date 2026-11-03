@@ -12,6 +12,8 @@ A **merge** joins the history of one flight path onto another. The one thing tha
 
 Switch to `main` first, then merge:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 git switch main
 git merge origin/draft-summer
@@ -81,7 +83,13 @@ git commit -m "add assets directory"
 
 You can now find the right branch without checking it out, merge only that branch into `main`, and commit a new directory with a placeholder file. The mission asks you to do exactly that in the Auto-Verifier application's repository.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop git-branches-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-042
@@ -99,8 +107,9 @@ Read the task in [`question.md`](../../../labs/lab-042/docs/question.md) and sol
 astrona submit -c labs/lab-042
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-042
+astrona start git-branches-playground
 ```

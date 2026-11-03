@@ -26,8 +26,26 @@ Check that you have the knowledge and the tools this module expects before you b
 
 ### What you need
 
-- A terminal on an Ubuntu 24.04 machine with the bash shell. Any Ubuntu 24.04 machine works for the examples in the parts.
-- Or a running lab machine: start a lab with `astrona run` and open a terminal on it with `astrona ssh <lab name>`. The mission in this module gives you the exact commands.
+A playground: one Ubuntu 24.04 training ship in the simulator, with the `bash` shell. Everything the examples use is already on it, so you do not need to install anything.
+
+### What is in your playground
+
+Your playground is a virtual machine on your computer. It already has:
+
+- The program `/usr/local/bin/backup-tool`. It prints `backup finished: 12 files copied` on stdout, prints `warning: 1 file skipped` on stderr, and exits with code `3` every time.
+- An empty folder `~/streams-practice` for the files you create.
+
+Launch your playground now, and keep it running next to you while you read the parts:
+
+<!-- astrona:playground -->
+
+Open a terminal on it:
+
+```sh
+astrona ssh shell-streams-playground
+```
+
+Every command block in the parts runs **inside that virtual machine**, as the user `candidate`, who can use `sudo`.
 
 ## How this module is laid out
 

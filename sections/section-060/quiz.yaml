@@ -1,0 +1,302 @@
+# Knowledge check for section 060.
+schema_version: 1
+kind: question_bank
+id: ats006-060
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-060
+  title: "Diskspace Management & Remote Sync"
+questions:
+  - id: ats006-060-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Recognise a deleted-but-open file as the cause of a df and du mismatch"
+    source_readings:
+      - sections/section-060/module-01/course-01-two-ways-of-counting-space.md
+      - sections/section-060/module-01/course-02-find-and-reclaim-the-lost-space.md
+    prompt: |-
+      A filesystem is 97% full according to `df -h`. `du -xsh` on the same mount point reports only a few hundred megabytes. Both commands cover the same filesystem. What should you investigate next?
+    options:
+      - id: a
+        text: "Assume `du` has a bug and report it against the coreutils package."
+        explanation: "`du` works as designed; it only counts files that still have a name in the directory tree."
+      - id: b
+        text: "Run `fsck` on the mounted filesystem to repair the difference."
+        explanation: "`fsck` checks metadata consistency and does not free space that a running process holds open."
+      - id: c
+        text: "Look for a process that holds a deleted file open, using `sudo lsof +L1`."
+        explanation: "Correct. A deleted file that a process still holds open keeps its blocks in use, so `df` counts them but `du` cannot see them."
+      - id: d
+        text: "Raise the disk quota for the affected user."
+        explanation: "A larger quota frees no space and only lets the problem grow."
+    correct_option: c
+    explanation: "`df` counts every block in use, while `du` only adds up files that still have a name. A large gap points to a deleted file that a process still holds open, and `sudo lsof +L1` finds it."
+
+  - id: ats006-060-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain why du needs -x when it is compared with df"
+    source_readings:
+      - sections/section-060/module-01/course-01-two-ways-of-counting-space.md
+    prompt: |-
+      You compare `df -h /var/log` with `du -xsh /var/log`. What does the `-x` option do for the comparison?
+    options:
+      - id: a
+        text: "It prints sizes in human-readable units such as `M` and `G`."
+        explanation: "That is the job of `-h`, not `-x`."
+      - id: b
+        text: "It keeps `du` on one filesystem, so other filesystems mounted below the directory are not counted."
+        explanation: "Correct. `df` reports one filesystem, so `du` must not wander onto another one or the comparison means nothing."
+      - id: c
+        text: "It excludes hidden files from the total."
+        explanation: "`-x` has nothing to do with hidden files; it limits `du` to one filesystem."
+      - id: d
+        text: "It prints one total instead of a line per folder."
+        explanation: "That is the job of `-s`, not `-x`."
+    correct_option: b
+    explanation: "`-x` stops `du` from crossing into other filesystems mounted inside the directory. Without it, the total no longer matches what `df` reports for one filesystem."
+
+  - id: ats006-060-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "State when the kernel frees the blocks of a deleted file"
+    source_readings:
+      - sections/section-060/module-01/course-01-two-ways-of-counting-space.md
+    prompt: |-
+      A background process keeps writing to a file, and a cleanup job runs `rm` on that file. When does the kernel free the file's data blocks?
+    options:
+      - id: a
+        text: "As soon as `rm` returns, because the name is gone."
+        explanation: "`rm` only removes the name and lowers the link count; the blocks stay while a process holds the file open."
+      - id: b
+        text: "When the link count is zero and no process still has the file open."
+        explanation: "Correct. The kernel frees the blocks only when both counters reach zero."
+      - id: c
+        text: "When the next `df` command runs and notices the missing name."
+        explanation: "`df` only reads the bookkeeping and never frees blocks."
+      - id: d
+        text: "When the link count is zero, even if a process still has the file open."
+        explanation: "An open file descriptor keeps the inode alive, so the blocks stay in use."
+    correct_option: b
+    explanation: "The kernel frees the blocks only when the link count is zero and the open count is zero. A process that still holds the file open keeps the blocks in use."
+
+  - id: ats006-060-q04
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read the output filter of lsof +L1"
+    source_readings:
+      - sections/section-060/module-01/course-02-find-and-reclaim-the-lost-space.md
+    prompt: |-
+      You run `sudo lsof +L1` while hunting for lost space. What does it list?
+    options:
+      - id: a
+        text: "Every file larger than 1 gigabyte that is open."
+        explanation: "`+L1` is about the link count, not the size."
+      - id: b
+        text: "Every open file owned by the user with UID 1."
+        explanation: "Filtering by user uses a different option, not `+L1`."
+      - id: c
+        text: "Every open file whose link count is below 1: deleted from the tree but still held open."
+        explanation: "Correct. That is exactly the kind of file that makes `df` and `du` disagree."
+      - id: d
+        text: "Every network socket with fewer than 1 connection."
+        explanation: "`+L1` is not about network connections."
+    correct_option: c
+    explanation: "`+L1` shows open files with a link count below 1. Each line gives the command, the PID, the user, the file descriptor and the current size."
+
+  - id: ats006-060-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Reclaim space from a deleted open file without restarting the process"
+    source_readings:
+      - sections/section-060/module-01/course-02-find-and-reclaim-the-lost-space.md
+    prompt: |-
+      `lsof` shows that PID `4821` holds a large deleted log file open on file descriptor `7`. The service must not be restarted. Which command frees the space?
+    options:
+      - id: a
+        text: "`sudo rm -f /proc/4821/fd/7`"
+        explanation: "`rm` cannot reach the lost space, because the file has no name left to remove."
+      - id: b
+        text: "`sudo kill -9 4821`"
+        explanation: "This stops the process, which is exactly what the task rules out."
+      - id: c
+        text: "`sudo truncate -s 0 /proc/4821/fd/7`"
+        explanation: "Correct. Truncating through the process's own descriptor empties the same inode, and the process keeps running."
+      - id: d
+        text: "`sudo systemctl restart` on the service that owns PID 4821"
+        explanation: "A restart would free the space, but the task says the service must not be restarted."
+    correct_option: c
+    explanation: "`truncate -s 0` on `/proc/<PID>/fd/<N>` sets the size of the open file to zero without touching the process. The process then writes into an empty file."
+
+  - id: ats006-060-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the correct fix when visible files cannot explain the full filesystem"
+    source_readings:
+      - sections/section-060/module-01/course-02-find-and-reclaim-the-lost-space.md
+    prompt: |-
+      A colleague wants to run `rm -rf` over the log directory to fix the same full-filesystem alarm, where `du` shows almost nothing. Will that help?
+    options:
+      - id: a
+        text: "Yes, because removing more files lowers the link counts on the deck."
+        explanation: "The lost space belongs to an inode with no name left, so `rm` cannot reach it."
+      - id: b
+        text: "No, the lost space has no name left that `rm` can reach, and the command may delete logs you still need."
+        explanation: "Correct. Truncate through `/proc` or restart the service that holds the file instead."
+      - id: c
+        text: "Yes, but only if you run it as root."
+        explanation: "Root cannot remove a name that no longer exists."
+      - id: d
+        text: "No, because `rm -rf` only works on files smaller than 1 gigabyte."
+        explanation: "There is no such size limit; the issue is that the held file has no name."
+    correct_option: b
+    explanation: "Deleting more visible files never brings this space back. Truncate the file through `/proc/<PID>/fd/<N>` or restart the service so the process closes its descriptor."
+
+  - id: ats006-060-q07
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "List what archive mode keeps"
+    source_readings:
+      - sections/section-060/module-02/course-01-mirror-a-directory-safely.md
+    prompt: |-
+      Your backup command starts with `rsync -a`. Which description of `-a` is correct?
+    options:
+      - id: a
+        text: "It is short for `-rlptgoD`: recursive, and it keeps symbolic links, permissions, times, group, owner and special files."
+        explanation: "Correct. This is why a backup with `-a` is a faithful copy."
+      - id: b
+        text: "It only turns on compression for the transfer."
+        explanation: "Compression is `-z`, not `-a`."
+      - id: c
+        text: "It makes the destination an exact mirror by removing extra files."
+        explanation: "Removing files at the destination needs `--delete`."
+      - id: d
+        text: "It only prints each file as it transfers."
+        explanation: "That is `-v`, not `-a`."
+    correct_option: a
+    explanation: "`-a` is a documented short form for `-rlptgoD`. Without it, permissions, owners and times are not kept and the copy is not faithful."
+
+  - id: ats006-060-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Predict the layout that the trailing slash on the source produces"
+    source_readings:
+      - sections/section-060/module-02/course-01-mirror-a-directory-safely.md
+    prompt: |-
+      You run `rsync -a /srv/website nas:/backup/site-mirror/` with no slash after `website`. You expected the contents of `/srv/website` directly inside `/backup/site-mirror/`. Where do the files land?
+    options:
+      - id: a
+        text: "Directly in `/backup/site-mirror/`, as you expected."
+        explanation: "That layout needs a trailing slash on the source path."
+      - id: b
+        text: "In `/backup/site-mirror/website/`, because without a slash `rsync` copies the directory itself."
+        explanation: "Correct. Use `/srv/website/` to copy only the contents."
+      - id: c
+        text: "Nowhere, because `rsync` refuses a source without a trailing slash."
+        explanation: "Both forms are valid; they just give different layouts."
+      - id: d
+        text: "In `/backup/site-mirror/website/` only when `--delete` is missing."
+        explanation: "`--delete` does not change the trailing-slash behaviour."
+    correct_option: b
+    explanation: "A source without a trailing slash copies the directory itself and creates a same-named directory inside the destination. A trailing slash copies only the contents."
+
+  - id: ats006-060-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Preview a --delete run with a dry run before it removes anything"
+    source_readings:
+      - sections/section-060/module-02/course-01-mirror-a-directory-safely.md
+    prompt: |-
+      You are about to run `rsync -avz --delete` to mirror a tree to another machine. You want to see what would be removed before anything is removed. What do you do?
+    options:
+      - id: a
+        text: "Add `-v` and watch the output while it runs."
+        explanation: "The run would already be deleting files while you watch."
+      - id: b
+        text: "Add `-z` so the transfer is slower and easier to stop."
+        explanation: "`-z` only compresses data and gives no preview."
+      - id: c
+        text: "Nothing is needed, because `rsync` asks for confirmation before it deletes."
+        explanation: "`rsync` has no confirmation question for `--delete`."
+      - id: d
+        text: "Add `-n` (`--dry-run`) and read every line that starts with `*deleting`, then run again without `-n`."
+        explanation: "Correct. A dry run makes the same comparison and prints the list without changing the destination."
+    correct_option: d
+    explanation: "`-n` does every comparison a real run would do and changes nothing. Read each `*deleting` line before you drop `-n`, so swapped or wrong paths are caught first."
+
+  - id: ats006-060-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Predict what happens when the exclude list changes between runs"
+    source_readings:
+      - sections/section-060/module-02/course-01-mirror-a-directory-safely.md
+    prompt: |-
+      You synced with `--delete --exclude=cache/`. On the next run you forget the `--exclude`. What can go wrong?
+    options:
+      - id: a
+        text: "Nothing, because `--exclude` is stored in the destination."
+        explanation: "`rsync` does not remember the exclude list; you must repeat it every time."
+      - id: b
+        text: "The excluded path is now compared in both directions, so `cache/` can start to sync, and with `--delete` destination files under it can be removed."
+        explanation: "Correct. An excluded path is invisible to the comparison in both directions, so dropping the exclude changes what `rsync` sees."
+      - id: c
+        text: "`rsync` refuses to run until you add the exclude again."
+        explanation: "`rsync` does not check for earlier exclude lists."
+      - id: d
+        text: "Only the source files in `cache/` are deleted."
+        explanation: "`rsync` never deletes source files in this way; `--delete` acts on the destination."
+    correct_option: b
+    explanation: "Excluded paths are skipped in both directions. Keep the exclude list the same on every run in a chain, or files can be copied or deleted unexpectedly."
+
+  - id: ats006-060-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose a space-efficient snapshot method and its one requirement"
+    source_readings:
+      - sections/section-060/module-02/course-02-space-efficient-snapshots-with-link-dest.md
+    prompt: |-
+      A full mirror already exists at `/backup/current`. You want a dated snapshot at `/backup/snapshots/day2/` that looks complete and browsable, but where unchanged files cost no extra disk space. Which approach fits, and what must be true?
+    options:
+      - id: a
+        text: "`rsync -a --link-dest=/backup/current` to the new directory, with both on the same filesystem."
+        explanation: "Correct. `--link-dest` hard-links unchanged files, and hard links cannot cross filesystems."
+      - id: b
+        text: "`tar --listed-incremental` into an archive."
+        explanation: "A `tar` increment is a delta that you must replay in order; it is not a complete directory you can browse."
+      - id: c
+        text: "`rsync -a --delete` to the new directory."
+        explanation: "`--delete` removes stale files at the destination and does nothing to share unchanged files."
+      - id: d
+        text: "`cp -r /backup/current /backup/snapshots/day2`."
+        explanation: "A plain copy writes every byte again, so it saves no space."
+    correct_option: a
+    explanation: "`--link-dest` makes a hard link for each unchanged file and sends only new or changed ones. The reference directory must be on the same filesystem as the destination."
+
+  - id: ats006-060-q12
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Diagnose and prove a link-dest snapshot with link counts and sizes"
+    source_readings:
+      - sections/section-060/module-02/course-02-space-efficient-snapshots-with-link-dest.md
+    prompt: |-
+      You took a `--link-dest` snapshot of `/backup/current` into `/backup/snapshots/day2`, and you suspect that `rsync` copied every file instead of linking it. How do you check, and what is the most likely cause?
+    options:
+      - id: a
+        text: "`ls` shows a smaller size for the snapshot; the cause is a wrong exclude list."
+        explanation: "`ls` shows a full copy either way and cannot prove the savings."
+      - id: b
+        text: "`stat -c '%n %h'` on unchanged files shows link counts of 1, and `du -sh /backup/current /backup/snapshots/day2` in one command charges the snapshot with nearly the full size; the likely cause is that the reference is on a different filesystem, so `rsync` copied everything."
+        explanation: "Correct. Hard links cannot cross filesystems, and `rsync` falls back to full copies without an error."
+      - id: c
+        text: "`stat -c '%n %h'` shows link counts above 1; the cause is the missing `-a` option."
+        explanation: "Link counts above 1 would prove the files are shared, so no full copy happened."
+      - id: d
+        text: "`df` shows less space used; the cause is an old `tar` increment."
+        explanation: "`df` does not show per-snapshot sharing, and `tar` is not part of a `--link-dest` snapshot."
+    correct_option: b
+    explanation: "An unchanged file in a good snapshot has a link count above 1. `du` counts each inode once per run, so run it on the reference and the snapshot together: the snapshot is then charged only for new or changed files. If the counts are 1 and the snapshot is charged in full, the reference was most likely on another filesystem. `du` on the snapshot alone shows nearly the full size either way."
+

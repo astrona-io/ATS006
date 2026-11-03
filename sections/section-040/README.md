@@ -57,7 +57,7 @@ Work through the modules in this order. Each part teaches one idea. A mission (a
 
 ### Knowledge check
 
-Before the capstone, test your reasoning with the **[Section 040 Knowledge Check](./quiz.md)**.
+Before the capstone, test your reasoning with the **[Section 040 Knowledge Check](./quiz.yaml)**.
 
 ### Capstone
 

@@ -26,6 +26,8 @@ The two simplest redirections each move one line and leave the other alone. Here
 
 ### Send only stdout to a file
 
+<!-- astrona:playground:renew -->
+
 ```bash
 backup-tool > success.log
 ```

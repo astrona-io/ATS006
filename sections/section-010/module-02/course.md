@@ -26,8 +26,26 @@ Check that you have the knowledge and the tools this module expects before you b
 
 ### What you need
 
-- A terminal on an Ubuntu 24.04 machine with the bash shell. Any Ubuntu 24.04 machine works for the examples in the parts.
-- Or a running lab machine: start a lab with `astrona run` and open a terminal on it with `astrona ssh <lab name>`. The mission in this module gives you the exact commands.
+A playground: one Ubuntu 24.04 training ship in the simulator, with the `bash` shell. Everything the examples use is already on it, so you do not need to install anything.
+
+### What is in your playground
+
+Your playground is a virtual machine on your computer. It already has:
+
+- A line in `~/.bashrc` that exports `SHIP_NAME=odyssey`, so every new shell already has it.
+- The script `/usr/local/bin/show-env`. It prints the values of `SHIP_NAME` and `CREW_ROLE` as the child process sees them.
+
+Launch your playground now, and keep it running next to you while you read the parts:
+
+<!-- astrona:playground -->
+
+Open a terminal on it:
+
+```sh
+astrona ssh env-scope-playground
+```
+
+Every command block in the parts runs **inside that virtual machine**, as the user `candidate`, who can use `sudo`.
 
 ## How this module is laid out
 

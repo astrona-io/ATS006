@@ -10,6 +10,8 @@ Once the numbers from `df` and `du` disagree on the same filesystem, you need tw
 
 Run `lsof` with the `+L1` option:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 sudo lsof +L1
 ```
@@ -81,7 +83,13 @@ You can build the problem yourself and fix it, step by step:
 
 You can now prove that `df` and `du` disagree, find the process that holds a deleted file open, and reclaim the space safely. The mission puts you on a ship whose log deck is almost full: find the cause and free the space without deleting any real log file.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop disk-space-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-061
@@ -99,8 +107,9 @@ Read the task in [question.md](../../../labs/lab-061/docs/question.md) and solve
 astrona submit -c labs/lab-061
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-061
+astrona start disk-space-playground
 ```

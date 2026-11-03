@@ -87,9 +87,9 @@ Use a spare machine or a running lab to repeat the module's key checks without h
 4. Create a second directory, apply `chmod 1777`, and confirm `ls -ld` shows a lowercase `t` (`drwxrwxrwt`).
 5. Build a tree with a script and a plain text file, run `chmod -R u+rwX,g+rX,o+rX`, and confirm only the script is executable.
 
-## Clean up
+## Clean up the playground
 
-When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -97,7 +97,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the lab. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy chmod-bits-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-021
@@ -113,6 +119,6 @@ astrona list
 No astrona labs running.
 ```
 
-You can start the mission again at any time with the `astrona run` command. It always starts clean, so nothing you broke carries over.
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-020/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Nine bits say who may look, change and run; the fourth digit adds the team tag, the owner's rank and the shared locker.*

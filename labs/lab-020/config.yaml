@@ -19,7 +19,7 @@ runtime:
 bootstrap:
   init:
     - name: "lab-020-setup"
-      description: "Creates the ops group and opsuser account with no persistent umask yet, pre-stages /srv/teamspace/shared, bin/deploy.sh, and dropbox with intentionally wrong permissions, and seeds /srv/teamspace/incoming with files of mixed ages, sizes, and permission bits"
+      description: "Creates the ops group and opsuser account with no persistent umask yet, pre-stages /srv/teamspace/shared, bin/deploy.sh, and dropbox with intentionally wrong permissions, seeds /srv/teamspace/incoming with files of mixed ages, sizes, and permission bits, and seeds /srv/teamspace/release-src with a config file of known mode and time, an old release note and a scratch folder"
       type: "folder"
       source: "bootstrap/"
 
@@ -54,6 +54,16 @@ validation:
       description: "Confirms permission-777 files were moved to quarantine/ and the untouched mid-range files remain at the top level"
       type: "file"
       source: "validation/validate-incoming-quarantine.sh"
+
+    - name: "verify-release-files"
+      description: "Confirms the release tree exists, app.conf was copied with its mode and time kept, old-release.txt was moved and tmp-build was removed"
+      type: "file"
+      source: "validation/validate-release-files.sh"
+
+    - name: "verify-release-links-and-group"
+      description: "Confirms the hard link shares the copy's inode, the symbolic link has the relative target 2026/q1 and everything under releases has group ops"
+      type: "file"
+      source: "validation/validate-release-links-and-group.sh"
 
 teardown:
   keepCluster: false

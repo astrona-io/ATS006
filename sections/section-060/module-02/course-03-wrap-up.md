@@ -19,7 +19,7 @@ This module was about keeping two directory trees in sync with `rsync`, and taki
 - `--link-dest` hard-links files that are unchanged compared with the reference directory, and sends only new or changed files.
 - A `--link-dest` snapshot is a complete directory you can browse on its own; a `tar` increment is a delta you must replay in order.
 - The reference must be on the same filesystem as the destination, or `rsync` silently copies everything.
-- `stat -c '%n %h'` shows a link count above 1 for shared files; `du -sh` against `du -sh --apparent-size` shows the savings.
+- `stat -c '%n %h'` shows a link count above 1 for shared files; `du -sh` on the reference and the snapshot in one command charges the snapshot only for new or changed files.
 
 ## Your missions
 
@@ -81,9 +81,9 @@ The reference directory is on a different filesystem from the destination. Hard 
 Run `stat -c '%n %h'` on it. A link count greater than 1 means another name points at the same inode.
 </details>
 
-## Clean up
+## Clean up the playground
 
-When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -91,7 +91,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy rsync-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-062
@@ -106,5 +112,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-060/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Preview before you delete, keep your excludes the same, and let hard links carry what did not change.*

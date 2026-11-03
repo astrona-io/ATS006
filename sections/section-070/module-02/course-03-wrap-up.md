@@ -84,9 +84,9 @@ No. `Environment=` lines add up, so your variable simply joins the vendor's.
 `sudo systemctl revert <unit>`, then `sudo systemctl daemon-reload` and `sudo systemctl restart <unit>`.
 </details>
 
-## Clean up
+## Clean up the playground
 
-Each mission runs in its own training ship. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -94,7 +94,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy unit-override-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-072
@@ -110,6 +116,6 @@ astrona list
 No astrona labs running.
 ```
 
-If you practised on a test machine of your own, run `sudo systemctl revert <unit>`, `sudo systemctl daemon-reload` and `sudo systemctl restart <unit>` to put the service back the way the package shipped it.
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-070/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Leave the vendor's card alone, put your change on a sticky note, and let `systemctl cat` prove the result.*

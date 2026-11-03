@@ -8,6 +8,8 @@ The standard technique is simple: make a listing of each archive's contents, the
 
 ### Compare a bzip2 archive with a gzip archive
 
+<!-- astrona:playground:renew -->
+
 ```bash
 tar -tjf legacy-export.tar.bz2 | sort > bz2.listing
 tar -tzf export-max.tar.gz      | sort > gz.listing
@@ -89,7 +91,13 @@ Create a small directory called `sample` with a few test files, and archive it w
 
 You can now convert an archive to another compression format, at the strongest level, and prove that both archives hold the same files. The mission asks you to convert a real bzip2 archive on a training ship to gzip, write sorted listings of both, and leave the original untouched.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop archive-convert-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-051
@@ -107,8 +115,9 @@ Read the task in [question.md](../../../labs/lab-051/docs/question.md) and solve
 astrona submit -c labs/lab-051
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-051
+astrona start archive-convert-playground
 ```

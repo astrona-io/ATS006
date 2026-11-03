@@ -8,6 +8,8 @@ Redirection controls where a program's text goes. It has no effect on whether th
 
 ### Read it right after the command
 
+<!-- astrona:playground:renew -->
+
 ```bash
 backup-tool
 echo $?
@@ -102,7 +104,13 @@ This time `echo $?` prints `0`: the exit code of `ls`, which succeeded. The scri
 
 You can now send stdout and stderr to separate files, catch both in one file in the right order, and capture an exit code. The mission asks you to do all four with a program that always prints the same two lines and always exits with the same code.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop shell-streams-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-011
@@ -120,8 +128,9 @@ Read the task in [the question](../../../labs/lab-011/docs/question.md) and solv
 astrona submit -c labs/lab-011
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-011
+astrona start shell-streams-playground
 ```

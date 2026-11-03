@@ -14,6 +14,8 @@ Write a brand-new unit file and `systemctl start` it at once, and it works. syst
 
 Now edit that same unit file later: change `Restart=`, add a line, fix a typo. `systemctl restart` will quietly keep using the *old*, cached definition and ignore your edit, until you run:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 sudo systemctl daemon-reload
 ```
@@ -100,7 +102,13 @@ The service should be `active (running)` again, with a new process ID. Being kil
 
 You can now write a unit file, load it, and start it now and at every boot. The mission asks you to wrap an existing metrics script as `metrics-collector.service`, running as its own system user, restarting on failure, ordered after the real network, and enabled.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop service-unit-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-071
@@ -118,8 +126,9 @@ Read the task in the [question](../../../labs/lab-071/docs/question.md) and solv
 astrona submit -c labs/lab-071
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-071
+astrona start service-unit-playground
 ```

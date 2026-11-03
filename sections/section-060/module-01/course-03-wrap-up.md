@@ -75,9 +75,9 @@ The old process closes its file descriptor when it stops. Both counters reach ze
 No. The lost space belongs to an inode with no name left, so `rm` cannot reach it. It would only delete logs that may still be needed.
 </details>
 
-## Clean up
+## Clean up the playground
 
-When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -85,7 +85,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy disk-space-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-061
@@ -100,5 +106,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-060/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *`df` reads the gauge, `du` counts the crates; when they disagree, look for a crate someone still holds.*

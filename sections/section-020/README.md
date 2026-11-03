@@ -21,6 +21,7 @@ Once you can set and read permissions with confidence, the next skill is finding
 - Why services have their own `umask`, and why a team folder needs setgid as well as a loose mask.
 - Matching files with `find` by absolute date (`-newermt`), by size (`-size`) and by permission (`-perm`), and acting on them with `-delete` and `-exec`.
 - Running a triage of several passes in the order given, with `-maxdepth 1`, so no pass undoes another.
+- Creating, copying, moving and removing files, making hard and symbolic links, and changing owners and groups with `chown` and `chgrp`.
 
 ---
 
@@ -55,10 +56,20 @@ Work through the modules in this order. Each part teaches one idea. A mission (a
    - Mission: [find Triage by Criteria Lab](../../labs/lab-023/docs/question.md)
 3. [Wrap-Up: Mission Debrief](module-03/course-03-wrap-up.md)
 
+### [Files, Links And Ownership](module-04/course.md)
+
+3 parts and 1 mission:
+
+1. [Create, Copy, Move And Remove](module-04/course-01-create-copy-move-and-remove.md)
+2. [Hard Links And Symbolic Links](module-04/course-02-hard-and-symbolic-links.md)
+3. [Owners And Groups](module-04/course-03-owners-and-groups.md)
+   - Mission: [File Operations, Links and Ownership Lab](../../labs/lab-024/docs/question.md)
+4. [Summary](module-04/course-04-summary.md)
+
 ### Knowledge check
 
-Before the capstone, test your reasoning with the **[Section 020 Knowledge Check](quiz.md)**: scenario questions with a full explanation for every answer.
+Before the capstone, test your reasoning with the **[Section 020 Knowledge Check](quiz.yaml)**: scenario questions with a full explanation for every answer.
 
 ### Capstone
 
-Your final mission for this section: **[Permissions & File Triage Capstone Lab](../../labs/lab-020/docs/question.md)**. You set a persistent `umask` for a user, lock down a shared team workspace with setgid, owner-only and sticky permissions, and triage a legacy folder with `find`, all on one training ship.
+Your final mission for this section: **[Permissions & File Triage Capstone Lab](../../labs/lab-020/docs/question.md)**. You set a persistent `umask` for a user, lock down a shared team workspace with setgid, owner-only and sticky permissions, triage a legacy folder with `find`, and stage a release with copy, move, hard and symbolic links, remove and group ownership, all on one training ship.

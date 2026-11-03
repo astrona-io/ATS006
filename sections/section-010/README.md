@@ -17,6 +17,7 @@ None of this is background reading. Wire the error line to the wrong place, and 
 - The difference between a shell variable and an exported environment variable, and how a child process gets a copy of the environment.
 - Checking exported variables with `export -p`, and deciding which variables in a script need `export`.
 - Using `${VAR}` braces and double quotes so values expand correctly.
+- Writing a small script: arguments (`$1`, `$#`, `"$@"`), exit codes, `if`, `for`, `while` and functions.
 
 ---
 
@@ -43,13 +44,22 @@ Work through the modules in this order. Each part teaches one idea. A mission (a
    - Mission: [Environment Variable Scope Lab](../../labs/lab-012/docs/question.md)
 3. [Wrap-Up: Mission Debrief](module-02/course-03-wrap-up.md)
 
+### [Shell Scripting Basics](module-03/course.md)
+
+2 parts and 1 mission:
+
+1. [Arguments, Exit Codes And Tests](module-03/course-01-arguments-and-tests.md)
+2. [Loops And Functions](module-03/course-02-loops-and-functions.md)
+   - Mission: [Shell Script Arguments, Tests and Loops Lab](../../labs/lab-013/docs/question.md)
+3. [Summary](module-03/course-03-summary.md)
+
 ### Knowledge check
 
-Before the capstone, test your reasoning with the [Section 010 Knowledge Check](./quiz.md).
+Before the capstone, test your reasoning with the [Section 010 Knowledge Check](./quiz.yaml).
 
 ### Capstone
 
-Your final mission for this section: **[Shell Semantics Integration Capstone Lab](../../labs/lab-010/docs/question.md)**. You build a wrapper script that exports the right variable to a health-check program, keeps another one local, and captures the program's stdout, stderr, both streams together and its exit code.
+Your final mission for this section: **[Shell Semantics Integration Capstone Lab](../../labs/lab-010/docs/question.md)**. You build a wrapper script that exports the right variable to a health-check program, keeps another one local, and captures the program's stdout, stderr, both streams together and its exit code. It also writes a small summary with an argument, an `if` test and a `for` loop.
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-010

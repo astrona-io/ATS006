@@ -12,6 +12,8 @@ Beginners often think a remote is something big and mysterious. It is not a serv
 
 First, create a repository to act as the remote:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 git init --bare ~/projects/recipe-notes-backup.git
 ```
@@ -81,7 +83,13 @@ The diagram shows that `git fetch` stops at the remote-tracking reference, while
 
 You can now create a repository, commit changes one at a time, ignore build output and push to a remote with upstream tracking. The mission asks you to build a small tool's repository from nothing, in exactly the commits the grader expects, and connect it to a bare `origin`.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop git-basics-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-041
@@ -99,8 +107,9 @@ Read the task in [`question.md`](../../../labs/lab-041/docs/question.md) and sol
 astrona submit -c labs/lab-041
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-041
+astrona start git-basics-playground
 ```

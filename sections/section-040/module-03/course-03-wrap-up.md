@@ -87,9 +87,9 @@ Fix the file, `git add` it and run `git rebase --continue`, or run `git rebase -
 When the branch is already pushed and someone else may have built on it. Rebase rewrites commit hashes; a merge keeps every existing commit as it is.
 </details>
 
-## Clean up
+## Clean up the playground
 
-The lab is a whole virtual machine running on your computer. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -97,7 +97,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy git-upstream-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-043
@@ -112,5 +118,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-040/module-03/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Fetch to look, rebase to replay your own path, and merge when the path is already shared.*

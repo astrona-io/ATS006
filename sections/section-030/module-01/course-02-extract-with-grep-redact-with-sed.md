@@ -10,6 +10,8 @@ A very common task is: "find the lines that meet condition A **and** condition B
 
 ### See one combined pattern miss a line
 
+<!-- astrona:playground:renew -->
+
 Save this as `syslog`:
 
 ```text
@@ -147,7 +149,13 @@ The rule: always send matches into a separate, clearly named output file, never 
 
 You can now extract lines that meet two conditions and redact whole lines safely. The mission asks you to pull an attacker's requests out of a web server log and to replace sensitive lines in a server log, without disturbing anything else in either file.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop grep-sed-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-031
@@ -165,8 +173,9 @@ Read the task in [the question](../../../labs/lab-031/docs/question.md) and solv
 astrona submit -c labs/lab-031
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-031
+astrona start grep-sed-playground
 ```

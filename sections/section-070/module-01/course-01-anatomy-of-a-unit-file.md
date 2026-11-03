@@ -116,6 +116,8 @@ The unit file you saved names a script and a user. Now create both on your test 
 
 Any long-running script will do. If you do not have one, write a small one that loops and sleeps. Create its folder first:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 sudo mkdir -p /opt/backup
 ```

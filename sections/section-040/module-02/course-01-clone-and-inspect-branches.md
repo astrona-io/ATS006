@@ -25,6 +25,8 @@ When you clone a repository, Git does not hand you a single snapshot. It copies 
 
 Suppose a team keeps a blog's files in a repository at `/repositories/garden-blog`. Clone it like this:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 git clone /repositories/garden-blog /home/writer/garden-blog
 cd /home/writer/garden-blog

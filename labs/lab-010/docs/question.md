@@ -18,6 +18,10 @@ Create a wrapper script at `/opt/monitor/run-check.sh` which, every time it runs
    - Its stderr, and only its stderr, is written to `/var/log/monitor/probe.err`.
    - Both streams combined are written to `/var/log/monitor/probe.combined`.
    - Its exit code is written, as a single number, to `/var/log/monitor/probe.exit`.
-4. Exits itself with exactly the same exit code that `/usr/local/bin/service-probe` returned.
+4. Takes an optional first argument, a label. Without an argument the label is `manual`. After the probe has run, the wrapper writes `/var/log/monitor/probe.summary`, a text file with exactly five lines:
+   - `label=<label>`
+   - `status=healthy` when the probe's exit code is `0`, otherwise `status=degraded`. Use an `if` test for this.
+   - Three lines, one for each of `probe.out`, `probe.err` and `probe.combined`, in that order, in the form `<file name> <N> lines`, where `<N>` is the number of lines in that file in `/var/log/monitor`. Use a `for` loop over the three file names.
+5. Exits itself with exactly the same exit code that `/usr/local/bin/service-probe` returned.
 
-`/var/log/monitor` already exists and is writable by your user. Make the script executable. The grader runs your script itself and then checks every file.
+`/var/log/monitor` already exists and is writable by your user. Make the script executable. The grader runs your script itself, with and without a label, and then checks every file.

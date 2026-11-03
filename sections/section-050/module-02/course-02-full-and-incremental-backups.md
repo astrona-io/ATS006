@@ -10,6 +10,8 @@ The fix for the waste is an **incremental backup**: a backup that holds only wha
 
 ### Take the first backup with a snapshot file
 
+<!-- astrona:playground:renew -->
+
 ```bash
 sudo tar -czpf level0.tar.gz \
   --listed-incremental=/var/backups/snapshot.snar \

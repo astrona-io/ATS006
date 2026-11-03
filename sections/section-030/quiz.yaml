@@ -1,0 +1,348 @@
+# Knowledge check for section 030. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats006-030
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-030
+  title: "Everyday Shell Craft: Text Processing, History & Aliases"
+questions:
+  - id: ats006-030-q01
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Match two conditions in any order with piped greps"
+    source_readings:
+      - sections/section-030/module-01/course-02-extract-with-grep-redact-with-sed.md
+    prompt: |-
+      You need every line of `access.log` with the path `/checkout` and the code `500`, and you do not know which comes first. Which approach is most reliable?
+    options:
+      - id: a
+        text: "`grep '/checkout' access.log | grep '500'`"
+        explanation: "Correct. Each grep filters on its own, in any order."
+      - id: b
+        text: "`grep -v '/checkout' access.log | grep -v '500'`"
+        explanation: "`-v` inverts and selects lines with neither."
+      - id: c
+        text: "`grep '/checkout' access.log; grep '500' access.log`"
+        explanation: "This prints two separate result sets, a union and not an intersection."
+      - id: d
+        text: "`grep '.*\\/checkout.*500.*' access.log`"
+        explanation: "This only matches when `/checkout` comes before `500`."
+    correct_option: a
+    explanation: "Pipe one grep into another for AND, use `-E 'a|b'` for OR."
+
+  - id: ats006-030-q02
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain why an unanchored end lets a longer name match"
+    source_readings:
+      - sections/section-030/module-01/course-01-patterns-describing-a-shape.md
+    prompt: |-
+      `sed -E 's/^host\.web.*DOWN$/OUTAGE LOGGED/' status.log` also changes the line `host.webhook-listener heartbeat DOWN`, which must not match. Why?
+    options:
+      - id: a
+        text: "`.*` matching zero characters skips the check."
+        explanation: "Zero characters is normal for `*`."
+      - id: b
+        text: "`sed -E` requires `\\b` by default."
+        explanation: "`\\b` is never required."
+      - id: c
+        text: "`sed -E` ignores anchors."
+        explanation: "Anchors work the same in basic and extended mode."
+      - id: d
+        text: "`^host\\.web` only requires the line to start with those characters, so `host.webhook-listener` matches too."
+        explanation: "Correct. The pattern does not say that the token ends after `web`."
+    correct_option: d
+    explanation: "Add a space or a word boundary after the token, for example `^host\\.web `."
+
+  - id: ats006-030-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use HISTCONTROL=ignorespace"
+    source_readings:
+      - sections/section-030/module-02/course-02-control-what-history-remembers.md
+    prompt: |-
+      You want the shell to skip any command that starts with a space, and you do not want any other change. Which `HISTCONTROL` value does this exactly?
+    options:
+      - id: a
+        text: "`HISTCONTROL=erasedups`"
+        explanation: "This removes older duplicates and does not skip space-led lines."
+      - id: b
+        text: "`HISTCONTROL=ignoredups`"
+        explanation: "This skips repeats, not space-led commands."
+      - id: c
+        text: "`HISTCONTROL=ignoreboth`"
+        explanation: "This adds duplicate suppression you did not ask for."
+      - id: d
+        text: "`HISTCONTROL=ignorespace`"
+        explanation: "Correct. Only commands with a leading space are skipped."
+    correct_option: d
+    explanation: "`ignoreboth` is `ignorespace` plus `ignoredups`."
+
+  - id: ats006-030-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain when a second terminal sees the history"
+    source_readings:
+      - sections/section-030/module-02/course-01-recall-commands-without-retyping.md
+    prompt: |-
+      You typed a command in Terminal A five minutes ago. Terminal B, open the whole time for the same user, does not show it in `history`. What is the best explanation?
+    options:
+      - id: a
+        text: "`history` can never show another shell's commands."
+        explanation: "With `history -a` and `history -r` they can be shared."
+      - id: b
+        text: "Terminal A writes to `~/.bash_history` only when it exits, and Terminal B reads the file only at its start unless told to re-read it."
+        explanation: "Correct. Use `history -a` in A and `history -r` in B."
+      - id: c
+        text: "`HISTFILE` is random for each terminal."
+        explanation: "It defaults to `~/.bash_history` for all."
+      - id: d
+        text: "Only shells with the same parent process share history."
+        explanation: "Sharing goes through the file, not the parent process."
+    correct_option: b
+    explanation: "History lives in memory and is written to the file on exit or with `history -a`."
+
+  - id: ats006-030-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why aliases are not expanded in non-interactive shells"
+    source_readings:
+      - sections/section-030/module-03/course-02-bypass-scripts-and-safe-aliases.md
+    prompt: |-
+      You add `alias rm='rm -i'` to `~/.bashrc`. A cron job as the same user runs a script that calls `rm`. What happens?
+    options:
+      - id: a
+        text: "The real `rm` runs without a prompt, because non-interactive shells do not expand aliases by default."
+        explanation: "Correct."
+      - id: b
+        text: "The cron job fails because aliases cannot be used in scripts."
+        explanation: "The script runs fine."
+      - id: c
+        text: "It depends on `#!/bin/bash` or `#!/bin/sh`."
+        explanation: "Neither shebang changes the default."
+      - id: d
+        text: "The `rm` asks for confirmation, since it is the same user."
+        explanation: "Aliases depend on interactivity, not on the user."
+    correct_option: a
+    explanation: "Use a function or the full path in scripts. Aliases are for the interactive prompt."
+
+  - id: ats006-030-q06
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Bypass an alias for one command"
+    source_readings:
+      - sections/section-030/module-03/course-02-bypass-scripts-and-safe-aliases.md
+    prompt: |-
+      `ls` is an alias that adds options and you want the plain command once. Which form bypasses the alias?
+    options:
+      - id: a
+        text: "`ls --no-alias`"
+        explanation: "`ls` has no such option."
+      - id: b
+        text: "`unalias`"
+        explanation: "Without a name it fails, and it removes the alias for the whole session."
+      - id: c
+        text: "`\\ls`"
+        explanation: "Correct. A backslash, or `command ls`, skips alias lookup."
+      - id: d
+        text: "`alias -d ls`"
+        explanation: "This is not a valid way to bypass an alias."
+    correct_option: c
+    explanation: "`\\name` and `command name` run the real command once."
+
+  - id: ats006-030-q07
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Rank values with sort and uniq"
+    source_readings:
+      - sections/section-030/module-04/course-01-sort-count-and-cut.md
+    prompt: |-
+      `visits.log` holds one station name per line. Which pipeline shows the stations by how often they appear, the most common first?
+    options:
+      - id: a
+        text: "`cut -d, -f1 visits.log`"
+        explanation: "This cuts a column and counts nothing."
+      - id: b
+        text: "`uniq -c visits.log | sort`"
+        explanation: "`uniq` needs sorted input and this sorts text ascending."
+      - id: c
+        text: "`sort visits.log | uniq -c | sort -rn`"
+        explanation: "Correct. Sort, count, then sort the counts numerically in reverse."
+      - id: d
+        text: "`wc -l visits.log`"
+        explanation: "This counts lines only."
+    correct_option: c
+    explanation: "`uniq` only merges neighbouring lines, so sort first."
+
+  - id: ats006-030-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Sort a column as numbers"
+    source_readings:
+      - sections/section-030/module-04/course-01-sort-count-and-cut.md
+    prompt: |-
+      How do you list `crew.csv` rows by the fourth column, a number, from largest to smallest, with the header row removed?
+    options:
+      - id: a
+        text: "`sort -t, -k4 crew.csv`"
+        explanation: "This sorts as text and ascending, and includes the header."
+      - id: b
+        text: "`tail -n +2 crew.csv | sort -t, -k4 -n -r`"
+        explanation: "Correct. `-t,` names the separator, `-k4` the column, `-n` numbers and `-r` reverse."
+      - id: c
+        text: "`cut -f4 crew.csv`"
+        explanation: "This cuts and does not sort, and `cut` needs `-d,`."
+      - id: d
+        text: "`sort -u crew.csv`"
+        explanation: "`-u` drops duplicate lines."
+    correct_option: b
+    explanation: "Without `-n`, `9` sorts after `10`."
+
+  - id: ats006-030-q09
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Cut a column from a CSV file"
+    source_readings:
+      - sections/section-030/module-04/course-01-sort-count-and-cut.md
+    prompt: |-
+      Which command prints only the first column of a comma-separated file?
+    options:
+      - id: a
+        text: "`cut -f1 crew.csv`"
+        explanation: "The default separator is a tab."
+      - id: b
+        text: "`wc -c crew.csv`"
+        explanation: "This counts bytes."
+      - id: c
+        text: "`tr -d , crew.csv`"
+        explanation: "`tr` takes no file name and deletes characters."
+      - id: d
+        text: "`cut -d, -f1 crew.csv`"
+        explanation: "Correct. `-d,` sets the separator and `-f1` picks field one."
+    correct_option: d
+    explanation: "`cut` has no way to reorder columns."
+
+  - id: ats006-030-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Sum a column with awk"
+    source_readings:
+      - sections/section-030/module-04/course-02-tr-awk-diff-and-tee.md
+    prompt: |-
+      Which command prints the sum of the fourth comma-separated column of `crew.csv` and skips the header?
+    options:
+      - id: a
+        text: "`cut -d, -f4 crew.csv | wc -l`"
+        explanation: "This counts lines."
+      - id: b
+        text: "`sort -k4 crew.csv`"
+        explanation: "This sorts and sums nothing."
+      - id: c
+        text: "`awk -F, 'NR>1 {sum += $4} END {print sum}' crew.csv`"
+        explanation: "Correct. `NR>1` skips line one and `END` runs after the last line."
+      - id: d
+        text: "`awk '{sum += $4}' crew.csv`"
+        explanation: "It never prints, and the separator is not set."
+    correct_option: c
+    explanation: "Quote the awk program in single quotes so the shell keeps `$4`."
+
+  - id: ats006-030-q11
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read the exit code of diff"
+    source_readings:
+      - sections/section-030/module-04/course-02-tr-awk-diff-and-tee.md
+    prompt: |-
+      A script runs `diff -q a.conf b.conf` and then `echo $?`. The files differ. What does it print?
+    options:
+      - id: a
+        text: "Nothing"
+        explanation: "`echo $?` always prints a number."
+      - id: b
+        text: "`0`"
+        explanation: "`0` means the files are the same."
+      - id: c
+        text: "`1`"
+        explanation: "Correct. `diff` returns 1 when the files differ."
+      - id: d
+        text: "`2`"
+        explanation: "`2` means trouble, such as a missing file."
+    correct_option: c
+    explanation: "`0` same, `1` different, `2` error."
+
+  - id: ats006-030-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find a man page in the right section"
+    source_readings:
+      - sections/section-030/module-05/course-01-manual-pages-and-help.md
+    prompt: |-
+      `man passwd` shows the command. How do you read the page that describes the format of `/etc/passwd`?
+    options:
+      - id: a
+        text: "`man 5 passwd`"
+        explanation: "Correct. Section 5 holds file formats."
+      - id: b
+        text: "`man 8 passwd`"
+        explanation: "Section 8 is for administration commands."
+      - id: c
+        text: "`man -f /etc/passwd`"
+        explanation: "`-f` prints a short description, not the page."
+      - id: d
+        text: "`info /etc/passwd`"
+        explanation: "`info` has no page for a file path."
+    correct_option: a
+    explanation: "`man -k topic` or `apropos topic` finds names when you do not know them."
+
+  - id: ats006-030-q13
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Leave vim without saving"
+    source_readings:
+      - sections/section-030/module-05/course-02-editing-with-vim-and-nano.md
+    prompt: |-
+      You made a mess in `vim` and want to quit without saving. What do you type in normal mode?
+    options:
+      - id: a
+        text: "`:q!` and Enter"
+        explanation: "Correct. `!` forces the quit and drops the changes."
+      - id: b
+        text: "`Ctrl+X`"
+        explanation: "`Ctrl+X` quits `nano`, not `vim`."
+      - id: c
+        text: "`dd`"
+        explanation: "`dd` deletes a line."
+      - id: d
+        text: "`:wq`"
+        explanation: "This saves and quits."
+    correct_option: a
+    explanation: "Press `Esc` first to be sure you are in normal mode."
+
+  - id: ats006-030-q14
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Replace all matches in vim"
+    source_readings:
+      - sections/section-030/module-05/course-02-editing-with-vim-and-nano.md
+    prompt: |-
+      In `vim` you want every `PLACEHOLDER` in the file changed to `TBD`. Which command does this?
+    options:
+      - id: a
+        text: "`:s/PLACEHOLDER/TBD/`"
+        explanation: "This changes the first match on the current line only."
+      - id: b
+        text: "`:w TBD`"
+        explanation: "This saves under another name."
+      - id: c
+        text: "`:%s/PLACEHOLDER/TBD/g`"
+        explanation: "Correct. `%` is every line and `g` every match in a line."
+      - id: d
+        text: "`/PLACEHOLDER/TBD`"
+        explanation: "`/` only searches."
+    correct_option: c
+    explanation: "Without `g` only the first match on each line changes."

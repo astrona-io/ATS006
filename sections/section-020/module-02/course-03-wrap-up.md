@@ -87,9 +87,9 @@ Repeat the module's key checks without help:
 4. Persist the same mask in a login startup file, start a fresh login session (or `source` the file), and confirm it still produces the right results.
 5. Explain out loud why a mask of `000` can never make a new file executable, using the file's `666` starting base.
 
-## Clean up
+## Clean up the playground
 
-When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -97,7 +97,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the lab. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy umask-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-022
@@ -113,6 +119,6 @@ astrona list
 No astrona labs running.
 ```
 
-You can start the mission again at any time with the `astrona run` command. It always starts clean, so nothing you broke carries over.
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-020/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *The umask is a stencil: it only blocks bits, so type what to block, and put it where every login reads it.*

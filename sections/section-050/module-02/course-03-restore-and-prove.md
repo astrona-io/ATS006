@@ -10,6 +10,8 @@ The only way to know a restore is correct is to compare it with a known-good ori
 
 ### Restore into a scratch directory and compare
 
+<!-- astrona:playground:renew -->
+
 ```bash
 sudo mkdir -p /restore/scratch
 sudo tar -xzpf level0.tar.gz -C /restore/scratch
@@ -85,7 +87,13 @@ Take a level 0 backup of a small directory tree with `--listed-incremental`, cha
 
 You can now take a full and an incremental backup with permissions kept and a cache left out, and prove both restores. The mission asks you to back up `/etc` and an application data directory on a training ship, take a true incremental after a change, restore both ways and prove the result.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop tar-backup-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-052
@@ -103,8 +111,9 @@ Read the task in [question.md](../../../labs/lab-052/docs/question.md) and solve
 astrona submit -c labs/lab-052
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-052
+astrona start tar-backup-playground
 ```

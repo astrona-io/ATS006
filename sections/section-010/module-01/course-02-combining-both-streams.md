@@ -10,6 +10,8 @@ Bash reads redirections **from left to right**, one at a time. That order is the
 
 ### The correct order
 
+<!-- astrona:playground:renew -->
+
 ```bash
 backup-tool > combined.log 2>&1
 ```

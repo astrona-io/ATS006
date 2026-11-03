@@ -76,9 +76,9 @@ A variable set at the prompt lives only in that session. Put `export HISTTIMEFOR
 Each shell keeps its history in its own memory and writes it to the file only on exit or with `history -a`. The second shell sees it only after it reads the file again with `history -r`.
 </details>
 
-## Clean up
+## Clean up the playground
 
-If a mission is still running, remove it now so it does not use memory on your machine.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -86,7 +86,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy history-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-032
@@ -101,5 +107,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-030/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *The order log remembers what you tell it to remember. Set it up once, and every command is two keystrokes away.*

@@ -1,0 +1,401 @@
+# Knowledge check for section 070.
+schema_version: 1
+kind: question_bank
+id: ats006-070
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-070
+  title: "Service Configuration: systemd Units & SSL Certificates"
+questions:
+  - id: ats006-070-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Order a service after the network is really usable and pull that target in"
+    source_readings:
+      - sections/section-070/module-01/course-01-anatomy-of-a-unit-file.md
+    prompt: |-
+      A new unit pushes data to a remote API as soon as it starts. It must start only after the network is really usable, and the target must be pulled into the boot. Which lines in `[Unit]` do this?
+    options:
+      - id: a
+        text: "`After=network.target` only"
+        explanation: "`network.target` is reached early and does not mean a connection works; `After=` alone also does not pull a target in."
+      - id: b
+        text: "`Requires=network.target` only"
+        explanation: "This names the wrong target and sets no ordering."
+      - id: c
+        text: "`After=network-online.target` and `Wants=network-online.target`"
+        explanation: "Correct. `Wants=` pulls the target in, and `After=` makes the service wait for it."
+      - id: d
+        text: "`Before=network-online.target` and `Requires=network.target`"
+        explanation: "`Before=` reverses the order, so the unit would start ahead of the network."
+    correct_option: c
+    explanation: "`network-online.target` is reached once an interface is really usable. `After=` only sets the order, so pair it with `Wants=` to start the target at all."
+
+  - id: ats006-070-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Predict what Restart=on-failure does after a deliberate stop"
+    source_readings:
+      - sections/section-070/module-01/course-01-anatomy-of-a-unit-file.md
+      - sections/section-070/module-01/course-02-load-start-and-enable-a-service.md
+    prompt: |-
+      A unit has `Restart=on-failure`. An administrator runs `sudo systemctl stop` on it. What happens?
+    options:
+      - id: a
+        text: "systemd restarts it after `RestartSec=`, because every exit is a failure."
+        explanation: "`on-failure` only restarts after a non-zero exit code or certain signals."
+      - id: b
+        text: "It stays stopped, because a clean deliberate stop is not a failure."
+        explanation: "Correct. `Restart=always` would restart it, but `on-failure` does not."
+      - id: c
+        text: "It is disabled for the next boot as well."
+        explanation: "Stopping a unit does not change whether it is enabled."
+      - id: d
+        text: "systemd restarts it only if `daemon-reload` runs afterwards."
+        explanation: "`daemon-reload` only rereads unit files and does not trigger restarts."
+    correct_option: b
+    explanation: "`on-failure` restarts after a non-zero exit or a kill by certain signals. A deliberate `systemctl stop` is clean, so the unit stays stopped."
+
+  - id: ats006-070-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Use enable --now to make a service run now and after a reboot"
+    source_readings:
+      - sections/section-070/module-01/course-01-anatomy-of-a-unit-file.md
+      - sections/section-070/module-01/course-02-load-start-and-enable-a-service.md
+    prompt: |-
+      A task says the service must be running now and must also come back after a reboot. Which command does both?
+    options:
+      - id: a
+        text: "`sudo systemctl start backup-agent.service`"
+        explanation: "`start` runs it now but does not create the link for the next boot."
+      - id: b
+        text: "`sudo systemctl enable backup-agent.service`"
+        explanation: "`enable` only affects the next boot and does not start it now."
+      - id: c
+        text: "`sudo systemctl daemon-reload`"
+        explanation: "This only rereads unit files and neither starts nor enables a unit."
+      - id: d
+        text: "`sudo systemctl enable --now backup-agent.service`"
+        explanation: "Correct. `enable` creates the link in `multi-user.target.wants/`, and `--now` starts it right away."
+    correct_option: d
+    explanation: "`start` and `enable` are two separate switches. `enable --now` flips both in one command."
+
+  - id: ats006-070-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Apply an edited unit file with daemon-reload"
+    source_readings:
+      - sections/section-070/module-01/course-02-load-start-and-enable-a-service.md
+    prompt: |-
+      You create `/etc/systemd/system/report-agent.service` and start it. A week later you change `Restart=no` to `Restart=on-failure` and run `sudo systemctl restart report-agent.service`. The unit still does not restart after a crash. What is the most likely cause?
+    options:
+      - id: a
+        text: "`Restart=on-failure` needs `RestartSec=` set, or it is ignored."
+        explanation: "`RestartSec=` only sets the delay between attempts."
+      - id: b
+        text: "`Restart=` can only be set on the first start of a unit."
+        explanation: "Unit files can be edited and reloaded as often as needed."
+      - id: c
+        text: "You did not run `sudo systemctl daemon-reload`, so systemd still uses its cached copy."
+        explanation: "Correct. systemd keeps unit definitions in memory until it is told to read them again."
+      - id: d
+        text: "The file must be renamed before systemd sees a change."
+        explanation: "systemd rereads the same path on `daemon-reload`; no rename is needed."
+    correct_option: c
+    explanation: "A brand-new unit works because nothing is cached, but an edited unit needs `daemon-reload` before `restart` uses the new definition."
+
+  - id: ats006-070-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Check what systemd really loaded and verify a unit before starting it"
+    source_readings:
+      - sections/section-070/module-01/course-02-load-start-and-enable-a-service.md
+    prompt: |-
+      You want to check a new unit for typos without starting it, and later confirm which restart policy systemd actually loaded. Which pair of commands does this?
+    options:
+      - id: a
+        text: "`systemd-analyze verify backup-agent.service`, then `systemctl show backup-agent.service -p Restart`"
+        explanation: "Correct. `verify` reports syntax errors without starting the unit, and `show` prints the properties in force."
+      - id: b
+        text: "`systemctl is-active backup-agent.service`, then `systemctl is-enabled backup-agent.service`"
+        explanation: "These check the two switches, not the syntax or the loaded restart policy."
+      - id: c
+        text: "`journalctl -u backup-agent.service -b`, then `systemctl stop backup-agent.service`"
+        explanation: "The journal needs a run to read, and stopping the unit does not show the loaded policy."
+      - id: d
+        text: "`systemctl enable --now backup-agent.service`, then `pkill -f nightly-backup.sh`"
+        explanation: "This starts the unit before any check and tests the restart, not the loaded values."
+    correct_option: a
+    explanation: "`systemd-analyze verify` catches syntax errors without a start. `systemctl show` reports what systemd really uses, not what you think the file says."
+
+  - id: ats006-070-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Start diagnosis of a failed unit from the journal"
+    source_readings:
+      - sections/section-070/module-01/course-03-diagnose-a-unit-that-will-not-start.md
+    prompt: |-
+      `systemctl status` shows a unit as failed with `status=203/EXEC`. What is the best first move, and what does the status mean?
+    options:
+      - id: a
+        text: "Edit the unit file first; `203/EXEC` is the application's own exit code."
+        explanation: "The journal comes first, and `203/EXEC` means systemd could not run the command at all."
+      - id: b
+        text: "Run `sudo systemctl daemon-reload` three times to clear the error."
+        explanation: "`daemon-reload` does not fix a script that cannot run."
+      - id: c
+        text: "Read `journalctl -u <unit> -b`, then check the script's execute permission and `#!` line; `203/EXEC` means systemd could not run the `ExecStart=` command."
+        explanation: "Correct. You can also run the command yourself as the service user to see a clearer error."
+      - id: d
+        text: "Reboot the machine; `203/EXEC` always means a kernel fault."
+        explanation: "`203/EXEC` points at the `ExecStart=` command, not at the kernel."
+    correct_option: c
+    explanation: "Read the journal before you edit anything. `status=203/EXEC` means systemd could not start the command, usually a missing execute bit or a wrong `#!` interpreter path."
+
+  - id: ats006-070-q07
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain why a drop-in override is used instead of editing the vendor unit"
+    source_readings:
+      - sections/section-070/module-02/course-01-write-a-drop-in-override.md
+    prompt: |-
+      The package `cups` installs `/usr/lib/systemd/system/cups.service`. You need a restart policy it does not set. You run `sudo systemctl edit cups.service` and add `Restart=on-failure`. Where does the change go?
+    options:
+      - id: a
+        text: "Into the vendor file itself, with the line appended."
+        explanation: "`systemctl edit` does not touch the vendor file, which a package upgrade could overwrite."
+      - id: b
+        text: "Into a full copy at `/etc/systemd/system/cups.service` that replaces the vendor unit."
+        explanation: "That is what `systemctl edit --full` does, not a plain `systemctl edit`."
+      - id: c
+        text: "Into `/etc/systemd/system/cups.service.d/override.conf`, laid on top of the vendor unit."
+        explanation: "Correct. The vendor file is left alone, so the override survives package upgrades."
+      - id: d
+        text: "Into a file that is lost at the next reboot."
+        explanation: "The drop-in lives under `/etc/systemd/system/` and persists."
+    correct_option: c
+    explanation: "`systemctl edit` writes a small drop-in under `/etc/systemd/system/<unit>.d/`. The package-owned file under `/usr/lib/systemd/system/` is never changed."
+
+  - id: ats006-070-q08
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Replace a vendor ExecStart with an empty line first"
+    source_readings:
+      - sections/section-070/module-02/course-01-write-a-drop-in-override.md
+    prompt: |-
+      A vendor unit has `ExecStart=/usr/sbin/widgetd`. Your drop-in contains only `ExecStart=/usr/sbin/widgetd --config /etc/widgetd/custom.conf`. After reload and restart the service does not use your command as the only one. Why?
+    options:
+      - id: a
+        text: "`ExecStart=` cannot be set in a drop-in at all."
+        explanation: "It can; it only needs a reset first."
+      - id: b
+        text: "`ExecStart=` adds to a list, so the drop-in needs an empty `ExecStart=` line first to clear the vendor value."
+        explanation: "Correct. An empty `ExecStart=` means throw away every value collected so far."
+      - id: c
+        text: "Drop-ins only apply to the `[Unit]` section."
+        explanation: "Drop-ins can set lines in any section, including `[Service]`."
+      - id: d
+        text: "The drop-in must be named `ExecStart.conf`."
+        explanation: "The file name does not decide whether a line replaces or adds."
+    correct_option: b
+    explanation: "`ExecStart=` appends to an internal list instead of replacing the old value. Write an empty `ExecStart=` line first, then the new command."
+
+  - id: ats006-070-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Distinguish single-value lines from Environment="
+    source_readings:
+      - sections/section-070/module-02/course-01-write-a-drop-in-override.md
+    prompt: |-
+      A vendor unit sets `Environment=LANG=C`, and `Restart=no` is the default. Your drop-in sets `Environment=APP_ENV=production` and `Restart=on-failure`. What is the merged result?
+    options:
+      - id: a
+        text: "Both environment variables are set, and `Restart=on-failure` wins as the last single value."
+        explanation: "Correct. `Environment=` lines add up, and for a single-value line the last one loaded wins."
+      - id: b
+        text: "Only `APP_ENV` is set, because the drop-in replaces the vendor `Environment=` line."
+        explanation: "`Environment=` adds up and does not wipe out earlier lines."
+      - id: c
+        text: "Both `Restart=no` and `Restart=on-failure` apply at once."
+        explanation: "A setting that holds one value uses only the last value loaded."
+      - id: d
+        text: "The drop-in is ignored, because it names no `ExecStart=`."
+        explanation: "A drop-in does not need `ExecStart=` to take effect."
+    correct_option: a
+    explanation: "Single-value lines such as `Restart=` take the last value loaded. `Environment=` lines add up, so you do not need to clear anything first."
+
+  - id: ats006-070-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Apply a drop-in with daemon-reload and restart, then inspect the merged result"
+    source_readings:
+      - sections/section-070/module-02/course-02-apply-prove-and-revert-an-override.md
+    prompt: |-
+      You saved a drop-in for `cups` that sets `Restart=on-failure`. Which steps make it take effect, and how do you see the merged files?
+    options:
+      - id: a
+        text: "Run `sudo systemctl reload cups` only; then use `ls` on the drop-in folder."
+        explanation: "`reload` asks the application to reread its own files and does not apply `Restart=`."
+      - id: b
+        text: "Run `sudo systemctl daemon-reload` and `sudo systemctl restart cups`; then use `systemctl cat cups`."
+        explanation: "Correct. `daemon-reload` makes systemd see the drop-in, `restart` relaunches under it, and `cat` shows the vendor file and each drop-in in order."
+      - id: c
+        text: "Do nothing; systemd notices the file on its own and `systemctl cat` is not needed."
+        explanation: "systemd keeps its cached definitions until told to reload."
+      - id: d
+        text: "Run `sudo systemctl enable cups`; then use `systemctl status cups`."
+        explanation: "`enable` only affects the next boot and does not apply a drop-in."
+    correct_option: b
+    explanation: "Use `daemon-reload` and `restart`, not `reload`. `systemctl cat` shows the files in order, and `systemctl show` shows the values in force."
+
+  - id: ats006-070-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Remove local overrides with systemctl revert"
+    source_readings:
+      - sections/section-070/module-02/course-02-apply-prove-and-revert-an-override.md
+    prompt: |-
+      You want a packaged service back to its vendor behaviour after a drop-in and a `--full` local copy. What is the clean way?
+    options:
+      - id: a
+        text: "Run `sudo systemctl revert <unit>`, then `daemon-reload` and `restart`."
+        explanation: "Correct. `revert` removes local drop-ins and full local copies, and the reload and restart apply the result to the running service."
+      - id: b
+        text: "Delete `/usr/lib/systemd/system/<unit>` and reinstall the package."
+        explanation: "This touches the vendor-owned file, which the override approach is meant to avoid."
+      - id: c
+        text: "Delete the files under `/etc/systemd/system/` by hand and skip the restart."
+        explanation: "Hand deletion risks removing the wrong file, and the running process keeps its old settings."
+      - id: d
+        text: "Run `sudo systemctl disable <unit>`."
+        explanation: "`disable` removes the boot link and leaves the overrides in place."
+    correct_option: a
+    explanation: "`systemctl revert` removes exactly the local changes. Follow it with `daemon-reload` and `restart` so the running service changes as well."
+
+  - id: ats006-070-q12
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Generate a private key and protect it"
+    source_readings:
+      - sections/section-070/module-03/course-01-private-keys-and-subject-alternative-names.md
+    prompt: |-
+      You generate a TLS private key with `openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out service.key`. What should you do straight afterwards?
+    options:
+      - id: a
+        text: "Check the mode with `ls -l service.key`, and run `chmod 600 service.key` if anyone but the owner can read it."
+        explanation: "Correct. Recent OpenSSL versions create the key readable by its owner only, but a key made by another tool or copied from elsewhere may not be, so always check and fix the mode."
+      - id: b
+        text: "Nothing. The private key is public data, so anyone may read it."
+        explanation: "The private key is the secret part. The certificate is the public part."
+      - id: c
+        text: "Run `chmod 644 service.key`, so the service can always read it."
+        explanation: "This lets every user read the private key."
+      - id: d
+        text: "Delete the key once the certificate is made."
+        explanation: "The certificate is only useful together with this private key."
+    correct_option: a
+    explanation: "`genpkey` and `genrsa` both write a PEM private key. Check the mode straight away and use `chmod 600` where needed, because a readable private key defeats its purpose."
+
+  - id: ats006-070-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why -subj cannot create a SAN"
+    source_readings:
+      - sections/section-070/module-03/course-01-private-keys-and-subject-alternative-names.md
+      - sections/section-070/module-03/course-03-read-and-verify-a-certificate.md
+    prompt: |-
+      You create a self-signed certificate for `payments.internal.example.com` with `-subj "/CN=payments.internal.example.com"` and no config file. Browsers reject the hostname. What is the most likely cause?
+    options:
+      - id: a
+        text: "`-subj` cannot set the Common Name."
+        explanation: "`-subj` sets Distinguished Name fields such as `CN=` correctly."
+      - id: b
+        text: "The certificate has no Subject Alternative Name, and `-subj` cannot add an extension; use a config file or `-addext`."
+        explanation: "Correct. Modern clients check the SAN and effectively ignore the Common Name."
+      - id: c
+        text: "Self-signed certificates can never carry a hostname."
+        explanation: "A self-signed certificate can carry a SAN like any other."
+      - id: d
+        text: "The key is too short for hostname checks."
+        explanation: "Key size does not decide whether a SAN is present."
+    correct_option: b
+    explanation: "The SAN is an X.509 extension, not a name field. Add it with an OpenSSL configuration file or the `-addext` shortcut."
+
+  - id: ats006-070-q14
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Set both req_extensions and x509_extensions in the config file"
+    source_readings:
+      - sections/section-070/module-03/course-01-private-keys-and-subject-alternative-names.md
+      - sections/section-070/module-03/course-02-self-signed-certificates-and-signing-requests.md
+    prompt: |-
+      Your config file has `req_extensions = req_ext` but no `x509_extensions`. You build a self-signed certificate with `openssl req -new -x509 ... -config openssl-service.cnf`. What do you get?
+    options:
+      - id: a
+        text: "A certificate with the SAN, because `req_extensions` covers both cases."
+        explanation: "`req_extensions` is read only when a CSR is made."
+      - id: b
+        text: "A certificate without the SAN; add `x509_extensions = req_ext` too."
+        explanation: "Correct. `x509_extensions` is the line read for a self-signed certificate."
+      - id: c
+        text: "A CSR file instead of a certificate."
+        explanation: "`-x509` makes a certificate; the missing line only drops the extension."
+      - id: d
+        text: "An error that stops `openssl` from running."
+        explanation: "The command still writes a certificate, just without the SAN."
+    correct_option: b
+    explanation: "`req_extensions` applies to a CSR and `x509_extensions` applies to a self-signed certificate. Set both in one file so either command carries the SAN."
+
+  - id: ats006-070-q15
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose between a CSR and a self-signed certificate"
+    source_readings:
+      - sections/section-070/module-03/course-02-self-signed-certificates-and-signing-requests.md
+    prompt: |-
+      You have `service.key` and `openssl-service.cnf`. You need a request to send to a certificate authority, and later a self-signed certificate valid for one year. Which commands do this?
+    options:
+      - id: a
+        text: "`openssl req -new -key service.key -out service.csr -config openssl-service.cnf`, then the same with `-x509 -days 365 -out service.crt`."
+        explanation: "Correct. Without `-x509` you get a request, and with `-x509` and `-days` you get a finished self-signed certificate."
+      - id: b
+        text: "`openssl req -new -x509` for both, with no `-days`."
+        explanation: "The request needs no `-x509`, and `-days` should be set so the validity is known."
+      - id: c
+        text: "`openssl x509 -in service.key -out service.csr`."
+        explanation: "`openssl x509` reads certificates and does not build a request."
+      - id: d
+        text: "`openssl genrsa -out service.csr 2048`, then `-x509` on the key."
+        explanation: "`genrsa` writes a private key, not a request."
+    correct_option: a
+    explanation: "Leave out `-x509` for a CSR. Add `-x509` and `-days` for a self-signed certificate, with the same key and configuration file."
+
+  - id: ats006-070-q16
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Prove that a key and a certificate match"
+    source_readings:
+      - sections/section-070/module-03/course-03-read-and-verify-a-certificate.md
+    prompt: |-
+      A service rejects `service.crt` and `service.key`, though each file looks valid on its own. How do you check that they belong together?
+    options:
+      - id: a
+        text: "Compare the file sizes of the two files."
+        explanation: "Different file types have different sizes, so this proves nothing."
+      - id: b
+        text: "Run `openssl x509 -in service.crt -noout -dates`."
+        explanation: "This shows the validity window and not whether the key matches."
+      - id: c
+        text: "Compare the modulus of both, for example with `openssl x509 -noout -modulus -in service.crt | openssl md5` and the same with `openssl rsa -noout -modulus -in service.key`."
+        explanation: "Correct. Identical hashes prove that both belong to the same key pair."
+      - id: d
+        text: "Read the Common Name with `-subject` on both files."
+        explanation: "The key file has no subject, and a name says nothing about the key pair."
+    correct_option: c
+    explanation: "The modulus is unique to each RSA key pair. If the hashes differ, the key was usually generated again after the certificate, so make the certificate again from the current key."
+

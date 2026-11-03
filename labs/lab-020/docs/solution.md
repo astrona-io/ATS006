@@ -1,6 +1,6 @@
 # Solution Walkthrough
 
-This walkthrough puts three skills together on one workspace: a persistent `umask` for `opsuser`, three `chmod` targets, and a four-pass `find` triage. Each part is checked the same way the grader checks it.
+This walkthrough puts four skills together on one workspace: a persistent `umask` for `opsuser`, three `chmod` targets, a four-pass `find` triage, and a release staged with file operations, links and group ownership. Each part is checked the same way the grader checks it.
 
 ---
 
@@ -114,7 +114,41 @@ find . -maxdepth 1 -type f -perm 0777 -exec mv {} quarantine/ \;
 
 ---
 
-## Step 8: Check the full end state
+## Step 8: Stage the release
+
+You are still in the root shell from Step 4, so these commands need no `sudo`. If you left it, run `sudo -i` again.
+
+```bash
+mkdir -p /srv/teamspace/releases/2026/q1
+cp -p /srv/teamspace/release-src/app.conf /srv/teamspace/releases/2026/q1/
+mv /srv/teamspace/release-src/old-release.txt /srv/teamspace/releases/2026/
+ln /srv/teamspace/releases/2026/q1/app.conf /srv/teamspace/releases/app-hard.conf
+ln -s 2026/q1 /srv/teamspace/releases/current
+rm -r /srv/teamspace/release-src/tmp-build
+chgrp -R ops /srv/teamspace/releases
+```
+
+- `mkdir -p` makes every missing parent folder in one command.
+- `cp -p` keeps the mode and the modification time. A plain `cp` gives the copy the current time.
+- `mv` moves the file, so the old place no longer has it.
+- `ln` without `-s` makes a hard link: a second label on the same crate, so both names share one inode. Both names must be on the same filesystem.
+- `ln -s 2026/q1` makes a symbolic link. The target is written relative to the folder that holds the link, so `current` resolves to `/srv/teamspace/releases/2026/q1`.
+- `rm -r` removes a folder and everything inside it.
+- `chgrp -R ops` changes the group of the folder and everything below it, and leaves the owner as `root`.
+
+Check the result:
+
+```bash
+stat -c '%i %h %a %y %n' /srv/teamspace/release-src/app.conf /srv/teamspace/releases/2026/q1/app.conf /srv/teamspace/releases/app-hard.conf
+readlink /srv/teamspace/releases/current
+stat -c '%G %U %n' /srv/teamspace/releases /srv/teamspace/releases/2026/q1/app.conf
+```
+
+The copy and `app-hard.conf` show the same inode number and a link count of `2`. All three files show mode `640` and the same modification time. `readlink` prints `2026/q1`. The group column shows `ops` and the owner column shows `root`.
+
+---
+
+## Step 9: Check the full end state
 
 ```bash
 sudo -iu opsuser bash -lc 'umask; touch ~/x; stat -c "%a" ~/x'
@@ -131,12 +165,13 @@ Check the result against what the grader expects:
 - `archive/large` holds `big-dump.bin` and `big-open.bin`.
 - `quarantine` holds `open-payload.sh` and `open-keys.env`.
 - The top level holds exactly two files: `keep1.dat` and `keep2.dat`.
+- `/srv/teamspace/releases` holds `2026/q1/app.conf`, `2026/old-release.txt`, `app-hard.conf` and the link `current`, all with group `ops`. `release-src` no longer holds `old-release.txt` or `tmp-build`.
 
 Setgid only affects files created after the bit is set, and a `umask` has no effect on files that already exist. Neither one changes old files. If a check fails, confirm the mode really landed with `stat -c '%A'` before you assume the mechanism is broken.
 
 ---
 
-## Step 9: Submit
+## Step 10: Submit
 
 Leave the root shell and the lab machine, then send the mission for grading:
 

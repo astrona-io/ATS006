@@ -27,6 +27,8 @@ A CSR signs the request with only the *applicant's own* private key and stops th
 
 Run:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 openssl req -new \
   -key service.key \

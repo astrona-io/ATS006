@@ -19,6 +19,7 @@ Three everyday habits separate a fluent shell user from someone still fighting t
 - Where aliases sit in `bash`'s lookup order, checking a name with `type`, and making aliases permanent.
 - When a shell function is the right tool instead of an alias.
 - Running the real command once with `\rm`, and why aliases never reach scripts or scheduled jobs.
+- Sorting, counting, cutting and comparing text with `sort`, `uniq`, `cut`, `tr`, `awk` and `diff`, and finding help in the manual pages and editing with `vim`.
 
 ---
 
@@ -53,13 +54,31 @@ Work through the modules in this order. Each part teaches one idea. A mission (a
    - Mission: [Command Aliases Lab](../../labs/lab-033/docs/question.md)
 3. [Wrap-Up: Mission Debrief](module-03/course-03-wrap-up.md)
 
+### [Comparing And Shaping Text](module-04/course.md)
+
+2 parts and 1 mission:
+
+1. [Sort, Count And Cut](module-04/course-01-sort-count-and-cut.md)
+2. [Translate, Awk, Diff And Tee](module-04/course-02-tr-awk-diff-and-tee.md)
+   - Mission: [Sort, Count, Cut and Compare Text Lab](../../labs/lab-034/docs/question.md)
+3. [Summary](module-04/course-03-summary.md)
+
+### [Finding Help And Editing Files](module-05/course.md)
+
+2 parts and 1 mission:
+
+1. [Manual Pages And Help](module-05/course-01-manual-pages-and-help.md)
+2. [Editing With Vim And Nano](module-05/course-02-editing-with-vim-and-nano.md)
+   - Mission: [Manual Pages and Editing a File Lab](../../labs/lab-035/docs/question.md)
+3. [Summary](module-05/course-03-summary.md)
+
 ### Knowledge check
 
-Test your reasoning before the capstone: **[Section 030 Knowledge Check: Everyday Shell Craft](./quiz.md)**.
+Test your reasoning before the capstone: **[Section 030 Knowledge Check: Everyday Shell Craft](./quiz.yaml)**.
 
 ### Capstone
 
-Your final mission for this section: **[Everyday Shell Craft Capstone Lab](../../labs/lab-030/docs/question.md)**. It combines all three modules in one incident handoff: mine and redact a compromised host's logs with `grep` and `sed`, recover a previous responder's exact commands from shell history, and leave safe, working aliases for the next shift.
+Your final mission for this section: **[Everyday Shell Craft Capstone Lab](../../labs/lab-030/docs/question.md)**. It combines all five modules in one incident handoff: mine and redact a compromised host's logs with `grep` and `sed`, recover a previous responder's exact commands from shell history, leave safe, working aliases for the next shift, build reports with `sort`, `uniq`, `cut` and `awk`, finish a handover note in an editor, and look up two facts in the manual pages.
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-030

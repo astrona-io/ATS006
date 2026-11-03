@@ -12,6 +12,8 @@ This is the most useful distinction in this module, and the one worth learning b
 
 Edit `pancakes.txt` to add a third ingredient, then ask Git what changed:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 echo "1 tsp baking powder" >> pancakes.txt
 git diff

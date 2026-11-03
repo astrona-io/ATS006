@@ -12,6 +12,8 @@ A clone does more than copy history. It also prepares your local `main` to follo
 
 Clone the repository and ask Git about your branch:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 git clone /repositories/network-configs /home/netops/network-configs
 cd /home/netops/network-configs

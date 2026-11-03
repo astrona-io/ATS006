@@ -12,6 +12,8 @@ The commands below need the private key `service.key`, the self-signed certifica
 
 Run:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 openssl x509 -in service.crt -noout -dates
 ```
@@ -87,7 +89,13 @@ This check matters more than it looks. Suppose someone generated the key again b
 
 You can now make a key, a self-signed certificate with a SAN, and a CSR, and prove the key and certificate belong together. The mission asks you to do exactly that for the internal hostname `internal.web-srv1.local`.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop tls-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-073
@@ -105,8 +113,9 @@ Read the task in the [question](../../../labs/lab-073/docs/question.md) and solv
 astrona submit -c labs/lab-073
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-073
+astrona start tls-playground
 ```

@@ -12,6 +12,8 @@ Two commands make a drop-in take effect, and the second one must be `restart`, n
 
 Run:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 sudo systemctl daemon-reload
 sudo systemctl restart cups
@@ -85,7 +87,13 @@ Run `systemctl cat cups` again. It should now show only the original vendor frag
 
 You can now change a packaged service with a drop-in, apply it, and prove the merged result. The mission asks you to give a packaged `nginx.service` a restart policy and an extra environment variable, without touching its vendor unit file.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop unit-override-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-072
@@ -103,8 +111,9 @@ Read the task in the [question](../../../labs/lab-072/docs/question.md) and solv
 astrona submit -c labs/lab-072
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-072
+astrona start unit-override-playground
 ```

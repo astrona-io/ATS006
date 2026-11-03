@@ -12,6 +12,8 @@ For most files that is a small annoyance. For a configuration directory it can b
 
 The `-p` (`--preserve-permissions`) flag fixes this on both ends:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 sudo tar -czpf nginx-backup.tar.gz -C / etc/nginx
 sudo tar -xzpf nginx-backup.tar.gz -C /restore/scratch

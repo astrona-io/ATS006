@@ -69,9 +69,9 @@ Bash reads `SUFFIX_backup` as one variable name, and that variable is not set. W
 The literal text `${HOME}/app-extended`. Single quotes stop expansion. Use double quotes to get the real path.
 </details>
 
-## Clean up
+## Clean up the playground
 
-Each mission runs a virtual machine on your computer. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -79,7 +79,13 @@ First, see what is still running:
 astrona list
 ```
 
-If the mission is still there, remove it. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy env-scope-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-012
@@ -94,5 +100,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-010/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *A note on the console stays on the console. Only `export` puts it into the briefing pack.*

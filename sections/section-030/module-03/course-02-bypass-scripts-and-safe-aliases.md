@@ -10,6 +10,8 @@ Sometimes you need the *real*, unaliased command exactly once, without giving up
 
 ### Two ways that leave the alias in place
 
+<!-- astrona:playground:renew -->
+
 ```bash
 \rm somefile        # leading backslash disables alias expansion for this word only
 /bin/rm somefile    # an absolute path also bypasses alias lookup entirely
@@ -101,7 +103,13 @@ An alias should never be the reason a command becomes *less* predictable for the
 
 You can now make aliases permanent, check what a name runs, and step around an alias exactly once. The mission asks you to persist three aliases, including a safety alias for `rm`, and then delete one file with the real `rm` without disabling that alias.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop alias-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-033
@@ -119,8 +127,9 @@ Read the task in [the question](../../../labs/lab-033/docs/question.md) and solv
 astrona submit -c labs/lab-033
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-033
+astrona start alias-playground
 ```

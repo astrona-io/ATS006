@@ -36,6 +36,8 @@ On a directory, setgid has a far more useful everyday job: every crate stored he
 
 Without setgid, each teammate's new files land in their own personal group. Then other team members cannot reach those files through their group membership. With setgid, everything lands in the team's group automatically:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 sudo chown root:launch-team /srv/projects/launch-team
 sudo chmod 2770 /srv/projects/launch-team
@@ -163,7 +165,13 @@ The owner can read, change and run it. The group and everyone else get nothing.
 
 You can now set setgid on a team directory, lock a script to its owner, and protect a shared folder with the sticky bit. The mission asks you to do all three on a fresh training ship, where a member of the `analysts` team must find their new files tagged with the team's group.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop chmod-bits-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-021
@@ -181,8 +189,9 @@ Read the task in [the question](../../../labs/lab-021/docs/question.md) and solv
 astrona submit -c labs/lab-021
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-021
+astrona start chmod-bits-playground
 ```

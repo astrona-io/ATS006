@@ -70,9 +70,9 @@ So nothing lands near the original archive, which `tar` only opens for reading. 
 When you only change the outer compression of an existing `.tar` stream: `bzip2 -dc archive.tar.bz2 | gzip -9 > archive.tar.gz`.
 </details>
 
-## Clean up
+## Clean up the playground
 
-Each mission runs as a virtual machine on your computer. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -80,7 +80,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy archive-convert-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-051
@@ -95,5 +101,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-050/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *List before you trust, sort before you compare, and never write to the original.*

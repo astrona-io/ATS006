@@ -8,6 +8,8 @@ A quick reminder: a plain `NAME=value` creates a **shell variable**, seen only b
 
 Picture a wrapper script that builds a database connection string and then calls a separate client program to use it:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 #!/bin/bash
 DB_HOST="db.internal"          # only needed inside this script
@@ -111,7 +113,13 @@ The child sees the full value because `TAGGED` was exported.
 
 You can now decide which variables in a script stay local and which a child process must see, and build one value from another with braces and double quotes. The mission asks you to write a script that keeps one variable local, exports another built from an existing variable, and leaves `~/.bashrc` alone.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop env-scope-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-012
@@ -129,8 +137,9 @@ Read the task in [the question](../../../labs/lab-012/docs/question.md) and solv
 astrona submit -c labs/lab-012
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-012
+astrona start env-scope-playground
 ```

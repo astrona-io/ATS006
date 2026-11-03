@@ -74,9 +74,9 @@ The exit code of `ls`. `$?` holds the code of the most recently finished command
 No. Redirection decides where the text goes. The exit code is a separate number, and `$?` still holds it.
 </details>
 
-## Clean up
+## Clean up the playground
 
-Each mission runs a virtual machine on your computer. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -84,7 +84,13 @@ First, see what is still running:
 astrona list
 ```
 
-If the mission is still there, remove it. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy shell-streams-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-011
@@ -99,5 +105,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-010/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Read redirections from left to right, and read `$?` straight away.*

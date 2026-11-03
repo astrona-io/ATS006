@@ -21,6 +21,8 @@ The short compression flags of `tar` are just a way to pick which compressor the
 
 This command creates a gzip-compressed archive, and the second one unpacks a bzip2-compressed archive into `/tmp/restore`:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 tar -czf backup.tar.gz /var/log/myapp
 tar -xjf legacy-export.tar.bz2 -C /tmp/restore

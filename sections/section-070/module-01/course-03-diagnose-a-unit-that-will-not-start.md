@@ -12,6 +12,8 @@ The first move is always the journal, not the unit file. It holds the error the 
 
 Run:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 journalctl -u backup-agent.service -b
 ```

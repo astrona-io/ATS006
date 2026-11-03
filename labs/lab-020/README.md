@@ -6,7 +6,7 @@ estimated_duration: 40m
 
 Welcome to your section capstone, astronaut. The `ops` team is moving into a new shared compartment on this training ship, and nothing is set up right: new crates get the wrong default lock, the shared folders have the wrong bits, and a legacy incoming folder is a junk drawer.
 
-Your job is to fix all of it in one mission: a persistent `umask` for `opsuser`, setgid, owner-only and sticky permissions on the workspace, and a four-pass `find` triage in the order given.
+Your job is to fix all of it in one mission: a persistent `umask` for `opsuser`, setgid, owner-only and sticky permissions on the workspace, a four-pass `find` triage in the order given, and a staged release built with `mkdir`, `cp`, `mv`, `ln`, `rm` and `chgrp`.
 
 ## Launching the Lab
 

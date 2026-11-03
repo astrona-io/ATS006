@@ -13,3 +13,14 @@ Astronaut, you are the incident responder handing a compromised web server over 
    - `report`, which prints the current count of redacted lines in `/var/log-collector/incident/service.log`, that is `grep -c "REDACTED - INCIDENT #4471" /var/log-collector/incident/service.log`
 
    The aliases must only work in interactive shells: a non-interactive shell (such as `bash -c 'type rm'`) must still see the real `rm` program.
+5. Build two small reports with the filter tools `cut`, `awk`, `sort` and `uniq`, not by typing the answer. Write them in your home directory.
+   - `~/top-sources.txt`: one line per source IP address in `/var/log-collector/incident/access.log`, with the number of requests, a space and the address, with the busiest address first. Extra spaces in front of the number are fine.
+   - `~/attacker-statuses.txt`: the HTTP status codes in `/var/log-collector/incident/attacker-requests.log` (the file from step 1), each code once, sorted, one per line.
+6. The handover note `~/handover.conf` is half filled in. Edit it with `vim` or `nano`:
+   - Replace `PLACEHOLDER` with the attacker's IP address, `198.51.100.23`.
+   - Change the line `reviewed=no` to `reviewed=yes`.
+   - Delete the comment line at the top of the file.
+   - Add a new last line: `shift=handover`.
+7. Create `~/handover-facts.txt` with two lines. Find both facts in the manual pages, not from memory.
+   - `sort-numeric=<option>`: the option of `sort` that compares by numeric value, with the dash, for example `-x`.
+   - `fstab-file-section=<N>`: the number of the manual section that describes the **file format** of `/etc/fstab`.

@@ -12,6 +12,8 @@ This is the most important fact in this module, so here it is as plainly as poss
 
 Download the new history and list what arrived:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 git fetch origin
 git log main..origin/main --oneline
@@ -94,7 +96,13 @@ The rule of thumb: rebase freely on a small topic branch nobody else has yet, to
 
 You can now make a focused change on a topic branch, fetch new upstream work safely and rebase your branch on top of it. The mission asks you to run that whole cycle on a shared repository, including a simulated teammate's push.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop git-upstream-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-043
@@ -112,8 +120,9 @@ Read the task in [`question.md`](../../../labs/lab-043/docs/question.md) and sol
 astrona submit -c labs/lab-043
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-043
+astrona start git-upstream-playground
 ```

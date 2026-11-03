@@ -51,6 +51,8 @@ Here is the whole method on a test folder you build yourself. It includes one fi
 
 Each `head -c` line writes a file of an exact size, and `touch -d` backdates one file:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 mkdir -p /tmp/triage-order
 cd /tmp/triage-order
@@ -125,7 +127,13 @@ find . -type f | sort
 
 You can now delete files by an absolute date, sort the rest by size and by exact permission, and keep each pass from touching the work of the one before. The mission asks you to clean up a backup folder in four passes, in a fixed order, where some files fit two rules.
 
-Start the mission:
+The mission runs on its own training ship, so first pause your playground. Nothing in it is lost:
+
+```sh
+astrona stop find-triage-playground
+```
+
+Then start the mission:
 
 ```sh
 astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-023
@@ -143,8 +151,9 @@ Read the task in [the question](../../../labs/lab-023/docs/question.md) and solv
 astrona submit -c labs/lab-023
 ```
 
-When the mission is done, remove it:
+When the mission is done, remove it and wake your playground up again:
 
 ```sh
 astrona destroy ats-006-lab-023
+astrona start find-triage-playground
 ```

@@ -27,6 +27,8 @@ flowchart TB
 
 Here is a real example:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 alias ls='ls --color=auto'
 ```

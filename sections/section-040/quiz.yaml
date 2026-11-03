@@ -1,0 +1,325 @@
+# Knowledge check for section 040. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats006-040
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-040
+  title: "Version Control with Git"
+questions:
+  - id: ats006-040-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Compare the working tree, staging area and last commit with git diff and git diff --staged"
+    source_readings:
+      - sections/section-040/module-01/course-02-diff-ignore-and-log.md
+    prompt: |-
+      You edit a tracked file and run `git add` on it. Then `git diff` prints nothing, but `git diff --staged` shows your change. What does this mean?
+    options:
+      - id: a
+        text: "The change was lost when you ran `git add`."
+        explanation: "Nothing is lost. `git add` moves the change into the staging area."
+      - id: b
+        text: "The working tree and the staging area now match, and the staging area still differs from the last commit."
+        explanation: "Correct. Plain `git diff` compares the working tree with the staging area, and `--staged` compares the staging area with `HEAD`."
+      - id: c
+        text: "`git diff` is broken after `git add`, so only `--staged` can be trusted."
+        explanation: "Both commands work. They compare different pairs of states."
+      - id: d
+        text: "The file was committed automatically when you staged it."
+        explanation: "Staging and committing are separate steps, and the change stays staged until you run `git commit`."
+    correct_option: b
+    explanation: "Plain `git diff` compares the working tree with the staging area, and `git diff --staged` compares the staging area with `HEAD`. After `git add` the first pair is identical, so nothing prints."
+
+  - id: ats006-040-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why a .gitignore rule does not stop Git from tracking a file that is already committed"
+    source_readings:
+      - sections/section-040/module-01/course-02-diff-ignore-and-log.md
+    prompt: |-
+      Your team adds `*.log` to `.gitignore`, but `git status` still reports `app.log` as modified each time it changes. What is the most likely cause?
+    options:
+      - id: a
+        text: "A `.gitignore` rule only starts to work after the next commit."
+        explanation: "The rule applies at once to untracked files, with no commit needed."
+      - id: b
+        text: "The `*.log` pattern is invalid and must be written as `**/*.log`."
+        explanation: "`*.log` is valid and matches log files by extension."
+      - id: c
+        text: "`git status` never reads `.gitignore`."
+        explanation: "`git status` does read it for untracked files."
+      - id: d
+        text: "`app.log` was committed before the rule existed, so Git keeps tracking it."
+        explanation: "Correct. A rule only hides files that Git is not already tracking. `git rm --cached app.log` followed by a commit stops the tracking."
+    correct_option: d
+    explanation: "A `.gitignore` pattern does not reach back into history. A file that is already tracked stays tracked until you run `git rm --cached <path>` and commit the removal."
+
+  - id: ats006-040-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read a file on another branch with git show <ref>:<path> without checking it out"
+    source_readings:
+      - sections/section-040/module-02/course-01-clone-and-inspect-branches.md
+    prompt: |-
+      You cloned a repository that has the branches `opt-a`, `opt-b`, `opt-c` and `opt-d`. You must find which branch sets `mode: strict` in `policy.yaml` without changing your working tree. What is the best method?
+    options:
+      - id: a
+        text: "Check out each branch in turn, read the file and switch back."
+        explanation: "This works, but it is slow and can leave you on the wrong branch."
+      - id: b
+        text: "Stash your work, check out each branch and pop the stash at the end."
+        explanation: "Stashing is needless work for a task that only reads a file."
+      - id: c
+        text: "Run `git show origin/opt-a:policy.yaml` and the same for the other three branches."
+        explanation: "Correct. `git show <ref>:<path>` prints the file at the tip of that ref with no checkout."
+      - id: d
+        text: "Run `git diff opt-a opt-b opt-c opt-d` and read the output."
+        explanation: "`git diff` does not give a clean per-branch view of one file."
+    correct_option: c
+    explanation: "`git show <ref>:<path>` reads the file straight from Git's object database, so nothing changes in your working tree. Right after a clone most branches exist only as `origin/<name>`."
+
+  - id: ats006-040-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why Git ignores an empty directory and fix it with a placeholder file"
+    source_readings:
+      - sections/section-040/module-02/course-02-merge-and-commit-a-new-directory.md
+    prompt: |-
+      You run `mkdir cache` and `git add cache` inside a repository, and `git status` shows nothing staged. What explains this?
+    options:
+      - id: a
+        text: "Git only tracks directories that hold at least two files."
+        explanation: "There is no file-count rule. One tracked file is enough."
+      - id: b
+        text: "Git stores file content and directory listings built from that content, so an empty directory has nothing to record."
+        explanation: "Correct. A tree entry exists only because something inside it needed recording, so a placeholder such as `.keep` fixes it."
+      - id: c
+        text: "`git add` needs the `-f` flag for directories."
+        explanation: "`-f` overrides ignore rules and does not change the empty-directory limit."
+      - id: d
+        text: "`cache` is a reserved name in Git."
+        explanation: "Git has no reserved directory names."
+    correct_option: b
+    explanation: "Git stores blobs (file content) and trees (directory listings). An empty directory has no content to hash, so add a placeholder file such as `.keep` to make Git see it."
+
+  - id: ats006-040-q05
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Choose between rebase and merge, and explain why rebasing a shared branch causes trouble"
+    source_readings:
+      - sections/section-040/module-03/course-02-fetch-rebase-or-merge.md
+    prompt: |-
+      You pushed a topic branch with two commits and a teammate pulled it. You want a linear history and consider `git rebase main`. What is the main risk?
+    options:
+      - id: a
+        text: "There is no risk, because rebase is always safe."
+        explanation: "Rebase is safe only on branches that nobody else has pulled."
+      - id: b
+        text: "Rebase permanently deletes your two commits."
+        explanation: "The old commits are not the danger. The danger is that history diverges from your teammate's copy."
+      - id: c
+        text: "Rebase makes new commits with new hashes, so your teammate's clone no longer shares history with yours."
+        explanation: "Correct. Replayed commits are new objects, which creates two histories that are hard to reconcile."
+      - id: d
+        text: "Rebase quietly merges `main` into the topic branch."
+        explanation: "That describes `git merge main`, and rebase replays your commits on top instead."
+    correct_option: c
+    explanation: "Rebase gives every replayed commit a new hash. Rebase freely on a branch nobody else has, and merge once the branch is shared."
+
+  - id: ats006-040-q06
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Describe what git init creates and what it does not do"
+    source_readings:
+      - sections/section-040/module-01/course-01-the-three-states-of-a-file.md
+    prompt: |-
+      You run `git init` in a new directory on a laptop with no network. What happens?
+    options:
+      - id: a
+        text: "Git creates a hidden `.git/` directory with an empty object database, and makes no commit and no network call."
+        explanation: "Correct. `git init` only sets up the local repository."
+      - id: b
+        text: "Git contacts a hosting service and registers the repository."
+        explanation: "`git init` makes no network call."
+      - id: c
+        text: "Git makes an initial commit of all files in the directory."
+        explanation: "No commit exists until you stage files and run `git commit`."
+      - id: d
+        text: "Git fails because no remote is configured."
+        explanation: "A remote is not needed to create a repository."
+    correct_option: a
+    explanation: "`git init` creates the `.git/` directory and nothing else. Until you make a commit, `git log` refuses to run because the repository has no commits yet."
+
+  - id: ats006-040-q07
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain what a Git remote is and why a bare repository is used as one"
+    source_readings:
+      - sections/section-040/module-01/course-03-remotes-push-and-fetch.md
+    prompt: |-
+      You run `git init --bare ~/projects/notes-backup.git` and then `git remote add backup ~/projects/notes-backup.git`. Which statement is correct?
+    options:
+      - id: a
+        text: "A remote must be a network server, so this fails for a local path."
+        explanation: "A local path to a bare repository is a valid remote."
+      - id: b
+        text: "A remote is a name mapped to a location, and a bare repository has no working tree, which suits a push target."
+        explanation: "Correct. The mapping is stored in `.git/config`, and a repository you push to should have no working tree."
+      - id: c
+        text: "The `--bare` flag copies your commits into the new repository."
+        explanation: "`--bare` only creates an empty repository without a working tree. The push copies the commits."
+      - id: d
+        text: "A bare repository can be used only by Git hosting services."
+        explanation: "Any directory made with `git init --bare` works, and hosting services use the same kind."
+    correct_option: b
+    explanation: "A remote is only a name for a location, such as a URL or a local path. A bare repository has only the object database and references, so there is no working tree to fall out of step."
+
+  - id: ats006-040-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Push a branch with upstream tracking using git push -u"
+    source_readings:
+      - sections/section-040/module-01/course-03-remotes-push-and-fetch.md
+    prompt: |-
+      What does `git push -u backup main` do that plain `git push backup main` does not?
+    options:
+      - id: a
+        text: "It forces the remote branch to match yours and discards its history."
+        explanation: "`-u` does not force anything. Forcing needs a different flag."
+      - id: b
+        text: "It pushes every local branch to `backup`."
+        explanation: "It pushes only `main`."
+      - id: c
+        text: "It also creates the bare repository `backup` if it is missing."
+        explanation: "`-u` does not create a repository."
+      - id: d
+        text: "It also records that your local `main` follows `backup/main`, so later `git push` and `git pull` need no arguments."
+        explanation: "Correct. `-u` is `--set-upstream`, and it saves the remote and branch names for later use."
+    correct_option: d
+    explanation: "`-u` pushes the branch and also saves the upstream link in your configuration. Without it, you must name the remote and the branch on every push."
+
+  - id: ats006-040-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Distinguish git fetch from git pull"
+    source_readings:
+      - sections/section-040/module-01/course-03-remotes-push-and-fetch.md
+      - sections/section-040/module-03/course-02-fetch-rebase-or-merge.md
+    prompt: |-
+      A teammate pushed new commits to `origin/main`. You want to see them without changing your checked-out branch or your files. Which command is right?
+    options:
+      - id: a
+        text: "`git pull`, because it only reports the new commits."
+        explanation: "`pull` is `fetch` followed by a merge (or rebase), so it changes your branch."
+      - id: b
+        text: "`git fetch origin`, then `git log main..origin/main --oneline`."
+        explanation: "Correct. `fetch` moves only the remote-tracking reference, and the range lists what upstream has that `main` lacks."
+      - id: c
+        text: "`git merge origin/main`, because it previews without changing files."
+        explanation: "`merge` changes your current branch and your files."
+      - id: d
+        text: "`git rebase origin/main`, because it only reads the upstream branch."
+        explanation: "`rebase` rewrites the commits of the branch you are on."
+    correct_option: b
+    explanation: "`git fetch` never changes your working directory or your checked-out branch. Only `merge`, `rebase` or `pull` does that."
+
+  - id: ats006-040-q10
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Create and switch to a topic branch with git switch -c"
+    source_readings:
+      - sections/section-040/module-03/course-01-a-topic-branch-and-a-focused-commit.md
+    prompt: |-
+      You run `git branch increase-mtu-value` and then edit `interfaces.yaml` and commit. Where did the commit go?
+    options:
+      - id: a
+        text: "On `increase-mtu-value`, because creating a branch moves you onto it."
+        explanation: "`git branch <name>` only creates the branch and leaves you where you were."
+      - id: b
+        text: "Nowhere, because Git needs `git switch` before any commit."
+        explanation: "Git commits on the branch you have checked out."
+      - id: c
+        text: "On the branch you were already on, because `git branch <name>` does not switch. `git switch -c <name>` does both."
+        explanation: "Correct. Check with `git branch --show-current` before you edit."
+      - id: d
+        text: "On a new detached commit that belongs to no branch."
+        explanation: "You were not in a detached state, so the commit went on your current branch."
+    correct_option: c
+    explanation: "`git branch <name>` creates a branch but does not move you. `git switch -c <name>` creates it and checks it out in one step."
+
+  - id: ats006-040-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use the two-dot range to list what a branch adds"
+    source_readings:
+      - sections/section-040/module-03/course-01-a-topic-branch-and-a-focused-commit.md
+    prompt: |-
+      The topic branch `increase-mtu-value` has one commit that `main` lacks. Which command lists exactly that commit?
+    options:
+      - id: a
+        text: "`git log increase-mtu-value..main --oneline`"
+        explanation: "This answers the opposite question and shows what `main` has that the topic lacks."
+      - id: b
+        text: "`git log main..increase-mtu-value --oneline`"
+        explanation: "Correct. `A..B` lists commits reachable from `B` but not from `A`."
+      - id: c
+        text: "`git log --graph --all` and nothing else"
+        explanation: "This shows every branch, not only the commits unique to the topic."
+      - id: d
+        text: "`git diff --staged`"
+        explanation: "This compares the staging area with `HEAD` and does not list commits."
+    correct_option: b
+    explanation: "`git log A..B` shows what the second branch has that the first one does not. Reversing the operands is a common reason for empty output."
+
+  - id: ats006-040-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Merge the chosen branch into main and know where a merge lands"
+    source_readings:
+      - sections/section-040/module-02/course-02-merge-and-commit-a-new-directory.md
+    prompt: |-
+      You are on `draft-fall` and run `git merge origin/draft-summer`, meaning to update `main`. What happened?
+    options:
+      - id: a
+        text: "The summer work merged into `draft-fall`, because a merge lands on the branch you have checked out."
+        explanation: "Correct. Switch to `main` first, and check with `git branch --show-current`."
+      - id: b
+        text: "The summer work merged into `main`, because merges always target `main`."
+        explanation: "A merge always targets the checked-out branch."
+      - id: c
+        text: "Git refused, because remote-tracking branches cannot be merged."
+        explanation: "Merging from `origin/<name>` is allowed."
+      - id: d
+        text: "Git merged every draft branch, because all of them share one history."
+        explanation: "Only the named branch is merged."
+    correct_option: a
+    explanation: "`git merge` brings the named branch into the branch you have checked out, never the other way round. Merge only the one branch that matches the requirement."
+
+  - id: ats006-040-q13
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Resolve a conflict during a rebase and abort it if needed"
+    source_readings:
+      - sections/section-040/module-03/course-02-fetch-rebase-or-merge.md
+    prompt: |-
+      During `git rebase origin/main`, Git stops and writes `<<<<<<<` markers into `interfaces.yaml`. What is the right next step?
+    options:
+      - id: a
+        text: "Run `git commit -a` and push, because the rebase is finished."
+        explanation: "The rebase is paused, and the markers are still in the file."
+      - id: b
+        text: "Delete the `.git/` directory and clone again."
+        explanation: "This is far too destructive when `git rebase --abort` exists."
+      - id: c
+        text: "Run `git pull`, which resolves the conflict for you."
+        explanation: "`pull` does not resolve conflicts, and it is not the tool here."
+      - id: d
+        text: "Edit the file to remove the markers, run `git add interfaces.yaml`, then `git rebase --continue`, or run `git rebase --abort` to go back."
+        explanation: "Correct. This is the documented way to continue or to undo the rebase."
+    correct_option: d
+    explanation: "The same line was changed on both sides. Fix the file by hand, stage it and continue, or abort to return to the state before the rebase."

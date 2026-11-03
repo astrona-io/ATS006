@@ -14,6 +14,8 @@ Astronaut, the bridge console remembers every order you type. That memory is the
 - `!n` runs the command with history number `n`.
 - `!string` runs the most recent command that *started with* `string`.
 
+<!-- astrona:playground:renew -->
+
 ```bash
 sudo systemctl restart nginx
 !!                              # re-runs "sudo systemctl restart nginx"

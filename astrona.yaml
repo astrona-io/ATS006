@@ -6,7 +6,8 @@
 # (course-0N-*.md), and right after the part a lab tests, the lab's
 # question.md reading and the `type: lab` entry. The module's wrap-up page
 # comes last. The section quiz and the section capstone close the section.
-# There are no playgrounds yet. solution.md files are never listed.
+# Playgrounds are not listed here: a module's landing page shows its
+# playground with the astrona:playground marker. solution.md files are never listed.
 #
 # Every `path:` is relative to this file.
 
@@ -108,8 +109,42 @@ modules:
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-010/module-02/course-03-wrap-up.md
       - type: reading
+        title: "Shell Scripting Basics"
+        path: sections/section-010/module-03/course.md
+      - type: reading
+        title: "Arguments, Exit Codes And Tests"
+        path: sections/section-010/module-03/course-01-arguments-and-tests.md
+      - type: reading
+        title: "Loops And Functions"
+        path: sections/section-010/module-03/course-02-loops-and-functions.md
+      - type: reading
+        title: Question
+        path: labs/lab-013/docs/question.md
+      - type: lab
+        title: "Shell Script Arguments, Tests and Loops Lab"
+        path: labs/lab-013
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: shell-usage
+        task_kind: build
+        tags: [shell-scripts, exit-codes, stderr, positional-parameters, loops, conditionals]
+        learning_goals:
+          - Check a script's arguments and report a wrong usage on stderr with the right exit code
+          - Loop over files whose names hold spaces and sum a value across them
+        resources:
+          - name: "Bash Reference Manual: Looping Constructs"
+            url: https://www.gnu.org/software/bash/manual/html_node/Looping-Constructs.html
+          - name: "Bash Reference Manual: Conditional Constructs"
+            url: https://www.gnu.org/software/bash/manual/html_node/Conditional-Constructs.html
+          - name: "Bash Reference Manual: Positional Parameters"
+            url: https://www.gnu.org/software/bash/manual/html_node/Positional-Parameters.html
+      - type: reading
+        title: "Summary"
+        path: sections/section-010/module-03/course-03-summary.md
+      - type: quiz
         title: "Section 010 Knowledge Check: Shell Semantics"
-        path: sections/section-010/quiz.md
+        path: sections/section-010/quiz.yaml
+        pass_score: 70
       - type: reading
         title: Question
         path: labs/lab-010/docs/question.md
@@ -117,14 +152,14 @@ modules:
         title: "Shell Semantics Integration Capstone Lab"
         path: labs/lab-010
         difficulty: advanced
-        estimated_duration: 30m
+        estimated_duration: 45m
         topic: redirection
         task_kind: build
-        tags: [shell-scripts, export, environment-variables, stdout, stderr, redirection, exit-codes]
+        tags: [shell-scripts, export, environment-variables, redirection, exit-codes, positional-parameters, conditionals, loops]
         learning_goals:
           - Export one variable to a child process while keeping another one local to the script
           - Capture a child's stdout, stderr, both streams together and its exit code in separate files
-          - Make a wrapper script exit with the same exit code as the program it runs
+          - Use an argument, an if test and a for loop to write a summary, then exit with the program's own exit code
         resources:
           - name: "Bash Reference Manual: Redirections"
             url: https://www.gnu.org/software/bash/manual/html_node/Redirections.html
@@ -237,8 +272,46 @@ modules:
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-020/module-03/course-03-wrap-up.md
       - type: reading
+        title: "Files, Links And Ownership"
+        path: sections/section-020/module-04/course.md
+      - type: reading
+        title: "Create, Copy, Move And Remove"
+        path: sections/section-020/module-04/course-01-create-copy-move-and-remove.md
+      - type: reading
+        title: "Hard Links And Symbolic Links"
+        path: sections/section-020/module-04/course-02-hard-and-symbolic-links.md
+      - type: reading
+        title: "Owners And Groups"
+        path: sections/section-020/module-04/course-03-owners-and-groups.md
+      - type: reading
+        title: Question
+        path: labs/lab-024/docs/question.md
+      - type: lab
+        title: "File Operations, Links and Ownership Lab"
+        path: labs/lab-024
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: file-management
+        task_kind: build
+        tags: [file-operations, hard-links, symbolic-links, chown, groups]
+        learning_goals:
+          - Copy a file so that it keeps its mode and modification time
+          - Make a hard link and a relative symbolic link and tell them apart
+          - Hand a whole directory tree to another group
+        resources:
+          - name: "GNU Coreutils: cp invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/cp-invocation.html
+          - name: "GNU Coreutils: ln invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/ln-invocation.html
+          - name: "GNU Coreutils: chgrp invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/chgrp-invocation.html
+      - type: reading
+        title: "Summary"
+        path: sections/section-020/module-04/course-04-summary.md
+      - type: quiz
         title: "Section 020 Knowledge Check: Permissions & File Triage"
-        path: sections/section-020/quiz.md
+        path: sections/section-020/quiz.yaml
+        pass_score: 70
       - type: reading
         title: Question
         path: labs/lab-020/docs/question.md
@@ -246,14 +319,15 @@ modules:
         title: "Permissions & File Triage Capstone Lab"
         path: labs/lab-020
         difficulty: advanced
-        estimated_duration: 40m
+        estimated_duration: 60m
         topic: permissions
         task_kind: build
-        tags: [umask, chmod, setgid, sticky-bit, find, file-age, file-size, file-permissions]
+        tags: [umask, chmod, setgid, sticky-bit, find, file-operations, hard-links, symbolic-links]
         learning_goals:
           - Give a user a persistent umask that makes 640 files and 750 directories
           - Set the setgid, owner-only and sticky permissions on a shared team workspace
           - Triage a folder with find by age, size and permission, in the order given
+          - Stage a release with copy, move, hard and symbolic links, remove and group ownership
         resources:
           - name: "GNU Coreutils: chmod invocation"
             url: https://www.gnu.org/software/coreutils/manual/html_node/chmod-invocation.html
@@ -365,8 +439,74 @@ modules:
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-030/module-03/course-03-wrap-up.md
       - type: reading
+        title: "Comparing And Shaping Text"
+        path: sections/section-030/module-04/course.md
+      - type: reading
+        title: "Sort, Count And Cut"
+        path: sections/section-030/module-04/course-01-sort-count-and-cut.md
+      - type: reading
+        title: "Translate, Awk, Diff And Tee"
+        path: sections/section-030/module-04/course-02-tr-awk-diff-and-tee.md
+      - type: reading
+        title: Question
+        path: labs/lab-034/docs/question.md
+      - type: lab
+        title: "Sort, Count, Cut and Compare Text Lab"
+        path: labs/lab-034
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: text-processing
+        task_kind: build
+        tags: [sort, uniq, cut, awk, diff, log-analysis]
+        learning_goals:
+          - Rank values by count with sort and uniq
+          - Sum and select fields with cut and awk
+          - Compare two files and save the difference
+        resources:
+          - name: "GNU Coreutils: sort invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html
+          - name: "GNU Coreutils: cut invocation"
+            url: https://www.gnu.org/software/coreutils/manual/html_node/cut-invocation.html
+          - name: "GNU Awk User's Guide"
+            url: https://www.gnu.org/software/gawk/manual/gawk.html
+      - type: reading
+        title: "Summary"
+        path: sections/section-030/module-04/course-03-summary.md
+      - type: reading
+        title: "Finding Help And Editing Files"
+        path: sections/section-030/module-05/course.md
+      - type: reading
+        title: "Manual Pages And Help"
+        path: sections/section-030/module-05/course-01-manual-pages-and-help.md
+      - type: reading
+        title: "Editing With Vim And Nano"
+        path: sections/section-030/module-05/course-02-editing-with-vim-and-nano.md
+      - type: reading
+        title: Question
+        path: labs/lab-035/docs/question.md
+      - type: lab
+        title: "Manual Pages and Editing a File Lab"
+        path: labs/lab-035
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: shell-usage
+        task_kind: build
+        tags: [man-pages, vim, text-editing]
+        learning_goals:
+          - Edit a configuration file with an editor and keep every other line unchanged
+          - Find a manual page section and a command option with the manual pages
+        resources:
+          - name: "man(1) manual page"
+            url: https://man7.org/linux/man-pages/man1/man.1.html
+          - name: "GNU nano manual"
+            url: https://www.nano-editor.org/dist/latest/nano.html
+      - type: reading
+        title: "Summary"
+        path: sections/section-030/module-05/course-03-summary.md
+      - type: quiz
         title: "Section 030 Knowledge Check: Everyday Shell Craft"
-        path: sections/section-030/quiz.md
+        path: sections/section-030/quiz.yaml
+        pass_score: 70
       - type: reading
         title: Question
         path: labs/lab-030/docs/question.md
@@ -374,14 +514,14 @@ modules:
         title: "Everyday Shell Craft Capstone Lab"
         path: labs/lab-030
         difficulty: advanced
-        estimated_duration: 40m
+        estimated_duration: 60m
         topic: text-processing
         task_kind: build
-        tags: [grep, sed, regular-expressions, log-analysis, history, aliases, bashrc, non-interactive-shell]
+        tags: [grep, sed, history, aliases, sort, awk, man-pages, vim]
         learning_goals:
-          - Extract and redact incident log lines with grep and sed, leaving every other line untouched
-          - Recover exact commands from another responder's shell history
-          - Persist aliases that work at the prompt but never reach a non-interactive shell
+          - Extract and redact incident log lines with grep and sed, and recover exact commands from shell history
+          - Persist aliases, and build reports with sort, uniq, cut and awk
+          - Edit a file in an editor and look up facts in the manual pages
         resources:
           - name: "GNU grep manual"
             url: https://www.gnu.org/software/grep/manual/grep.html
@@ -509,9 +649,10 @@ modules:
       - type: reading
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-040/module-03/course-03-wrap-up.md
-      - type: reading
+      - type: quiz
         title: "Section 040 Knowledge Check: Version Control with Git"
-        path: sections/section-040/quiz.md
+        path: sections/section-040/quiz.yaml
+        pass_score: 70
       - type: reading
         title: Question
         path: labs/lab-040/docs/question.md
@@ -614,9 +755,10 @@ modules:
       - type: reading
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-050/module-02/course-04-wrap-up.md
-      - type: reading
+      - type: quiz
         title: "Section 050 Knowledge Check: Archiving & Backup Strategy"
-        path: sections/section-050/quiz.md
+        path: sections/section-050/quiz.yaml
+        pass_score: 70
       - type: reading
         title: Question
         path: labs/lab-050/docs/question.md
@@ -714,9 +856,10 @@ modules:
       - type: reading
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-060/module-02/course-03-wrap-up.md
-      - type: reading
+      - type: quiz
         title: "Section 060 Knowledge Check: Diskspace & Remote Sync"
-        path: sections/section-060/quiz.md
+        path: sections/section-060/quiz.yaml
+        pass_score: 70
       - type: reading
         title: Question
         path: labs/lab-060/docs/question.md
@@ -857,9 +1000,10 @@ modules:
       - type: reading
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-070/module-03/course-04-wrap-up.md
-      - type: reading
+      - type: quiz
         title: "Section 070 Knowledge Check: Service Configuration"
-        path: sections/section-070/quiz.md
+        path: sections/section-070/quiz.yaml
+        pass_score: 70
       - type: reading
         title: Question
         path: labs/lab-070/docs/question.md
@@ -888,11 +1032,12 @@ modules:
   - id: module-080
     title: "LFCS Essential Commands Domain Certification Quiz"
     description: >
-      A comprehensive, scenario-based final assessment covering all 18
+      A comprehensive, scenario-based final assessment covering all 22
       modules across the 7 Essential Commands sections, simulating actual
       Linux Foundation exam pressure.
 
     content:
-      - type: reading
+      - type: quiz
         title: "Final Domain Certification Quiz"
-        path: sections/final-domain-quiz.md
+        path: sections/final-domain-quiz.yaml
+        pass_score: 70

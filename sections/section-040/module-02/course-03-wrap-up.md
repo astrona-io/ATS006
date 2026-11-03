@@ -86,9 +86,9 @@ No. `.keep` and `.gitkeep` are only conventions. Any file name makes the directo
 It skips the text editor and gives you the exact message you typed, which graders compare word for word.
 </details>
 
-## Clean up
+## Clean up the playground
 
-The lab is a whole virtual machine running on your computer. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -96,7 +96,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy git-branches-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-042
@@ -111,5 +117,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-040/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Read every flight path from the chart, join only the right one, and remember that Git carries crates, not empty compartments.*

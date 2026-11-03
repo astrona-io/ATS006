@@ -93,9 +93,9 @@ In `openssl x509 -in <file> -noout -text`, under `X509v3 Subject Alternative Nam
 The key was generated again after the certificate was made. Make the certificate again from the current key.
 </details>
 
-## Clean up
+## Clean up the playground
 
-Each mission runs in its own training ship. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -103,7 +103,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy tls-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-073
@@ -119,6 +125,6 @@ astrona list
 No astrona labs running.
 ```
 
-If you practised in a folder of your own, delete `service.key`, `service.crt`, `service.csr` and `openssl-service.cnf` when you are done. A private key you no longer need should not stay lying around.
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-070/module-03/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Seal first, names in the configuration file, and the modulus to prove the pair.*

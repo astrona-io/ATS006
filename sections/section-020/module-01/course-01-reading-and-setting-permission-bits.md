@@ -43,6 +43,8 @@ Without `x`, `r--` on a directory lets you see that file names exist, but you ca
 
 Symbolic notation names **who** (`u`, `g`, `o`, or `a` for all three), then an **operator**, then the **permissions**. The operator is `+` to add, `-` to remove, or `=` to set exactly:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 chmod g+w /srv/projects/launch-team
 chmod o-rwx /usr/local/bin/nightly-purge.sh

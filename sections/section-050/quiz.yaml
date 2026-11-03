@@ -1,0 +1,324 @@
+# Knowledge check for section 050. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats006-050
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-050
+  title: "Archiving, Compression & Backup Strategy"
+questions:
+  - id: ats006-050-q01
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Force the strongest gzip compression through tar with --use-compress-program"
+    source_readings:
+      - sections/section-050/module-01/course-01-archives-and-compressors.md
+    prompt: |-
+      A task requires the strongest possible gzip compression. You run `tar -czf export.tar.gz /data/reports` and it finishes without error. What is wrong?
+    options:
+      - id: a
+        text: "Nothing, because `-z` always uses gzip level 9."
+        explanation: "`-z` starts gzip with its default level 6."
+      - id: b
+        text: "`-z` runs gzip at its default level 6 and has no level option of its own, so use `--use-compress-program=\"gzip -9\"`."
+        explanation: "Correct. The command succeeds but silently ignores the request for maximum compression."
+      - id: c
+        text: "`tar -czf` cannot make gzip archives at all."
+        explanation: "It makes valid gzip archives, but without control over the level."
+      - id: d
+        text: "`-z` with a directory always produces a corrupt archive."
+        explanation: "The archive is valid when the target is a directory."
+    correct_option: b
+    explanation: "The `-z` shortcut pipes the archive stream through gzip with default settings, which is level 6. To get level 9, name the exact compressor command with `--use-compress-program`."
+
+  - id: ats006-050-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Prove two archives hold the same files by sorting both listings before diff"
+    source_readings:
+      - sections/section-050/module-01/course-02-convert-and-prove.md
+    prompt: |-
+      You convert `data.tar.bz2` to `data.tar.gz`, then run `tar -tjf data.tar.bz2 > list1.txt`, `tar -tzf data.tar.gz > list2.txt` and `diff list1.txt list2.txt`. Many lines differ even though no file was lost. Why?
+    options:
+      - id: a
+        text: "`tar -t` cannot list gzip archives."
+        explanation: "`tar -t` lists gzip archives and usually detects the format itself."
+      - id: b
+        text: "`diff` cannot compare files made by different commands."
+        explanation: "`diff` compares text and does not care how the file was made."
+      - id: c
+        text: "The listings are in different orders, and neither was sorted before the comparison."
+        explanation: "Correct. `tar -t` prints entries in storage order, so pipe both listings through `sort` first."
+      - id: d
+        text: "The bzip2 archive is corrupt."
+        explanation: "Nothing in the scenario points to corruption, and ordering is the simpler cause."
+    correct_option: c
+    explanation: "Two archives of the same content often store entries in a different order. Sorting both listings first makes an empty `diff` mean that the file sets are the same."
+
+  - id: ats006-050-q03
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Exclude one exact path and keep other directories with the same name"
+    source_readings:
+      - sections/section-050/module-02/course-01-permissions-and-excludes.md
+    prompt: |-
+      You back up with `sudo tar -czpf up.tar.gz --exclude=<pattern> -C / var/www/uploads`. You must leave out `var/www/uploads/cache` but keep the unrelated `var/www/uploads/app/vendor/cache`. Which pattern does this?
+    options:
+      - id: a
+        text: "`--exclude=cache`"
+        explanation: "A bare name matches every file or directory called `cache` at any level, so the vendor one is left out too."
+      - id: b
+        text: "`--exclude=/var/www/uploads/cache`"
+        explanation: "After `-C /` the stored path is relative, so a leading slash matches nothing."
+      - id: c
+        text: "`--exclude=var/www/uploads/cache`"
+        explanation: "Correct. This matches that one relative path as stored in the archive."
+      - id: d
+        text: "`--exclude-from=cache`"
+        explanation: "`--exclude-from` reads patterns from a file named `cache`, not from the word itself."
+    correct_option: c
+    explanation: "`--exclude` patterns match the path as stored in the archive. With `-C /` that is relative, so the exact relative path removes only the one directory."
+
+  - id: ats006-050-q04
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Explain what happens when the incremental snapshot file is lost"
+    source_readings:
+      - sections/section-050/module-02/course-02-full-and-incremental-backups.md
+    prompt: |-
+      Nightly backups use `tar --listed-incremental=/backup/state.snar`. A cleanup job deletes `state.snar`. Tonight's job runs the same command and exits with status 0. What happened?
+    options:
+      - id: a
+        text: "The archive is empty and unusable."
+        explanation: "The archive is a complete full backup."
+      - id: b
+        text: "`tar` found no snapshot to compare with, so it made a full backup and wrote a new snapshot file, without any warning."
+        explanation: "Correct. The snapshot file is the incremental mechanism, and losing it silently turns the run into a level 0 backup."
+      - id: c
+        text: "`tar` stopped with a warning and skipped the run."
+        explanation: "`tar` raises no error for a missing snapshot file."
+      - id: d
+        text: "`tar` rebuilt the old snapshot from the metadata in earlier archives."
+        explanation: "`tar` cannot rebuild that data from a plain archive."
+    correct_option: b
+    explanation: "The snapshot file is the only record of what was already backed up. Without it `tar` archives everything again and still reports success, so compare the archive sizes."
+
+  - id: ats006-050-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Check permissions separately because diff -r compares content only"
+    source_readings:
+      - sections/section-050/module-02/course-03-restore-and-prove.md
+    prompt: |-
+      After `sudo tar -xzpf backup.tar.gz -C /restore` of `/etc`, `diff -r /etc /restore/etc` prints nothing. Can you conclude that permissions and ownership were kept?
+    options:
+      - id: a
+        text: "Yes, because an empty `diff -r` means everything is identical."
+        explanation: "`diff -r` compares content and does not check modes or owners."
+      - id: b
+        text: "No, because `diff -r` cannot read hidden files."
+        explanation: "`diff -r` includes hidden files."
+      - id: c
+        text: "Yes, but only if `diff` was run with `-p`."
+        explanation: "Permission handling belongs to `tar -p`, not to any flag of `diff`."
+      - id: d
+        text: "No, because `diff -r` compares content only, so compare modes and owners with `stat -c '%a %U:%G'` on a file such as `/etc/shadow`."
+        explanation: "Correct. A restore can keep every byte and still lose permissions."
+    correct_option: d
+    explanation: "A clean `diff -r` proves content only. Check permissions yourself with `stat` on a file whose mode really matters."
+
+  - id: ats006-050-q06
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "State which program does the compression when tar creates a compressed archive"
+    source_readings:
+      - sections/section-050/module-01/course-01-archives-and-compressors.md
+    prompt: |-
+      Which statement about `tar -czf`, `-cjf` and `-cJf` is correct?
+    options:
+      - id: a
+        text: "`tar` bundles the files and pipes the stream to `gzip`, `bzip2` or `xz`, and each flag picks one of them."
+        explanation: "Correct. The flags are `-z` for gzip, `-j` for bzip2 and `-J` for xz, and you may use only one."
+      - id: b
+        text: "`tar` compresses by itself, and the flags only change the file name."
+        explanation: "`tar` does not compress anything itself."
+      - id: c
+        text: "You can combine `-z` and `-j` to get double compression."
+        explanation: "One command pipes through one compressor."
+      - id: d
+        text: "`-J` selects gzip and `-z` selects xz."
+        explanation: "`-z` is gzip and `-J` is xz."
+    correct_option: a
+    explanation: "An archive and a compression format are two separate jobs. `tar` makes the archive, and an outside program squeezes the stream."
+
+  - id: ats006-050-q07
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read the gzip header byte to prove which compression level was used"
+    source_readings:
+      - sections/section-050/module-01/course-01-archives-and-compressors.md
+    prompt: |-
+      You run `od -An -tu1 -j8 -N1` on an archive made with `tar -czf` and it prints `0`. What does that tell you?
+    options:
+      - id: a
+        text: "The archive was made at gzip level 9."
+        explanation: "Level 9 prints `2`."
+      - id: b
+        text: "The archive is empty."
+        explanation: "The byte describes the compression level, not the size."
+      - id: c
+        text: "The archive used the default level or one between 1 and 9, so it is not proof of level 9."
+        explanation: "Correct. Value `0` means anything in between, including the default 6, and level 9 would show `2`."
+      - id: d
+        text: "The archive used level 1, the fastest."
+        explanation: "Level 1 prints `4`."
+    correct_option: c
+    explanation: "The extra flags byte at offset 8 is `2` for level 9, `4` for level 1 and `0` for anything in between. Use it to prove the level after the fact."
+
+  - id: ats006-050-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Convert a bzip2 archive to gzip without touching the original"
+    source_readings:
+      - sections/section-050/module-01/course-02-convert-and-prove.md
+    prompt: |-
+      Which command changes `legacy.tar.bz2` into a level 9 gzip archive without running `tar` and without writing to the original?
+    options:
+      - id: a
+        text: "`gzip -9 legacy.tar.bz2`"
+        explanation: "This would compress the bzip2 file again instead of changing the outer format."
+      - id: b
+        text: "`bzip2 -dc legacy.tar.bz2 | gzip > out.tar.gz`"
+        explanation: "This leaves out `-9`, so gzip uses its default level 6."
+      - id: c
+        text: "`tar -czf out.tar.gz legacy.tar.bz2`"
+        explanation: "This packs the bzip2 file as one member inside a new archive."
+      - id: d
+        text: "`bzip2 -dc legacy.tar.bz2 | gzip -9 > out.tar.gz`"
+        explanation: "Correct. The tar bytes pass between the two compressors, and the original is only read."
+    correct_option: d
+    explanation: "The stream-only path decompresses to stdout and recompresses with `gzip -9`. Remember `-9`, or the level falls back to 6."
+
+  - id: ats006-050-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Keep permissions and ownership with -p on both backup and restore"
+    source_readings:
+      - sections/section-050/module-02/course-01-permissions-and-excludes.md
+    prompt: |-
+      You want a backup of `/etc/nginx` to restore with the original modes and owners. What is the right approach?
+    options:
+      - id: a
+        text: "Use `-p` on the backup only."
+        explanation: "The restore side also needs `-p`, or the extracting process's defaults apply."
+      - id: b
+        text: "Use `-p` on both the backup and the restore, and run both with `sudo`."
+        explanation: "Correct. Only `root` can give a file back to its original owner."
+      - id: c
+        text: "Use `-p` on the restore only."
+        explanation: "The backup must also record the modes and owners."
+      - id: d
+        text: "Use no flag, because `tar` always keeps owners."
+        explanation: "What comes back depends on the extracting user and its `umask`."
+    correct_option: b
+    explanation: "Permissions can be lost on the way in and on the way out. `-p` on both ends, with `sudo`, prevents both losses."
+
+  - id: ats006-050-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Verify that an exclude pattern worked, because a wrong pattern gives no error"
+    source_readings:
+      - sections/section-050/module-02/course-01-permissions-and-excludes.md
+    prompt: |-
+      With `-C /`, you used `--exclude=/var/www/uploads/cache` and the cache directory is still in the archive. What is the best explanation and check?
+    options:
+      - id: a
+        text: "The pattern needed a trailing star, and `tar` reports an error for it."
+        explanation: "`tar` reports no error for a pattern that matches nothing."
+      - id: b
+        text: "`--exclude` only works together with `-z`."
+        explanation: "`--exclude` works with any archive."
+      - id: c
+        text: "`tar` always keeps directories named `cache`."
+        explanation: "`tar` skips them when the pattern matches."
+      - id: d
+        text: "The stored path is relative, so the leading slash matched nothing. Check with `tar -tzf archive.tar.gz | grep cache`."
+        explanation: "Correct. No output from `grep` is the proof that the directory is absent."
+    correct_option: d
+    explanation: "After `-C /` the archive stores relative paths. A pattern with a leading slash silently matches nothing, so always list the archive afterwards."
+
+  - id: ats006-050-q11
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain how the first run with --listed-incremental differs from later runs"
+    source_readings:
+      - sections/section-050/module-02/course-02-full-and-incremental-backups.md
+    prompt: |-
+      You run `tar --listed-incremental=snapshot.snar` for the first time, and a day later with the same snapshot file. How do the two archives differ?
+    options:
+      - id: a
+        text: "Both are full backups, because `tar` always archives everything."
+        explanation: "Only the first run is full."
+      - id: b
+        text: "The first is an incremental, and the second is a full backup."
+        explanation: "This is the wrong way round."
+      - id: c
+        text: "The first run creates the snapshot file and is a full (level 0) backup. The second archives only new or changed files."
+        explanation: "Correct. The second archive is usually much smaller, and the snapshot is updated each time."
+      - id: d
+        text: "Neither run changes the snapshot file."
+        explanation: "`tar` writes and updates the snapshot file on each run."
+    correct_option: c
+    explanation: "The snapshot file records modification time, inode and size per file. With no file on the first run there is nothing to compare, so the run is a full copy."
+
+  - id: ats006-050-q12
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Restore a full backup and its incrementals in the right order"
+    source_readings:
+      - sections/section-050/module-02/course-03-restore-and-prove.md
+    prompt: |-
+      You have `level0.tar.gz` (full) and `level1.tar.gz` (incremental). How do you restore the latest state into `/restore/scratch`?
+    options:
+      - id: a
+        text: "Extract only `level1.tar.gz`, because it is the newest."
+        explanation: "The incremental holds only changes, so the result would be incomplete."
+      - id: b
+        text: "Extract `level1.tar.gz` first and then `level0.tar.gz`."
+        explanation: "The order must follow the order of the backups, or older files overwrite newer ones."
+      - id: c
+        text: "Extract `level0.tar.gz` and then `level1.tar.gz` into the same directory."
+        explanation: "Correct. The incremental holds the changes since the full backup. Extract it with `--listed-incremental=/dev/null` and it also removes the files that were deleted in the source."
+      - id: d
+        text: "Extract each into its own directory and merge them by hand."
+        explanation: "Layering into one directory is the supported way and needs no manual merge."
+    correct_option: c
+    explanation: "Extract the full backup first, then each incremental on top of the same destination, in the order they were taken."
+
+  - id: ats006-050-q13
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain what a clean tar exit code does and does not prove"
+    source_readings:
+      - sections/section-050/module-02/course-03-restore-and-prove.md
+    prompt: |-
+      `tar -xzpf backup.tar.gz -C /restore/scratch` exits with status 0. What does that prove?
+    options:
+      - id: a
+        text: "That the files, permissions and structure match the original."
+        explanation: "The exit code says nothing about whether the result matches the original."
+      - id: b
+        text: "Only that `tar` met no read or write error and found no broken archive, so you must still compare the result."
+        explanation: "Correct. Compare with `diff -r` for content and `stat` for permissions."
+      - id: c
+        text: "That the backup was an incremental one."
+        explanation: "The exit code does not tell you the backup type."
+      - id: d
+        text: "That no files were deleted from the source."
+        explanation: "The exit code does not describe the source."
+    correct_option: b
+    explanation: "A restore is proven only by comparing it with a known-good original in a scratch directory."

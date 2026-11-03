@@ -26,6 +26,8 @@ A brand-new repository has none of these entries yet. You create one with `git i
 
 Run these commands to make a directory and turn it into a repository:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 mkdir -p ~/projects/recipe-notes
 cd ~/projects/recipe-notes

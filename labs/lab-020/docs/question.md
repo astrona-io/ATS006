@@ -25,4 +25,15 @@ Clean up `/srv/teamspace/incoming` with these steps, in this exact order:
 
 Each later step must only act on the files still left in the top level of `/srv/teamspace/incoming` after the earlier steps ran. A file that fits more than one rule goes where the earliest matching step puts it.
 
-The grader starts a fresh login for `opsuser` and checks the modes of a new file and directory, checks the exact modes of the three workspace paths, creates a file in `/srv/teamspace/shared` as `opsuser` and checks its group, and checks where every file in `/srv/teamspace/incoming` ended up.
+## Part 4: Stage a release
+
+The release files wait in `/srv/teamspace/release-src`. Everything here belongs to `root`, so use `sudo` where you must.
+
+1. Create the directory tree `/srv/teamspace/releases/2026/q1` with one command. The parent folders do not exist yet.
+2. Copy `/srv/teamspace/release-src/app.conf` into `/srv/teamspace/releases/2026/q1/`. The copy must keep the **mode** and the **modification time** of the original. Leave the original where it is.
+3. **Move** `/srv/teamspace/release-src/old-release.txt` into `/srv/teamspace/releases/2026/`. It must no longer exist in the old place.
+4. Create a **hard link** `/srv/teamspace/releases/app-hard.conf` to the copy `/srv/teamspace/releases/2026/q1/app.conf`, and a **symbolic link** `/srv/teamspace/releases/current` that points at the directory `2026/q1` with a relative target.
+5. **Remove** the folder `/srv/teamspace/release-src/tmp-build` with everything inside it.
+6. Give the group `ops` ownership of `/srv/teamspace/releases` and everything inside it. The owner stays `root`.
+
+The grader starts a fresh login for `opsuser` and checks the modes of a new file and directory, checks the exact modes of the three workspace paths, creates a file in `/srv/teamspace/shared` as `opsuser` and checks its group, checks where every file in `/srv/teamspace/incoming` ended up, and checks the release tree, the preserved mode and time, the hard link's inode, the symbolic link's target and the group of every file and folder under `/srv/teamspace/releases`.

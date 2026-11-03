@@ -1,0 +1,34 @@
+metadata:
+  name: "ats-006-lab-024"
+  docs:
+    solution: "docs/solution.md"
+    question: "docs/question.md"
+
+runtime:
+  type: "qemu"
+  qemu:
+  - image:
+      type: "oci"
+      source: "ghcr.io/astrona-io/ubuntu-qcow2-image:24.04-lfcs-{ARCH}"
+
+    cpus: 2
+    memoryMB: 2048
+    diskSizeGB: 15
+    display: false
+
+bootstrap:
+  init:
+    - name: "lab-024-setup"
+      description: "Creates the candidate user, the group loaders and a cargo folder with files, a scratch folder and a crates folder"
+      type: "folder"
+      source: "bootstrap/"
+
+validation:
+  scripts:
+    - name: "verify-file-operations"
+      description: "Checks the new tree, the preserved copy, the moved file, the hard link, the symbolic link, the removed folder and the group ownership"
+      type: "file"
+      source: "validation/validate-completed.sh"
+
+teardown:
+  keepCluster: false

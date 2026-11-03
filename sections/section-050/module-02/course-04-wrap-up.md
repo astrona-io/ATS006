@@ -81,9 +81,9 @@ You do not know yet. Compare the content with `diff -r` and the permissions with
 Full backup first, then the first incremental, then the second, all into the same destination directory.
 </details>
 
-## Clean up
+## Clean up the playground
 
-Each mission runs as a virtual machine on your computer. When you are done with this module, remove any mission that is still running.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -91,7 +91,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy tar-backup-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-052
@@ -106,5 +112,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-050/module-02/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Keep the locks, guard the snapshot file, and never call a backup good until you have restored it and compared.*

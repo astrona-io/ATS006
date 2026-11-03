@@ -1,6 +1,6 @@
 # Solution Walkthrough
 
-This capstone combines four skills in one incident handoff: extracting lines with `grep`, redacting lines with `sed`, recovering commands from history, and persisting aliases. The grader checks the exact contents of every file, so preview before you write and copy commands exactly.
+This capstone combines seven skills in one incident handoff: extracting lines with `grep`, redacting lines with `sed`, recovering commands from history, persisting aliases, building reports with the text filters, editing a file with an editor, and finding facts in the manual pages. The grader checks the exact contents of every file, so preview before you write and copy commands exactly.
 
 ---
 
@@ -125,7 +125,88 @@ It reports the path of the real `rm` program, not the alias.
 
 ---
 
-## Step 5: Check everything and submit
+## Step 5: Build the two reports with filters
+
+Count the requests per source address. `cut` takes the first space-separated field, `sort` groups equal lines, `uniq -c` counts each group and the second `sort -rn` puts the biggest count first:
+
+```bash
+cut -d ' ' -f 1 /var/log-collector/incident/access.log | sort | uniq -c | sort -rn > ~/top-sources.txt
+cat ~/top-sources.txt
+```
+
+```text
+      4 198.51.100.23
+      1 203.0.113.50
+```
+
+The status code is the ninth space-separated field of an attacker line. `sort -u` sorts and removes repeated lines in one step:
+
+```bash
+awk '{print $9}' /var/log-collector/incident/attacker-requests.log | sort -u > ~/attacker-statuses.txt
+cat ~/attacker-statuses.txt
+```
+
+```text
+200
+401
+```
+
+---
+
+## Step 6: Edit the handover note
+
+Open the note in an editor:
+
+```bash
+vim ~/handover.conf
+```
+
+In `vim`, type `:%s/PLACEHOLDER/198.51.100.23/g` and press Enter to replace the word. Move to the `reviewed=no` line and change it to `reviewed=yes`. Put the cursor on the first line and type `dd` to delete the comment line. Press `G` then `o` to open a new last line, type `shift=handover`, press Esc, then type `:wq` and press Enter to save. In `nano`, press Ctrl+\ to replace, Ctrl+K to cut the comment line, and Ctrl+O then Ctrl+X to save and leave.
+
+Then check the result:
+
+```bash
+cat ~/handover.conf
+```
+
+```text
+blocked_ip=198.51.100.23
+reviewed=yes
+mode=lockdown
+shift=handover
+```
+
+---
+
+## Step 7: Find two facts in the manual pages
+
+Open the manual page of `sort` and search it for numeric comparison:
+
+```bash
+man sort
+```
+
+Inside the page, press `/`, type `numeric` and press Enter. The line `-n, --numeric-sort` shows the option, `-n`. Press `q` to leave. To find the section of the `fstab` file format, list every page with that name:
+
+```bash
+man -k fstab
+```
+
+The list shows `fstab (5)` for the file format. The number in the brackets is the section. Write the answers:
+
+```bash
+printf 'sort-numeric=-n\nfstab-file-section=5\n' > ~/handover-facts.txt
+cat ~/handover-facts.txt
+```
+
+```text
+sort-numeric=-n
+fstab-file-section=5
+```
+
+---
+
+## Step 8: Check everything and submit
 
 ```bash
 cat ~/blocking-command.txt ~/next-command.txt

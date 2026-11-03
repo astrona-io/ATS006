@@ -10,6 +10,8 @@ Astronaut, before a ship can wear an ID badge, it needs a secret seal to stamp i
 
 Run:
 
+<!-- astrona:playground:renew -->
+
 ```sh
 openssl genrsa -out service.key 2048
 ```

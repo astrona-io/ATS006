@@ -178,9 +178,9 @@ section is only true for this one.
 
   | Section | Title | Exam topic |
   | --- | --- | --- |
-  | 010 | Shell Semantics: Redirection, Exit Codes & Environment | Input and output redirection, the shell environment |
-  | 020 | Permissions & File Triage | File permissions, searching for files |
-  | 030 | Everyday Shell Craft: Text Processing, History & Aliases | Analysing text with regular expressions, using the shell |
+  | 010 | Shell Semantics: Redirection, Exit Codes & Environment | Input and output redirection, the shell environment, basic scripting |
+  | 020 | Permissions & File Triage | File permissions, file operations and links, searching for files |
+  | 030 | Everyday Shell Craft: Text Processing, History & Aliases | Analysing text with regular expressions, filters, the manual pages and an editor |
   | 040 | Version Control with Git | Basic Git operations |
   | 050 | Archiving, Compression & Backup Strategy | Archive, back up, compress and restore files |
   | 060 | Diskspace Management & Remote Sync | Troubleshoot disk space issues, copy data between machines |
@@ -319,14 +319,18 @@ the scripts create them:
 | lab-010 | `/usr/local/bin/service-probe` and an empty `/var/log/monitor` |
 | lab-011 | `/bin/output-generator`: one stdout line, one stderr line, exit code `7` |
 | lab-012 | An existing exported `VARIABLE1` in `~/.bashrc` |
-| lab-020 | Group `ops`, user `opsuser`, `/srv/teamspace/` (`shared`, `bin/deploy.sh`, `dropbox`, `incoming`) |
+| lab-013 | `~/inbox` with text files and an empty `~/scripts`; the learner writes `count-lines.sh` |
+| lab-020 | Group `ops`, user `opsuser`, `/srv/teamspace/` (`shared`, `bin/deploy.sh`, `dropbox`, `incoming`, `release-src`) |
 | lab-021 | Group `analysts`, user `someanalyst`, a shared reports directory, `backup-runner.sh` and a dropbox folder |
 | lab-022 | The default system `umask` for `candidate`, with no override yet |
 | lab-023 | `/var/backup/backup-015` with files of mixed ages, sizes and permissions |
-| lab-030 | Incident `access.log` and `service.log`, and a seeded `~/.bash_history` |
+| lab-024 | `~/cargo` with `manifest.txt` (mode 664, fixed time), `old-crew.txt`, a `scratch` folder and `crates`; group `loaders` |
+| lab-030 | Incident `access.log` and `service.log`, a seeded `~/.bash_history` and a half-filled `~/handover.conf` |
 | lab-031 | `/var/log-collector/003/nginx.log` and `server.log` |
 | lab-032 | A seeded `~/.bash_history` |
 | lab-033 | A file that must be removed with the real, non-aliased `rm` |
+| lab-034 | Crew, visit and settings data in `~/data`; the learner writes reports to `~/report` |
+| lab-035 | `~/flightplan.conf` (six lines, three `PLACEHOLDER`) and the manual pages |
 | lab-040 | A bare upstream repository `/repositories/deploy-configs.git` with three environment branches |
 | lab-041 | Working directories and a throwaway Git identity |
 | lab-042 | The source repository `/repositories/auto-verifier` with three candidate branches |
@@ -346,16 +350,52 @@ Course pages use small made-up examples (`backup-tool`, `report-tool`,
 `/srv/shared`) to show an idea. When a page shows a lab's own names, they
 must match the table above.
 
+### The playgrounds
+
+| Module | Playground name |
+| --- | --- |
+| 010/01 | `shell-streams-playground` |
+| 010/02 | `env-scope-playground` |
+| 010/03 | `script-basics-playground` |
+| 020/01 | `chmod-bits-playground` |
+| 020/02 | `umask-playground` |
+| 020/03 | `find-triage-playground` |
+| 020/04 | `file-ops-links-playground` |
+| 030/01 | `grep-sed-playground` |
+| 030/02 | `history-playground` |
+| 030/03 | `alias-playground` |
+| 030/04 | `text-filters-playground` |
+| 030/05 | `docs-editor-playground` |
+| 040/01 | `git-basics-playground` |
+| 040/02 | `git-branches-playground` |
+| 040/03 | `git-upstream-playground` |
+| 050/01 | `archive-convert-playground` |
+| 050/02 | `tar-backup-playground` |
+| 060/01 | `disk-space-playground` |
+| 060/02 | `rsync-playground` |
+| 070/01 | `service-unit-playground` |
+| 070/02 | `unit-override-playground` |
+| 070/03 | `tls-playground` |
+
 ### Environment facts the text must respect
 
-- **No playgrounds yet.** No module has a `playground/` folder. So landing
-  pages have no `<!-- astrona:playground -->` marker, parts have no
-  `<!-- astrona:playground:renew -->` marker, and a `## Your mission`
-  section has only the `astrona run`, `astrona submit` and
-  `astrona destroy` steps (no `astrona stop` or `astrona start` of a
-  playground). The reader tries the commands in a part on any Ubuntu 24.04
-  machine or inside a running lab. When a playground is added, add the
-  markers and the stop and start steps.
+- **Every module has a playground.** Each module folder holds a
+  `playground/` folder (`config.yaml`, `README.md`, `docs/overview.md`,
+  `bootstrap/prepare.sh`) with an ungraded Ubuntu 24.04 virtual machine from
+  the same image as the labs. Playgrounds are not listed in `astrona.yaml`:
+  the landing page carries `<!-- astrona:playground -->`, parts carry
+  `<!-- astrona:playground:renew -->` once before the first hands-on step,
+  `course-0N-summary.md` pages end with `<!-- astrona:playground:destroy -->`
+  and wrap-up pages have a `## Clean up the playground` section. A
+  `## Your mission` section pauses the playground with
+  `astrona stop <playground>` before `astrona run` and wakes it with
+  `astrona start <playground>` after `astrona destroy <lab>`. The learner
+  reaches it with `astrona ssh <playground name>`. The playground names are
+  in the table below. Playground files must stay ungraded: no task, no
+  `astrona submit`.
+- **Four modules end with a Summary page**, not a wrap-up: 010/module-03,
+  020/module-04, 030/module-04 and 030/module-05 (`course-0N-summary.md`,
+  headed `# Summary`). The section capstones of 010, 020 and 030 now also exercise them (lab-010 summary script, lab-020 release staging, lab-030 filter reports, editor note and manual-page facts).
 - **Labs are virtual machines, not clusters.** Every lab uses
   `runtime.type: "qemu"` with 2 CPUs, 2048 MB of memory and a 15 GB disk.
   The learner reaches it with `astrona ssh <lab name>`; there is no
@@ -382,8 +422,8 @@ must match the table above.
 | Overview, sections table, how to run things | `README.md` |
 | Section overview and its modules | `sections/section-0N0/README.md` |
 | Module reading: landing page, deep-dive parts, wrap-up | `sections/section-0N0/module-0M/course.md`, `course-0N-*.md` |
-| Section knowledge check (multiple choice) | `sections/section-0N0/quiz.md` |
-| Final domain quiz | `sections/final-domain-quiz.md` |
+| Section knowledge check (multiple choice) | `sections/section-0N0/quiz.yaml` |
+| Final domain quiz | `sections/final-domain-quiz.yaml` |
 | Graded labs, all in one folder: module labs `lab-0NM` (section `0N0`, module `M`) and section capstones `lab-0N0` | `labs/lab-0NN/` |
 
 A lab folder holds:
@@ -435,7 +475,8 @@ this order:
 - `estimated_duration`: realistic time to solve it, for example `15m`, `30m`, `45m`.
 - `topic`: exactly one of `redirection`, `environment`, `permissions`,
   `file-search`, `text-processing`, `shell-usage`, `git`, `archiving`,
-  `backup`, `disk-space`, `remote-sync`, `services`, `certificates`.
+  `backup`, `disk-space`, `remote-sync`, `services`, `certificates`,
+  `file-management`.
 - `task_kind`: exactly one of `build` (create the result from scratch),
   `troubleshooting` (find and fix what is broken) or `migration` (move a
   working setup to another form or place, for example one archive format to
@@ -459,6 +500,9 @@ this order:
   `sticky-bit`, `umask`, `chown`, `groups`
 - Finding and text: `find`, `file-age`, `file-size`, `file-permissions`,
   `grep`, `sed`, `regular-expressions`, `log-analysis`
+- Scripts, files and tools: `positional-parameters`, `loops`, `conditionals`,
+  `file-operations`, `hard-links`, `symbolic-links`, `sort`, `uniq`, `cut`,
+  `awk`, `diff`, `man-pages`, `vim`, `text-editing`
 - Git: `git-clone`, `git-commit`, `git-branch`, `git-merge`, `git-rebase`,
   `git-remote`, `git-log`, `git-diff`, `gitignore`
 - Archives and backup: `tar`, `gzip`, `bzip2`, `incremental-backup`,

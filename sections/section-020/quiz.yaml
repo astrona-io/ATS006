@@ -1,0 +1,300 @@
+# Knowledge check for section 020. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats006-020
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-020
+  title: "Permissions & File Triage"
+questions:
+  - id: ats006-020-q01
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Set the setgid bit on a shared directory with a four digit mode"
+    source_readings:
+      - sections/section-020/module-01/course-02-the-three-special-bits.md
+    prompt: |-
+      `/srv/data/finance` is a shared directory for the group `finance`. Owner and group need full access, others none, and every new file must belong to the group `finance`. Which command does this in one step?
+    options:
+      - id: a
+        text: "`sudo chmod 2770 /srv/data/finance`"
+        explanation: "Correct. The leading `2` is setgid, so new entries inherit the directory's group."
+      - id: b
+        text: "`sudo chmod 7200 /srv/data/finance`"
+        explanation: "`7200` gives the owner no access in the way the task needs and is not the setgid form."
+      - id: c
+        text: "`sudo chmod 4770 /srv/data/finance`"
+        explanation: "`4` is setuid, which does nothing for group inheritance on a directory."
+      - id: d
+        text: "`sudo chmod 770 /srv/data/finance`"
+        explanation: "`770` has no special bit, so new files get the primary group of the creator."
+    correct_option: a
+    explanation: "setgid on a directory is the digit `2` in front of the usual three digits."
+
+  - id: ats006-020-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use the sticky bit to stop users deleting each other's files"
+    source_readings:
+      - sections/section-020/module-01/course-02-the-three-special-bits.md
+    prompt: |-
+      `/srv/uploads/dropbox` is `777` so every team member can upload. Users can also delete files that others uploaded. What is the correct fix?
+    options:
+      - id: a
+        text: "Add setgid with `chmod g+s`, giving `2777`."
+        explanation: "setgid decides the group of new files. It does not limit deletion."
+      - id: b
+        text: "Nothing helps. `777` always lets everyone delete everything."
+        explanation: "The sticky bit exists for exactly this case."
+      - id: c
+        text: "Change the mode to `755`."
+        explanation: "This also stops the team creating files, so it breaks the requirement."
+      - id: d
+        text: "Add the sticky bit with `chmod +t`, giving `1777`."
+        explanation: "Correct. With the sticky bit only the file owner, the directory owner or root may delete an entry."
+    correct_option: d
+    explanation: "Write access on a directory lets a user remove any entry. Only the sticky bit narrows that."
+
+  - id: ats006-020-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Work out the umask for given default modes"
+    source_readings:
+      - sections/section-020/module-02/course-01-how-the-umask-shapes-new-files.md
+    prompt: |-
+      User `deploy` needs new files to default to `640` and new directories to `750`, for every future login. Which line goes in the login startup file?
+    options:
+      - id: a
+        text: "`umask 750`"
+        explanation: "`750` as a mask would remove far too much from new files."
+      - id: b
+        text: "`umask 640`"
+        explanation: "`640` is the wanted result, not the mask."
+      - id: c
+        text: "`umask 027`"
+        explanation: "Correct. `666` minus `027` gives `640`, and `777` minus `027` gives `750`."
+      - id: d
+        text: "`chmod 640 ~/*`"
+        explanation: "This changes only files that exist now, not future files."
+    correct_option: c
+    explanation: "umask is the set of bits to remove, and the line must be in `~/.profile` or `~/.bashrc` to persist."
+
+  - id: ats006-020-q04
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Pick an absolute date cutoff with find"
+    source_readings:
+      - sections/section-020/module-03/course-01-matching-files-by-age-size-and-permission.md
+    prompt: |-
+      Every file in `/backup` modified before 1 January 2023 must be deleted, whatever day the command runs. Which `find` does this?
+    options:
+      - id: a
+        text: "`find /backup -maxdepth 1 -type f -mtime +365 -delete`"
+        explanation: "`-mtime +365` is relative to today, so the cutoff drifts."
+      - id: b
+        text: "`find /backup -maxdepth 1 -type f ! -newermt \"2023-01-01\" -delete`"
+        explanation: "Correct. `-newermt` uses a fixed date and `!` selects the files that are not newer."
+      - id: c
+        text: "`find /backup -maxdepth 1 -type f -atime +365 -delete`"
+        explanation: "`-atime` is access time and is also relative."
+      - id: d
+        text: "`find /backup -maxdepth 1 -type f -newermt \"2023-01-01\" -delete`"
+        explanation: "This matches the files newer than the cutoff, the opposite set."
+    correct_option: b
+    explanation: "Use `-newermt DATE` with `!` for an exact calendar cutoff."
+
+  - id: ats006-020-q05
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Limit find passes with -maxdepth when sorting into subfolders"
+    source_readings:
+      - sections/section-020/module-03/course-02-triage-in-the-right-order.md
+    prompt: |-
+      You triage `/data/incoming`: delete old files, then create `small/` and `large/` inside it, then run size based `find` passes on `/data/incoming` with no extra flag. What is the likely problem?
+    options:
+      - id: a
+        text: "Without `-maxdepth 1`, each pass also walks into `small/` and `large/` and can move files again."
+        explanation: "Correct. Limit each pass to the top folder."
+      - id: b
+        text: "`-size` cannot be combined with `-exec mv`."
+        explanation: "The combination is normal."
+      - id: c
+        text: "The target folders must exist before the delete step."
+        explanation: "Their timing does not make `-delete` fail."
+      - id: d
+        text: "There is none. `find` never revisits folders it has seen."
+        explanation: "`find` has no memory and walks the tree as it is."
+    correct_option: a
+    explanation: "Add `-maxdepth 1` to passes that run next to the folders they fill."
+
+  - id: ats006-020-q06
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read symbolic mode for chmod"
+    source_readings:
+      - sections/section-020/module-01/course-01-reading-and-setting-permission-bits.md
+    prompt: |-
+      A file has mode `-rw-r--r--`. Which command gives the group write permission and changes nothing else?
+    options:
+      - id: a
+        text: "`chmod 060 file`"
+        explanation: "`060` sets the owner to no rights and the group to `rw`, so it changes more than the group write bit."
+      - id: b
+        text: "`chmod a+w file`"
+        explanation: "`a+w` gives write to everyone."
+      - id: c
+        text: "`chmod g+w file`"
+        explanation: "Correct. `g+w` adds write for the group only."
+      - id: d
+        text: "`chmod g=w file`"
+        explanation: "`=` sets the group bits to exactly `w`, removing read."
+    correct_option: c
+    explanation: "`+` adds, `-` removes and `=` sets exactly."
+
+  - id: ats006-020-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Compute the default file mode from a umask"
+    source_readings:
+      - sections/section-020/module-02/course-01-how-the-umask-shapes-new-files.md
+    prompt: |-
+      A shell has `umask 022`. You run `touch note.txt` and `mkdir box`. What are the modes?
+    options:
+      - id: a
+        text: "`022` for both"
+        explanation: "`022` is the mask, not the result."
+      - id: b
+        text: "`644` for the file and `755` for the folder"
+        explanation: "Correct. Files start from `666` and folders from `777`."
+      - id: c
+        text: "`755` for both"
+        explanation: "A new file never gets the execute bit from touch."
+      - id: d
+        text: "`644` for both"
+        explanation: "A folder would then not be enterable by group and others."
+    correct_option: b
+    explanation: "Files start at 666 and directories at 777, then the mask is removed."
+
+  - id: ats006-020-q08
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Copy a file and keep its time and mode"
+    source_readings:
+      - sections/section-020/module-04/course-01-create-copy-move-and-remove.md
+    prompt: |-
+      Which command copies `manifest.txt` and keeps its mode and modification time?
+    options:
+      - id: a
+        text: "`cp manifest.txt backup/`"
+        explanation: "A plain copy gets a new time and a mode shaped by the umask."
+      - id: b
+        text: "`mv manifest.txt backup/`"
+        explanation: "`mv` moves the file and leaves no original."
+      - id: c
+        text: "`cp -p manifest.txt backup/`"
+        explanation: "Correct. `-p` preserves the mode, owner where allowed, and the times."
+      - id: d
+        text: "`cp -r manifest.txt backup/`"
+        explanation: "`-r` is for folders."
+    correct_option: c
+    explanation: "`cp -p` for one file, `cp -a` for a whole tree."
+
+  - id: ats006-020-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain what happens to a hard link and a symbolic link when the original is removed"
+    source_readings:
+      - sections/section-020/module-04/course-02-hard-and-symbolic-links.md
+    prompt: |-
+      You make `ln note-a.txt note-b.txt` and `ln -s note-a.txt note-c.txt`, then run `rm note-a.txt`. What is the state?
+    options:
+      - id: a
+        text: "`note-b.txt` still shows the data, and `note-c.txt` is a dangling link."
+        explanation: "Correct. The inode lives on while one name points at it."
+      - id: b
+        text: "`note-c.txt` shows the data, and `note-b.txt` is gone."
+        explanation: "A hard link is a second name for the same inode, so it stays."
+      - id: c
+        text: "Both are removed."
+        explanation: "`rm` removes only the name it is given."
+      - id: d
+        text: "Both `note-b.txt` and `note-c.txt` still show the data."
+        explanation: "The symbolic link holds only a path and now points at nothing."
+    correct_option: a
+    explanation: "Hard link: another name for the inode. Symbolic link: a file holding a path."
+
+  - id: ats006-020-q10
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Make a hard link and find it with stat"
+    source_readings:
+      - sections/section-020/module-04/course-02-hard-and-symbolic-links.md
+    prompt: |-
+      Which command shows the inode number and the link count of `note-a.txt` after you made a hard link to it?
+    options:
+      - id: a
+        text: "`ln -s note-a.txt`"
+        explanation: "This makes a link, it does not show one."
+      - id: b
+        text: "`chown -R note-a.txt`"
+        explanation: "`chown` changes an owner."
+      - id: c
+        text: "`stat -c 'inode=%i links=%h' note-a.txt`"
+        explanation: "Correct. `%i` is the inode and `%h` is the hard link count."
+      - id: d
+        text: "`readlink note-a.txt`"
+        explanation: "`readlink` prints the target of a symbolic link."
+    correct_option: c
+    explanation: "`ls -li` also shows the inode and the link count."
+
+  - id: ats006-020-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Change the group of a whole tree"
+    source_readings:
+      - sections/section-020/module-04/course-03-owners-and-groups.md
+    prompt: |-
+      You must give the folder `crates` and everything in it to the group `loaders` and keep each owner. Which command does this?
+    options:
+      - id: a
+        text: "`chmod -R loaders crates`"
+        explanation: "`chmod` changes modes, not groups."
+      - id: b
+        text: "`sudo chgrp loaders crates`"
+        explanation: "This changes only the folder itself."
+      - id: c
+        text: "`sudo chgrp -R loaders crates`"
+        explanation: "Correct. `-R` goes through the whole tree and `chgrp` leaves the owners alone."
+      - id: d
+        text: "`sudo chown loaders crates`"
+        explanation: "This changes the owner, not the group."
+    correct_option: c
+    explanation: "`chgrp -R` for the group, `chown -R owner:group` for both."
+
+  - id: ats006-020-q12
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know what mv does with an existing name"
+    source_readings:
+      - sections/section-020/module-04/course-01-create-copy-move-and-remove.md
+    prompt: |-
+      `mv a.txt reports/` runs while `reports/a.txt` already exists. What happens by default?
+    options:
+      - id: a
+        text: "`mv` asks for confirmation."
+        explanation: "`mv -i` asks for every file. By default `mv` asks only when the old file is write-protected and input comes from a terminal."
+      - id: b
+        text: "`mv` stops with an error."
+        explanation: "`mv` does not refuse by default."
+      - id: c
+        text: "`mv` renames the new file to `a.txt~`."
+        explanation: "It makes no backup unless you ask."
+      - id: d
+        text: "The old `reports/a.txt` is replaced without a question."
+        explanation: "Correct. Use `mv -i` or `mv -n` to protect it."
+    correct_option: d
+    explanation: "`rm` and `mv` give no undo. Use `-i` when unsure."

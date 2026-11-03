@@ -27,7 +27,27 @@ Every mission starts with a pre-flight check, astronaut. Make sure you know the 
 
 ### What you need
 
-A terminal on an Ubuntu 24.04 machine with `bash`, `tar`, `gzip` and `bzip2`. You can also use a running lab machine: start a lab and open a terminal on it with `astrona ssh <lab name>`. There is no playground for this module.
+A playground: one Ubuntu 24.04 training ship in the simulator, with the `bash` shell. Everything the examples use is already on it, so you do not need to install anything.
+
+### What is in your playground
+
+Your playground is a virtual machine on your computer. It already has:
+
+- The folder `~/archive-practice/reports` with three small text files.
+- The archive `~/archive-practice/sample.tar.bz2`, which holds those three files.
+- `tar`, `gzip`, `bzip2` and `xz` installed.
+
+Launch your playground now, and keep it running next to you while you read the parts:
+
+<!-- astrona:playground -->
+
+Open a terminal on it:
+
+```sh
+astrona ssh archive-convert-playground
+```
+
+Every command block in the parts runs **inside that virtual machine**, as the user `candidate`, who can use `sudo`.
 
 ## How this module is laid out
 

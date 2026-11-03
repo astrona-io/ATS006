@@ -6,6 +6,8 @@
 
 Almost every serious `rsync` command starts with `-a`, archive mode. Here is a typical command that sends a folder of photos to a storage machine called `nas`:
 
+<!-- astrona:playground:renew -->
+
 ```bash
 rsync -avz -e ssh /photos/2024-shoot/ nas:/backup/2024-shoot/
 ```

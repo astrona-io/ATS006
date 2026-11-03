@@ -27,7 +27,26 @@ Every mission starts with a pre-flight check, astronaut. Make sure you know the 
 
 ### What you need
 
-A terminal on an Ubuntu 24.04 machine with `bash`, or a running lab machine. You open a terminal on a lab machine with `astrona ssh <lab name>`.
+A playground: one Ubuntu 24.04 training ship in the simulator, with the `bash` shell. Everything the examples use is already on it, so you do not need to install anything.
+
+### What is in your playground
+
+Your playground is a virtual machine on your computer. It already has:
+
+- The folder `~/scrap` with three throwaway files named `one.tmp`, `two.tmp` and `three.tmp`.
+- A default `~/.bashrc`, with no aliases of your own yet.
+
+Launch your playground now, and keep it running next to you while you read the parts:
+
+<!-- astrona:playground -->
+
+Open a terminal on it:
+
+```sh
+astrona ssh alias-playground
+```
+
+Every command block in the parts runs **inside that virtual machine**, as the user `candidate`, who can use `sudo`.
 
 ## How this module is laid out
 

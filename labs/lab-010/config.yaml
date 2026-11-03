@@ -45,6 +45,11 @@ validation:
       type: "file"
       source: "validation/validate-combined-output.sh"
 
+    - name: "verify-summary-script-logic"
+      description: "Confirms the wrapper writes probe.summary from its optional label argument, an if test and a for loop"
+      type: "file"
+      source: "validation/validate-summary.sh"
+
     - name: "verify-exit-code-and-propagation"
       description: "Confirms probe.exit captured 0 and that run-check.sh itself exits with the probe's exit code"
       type: "file"

@@ -4,7 +4,7 @@ estimated_duration: 40m
 
 # Everyday Shell Craft Capstone Lab
 
-Welcome to your section capstone, astronaut. A web server on this ship was attacked overnight, and you are handing it over to the next shift. Scan the logs for the attacker's signals, black out the brute-force lines, dig the previous responder's exact orders out of the order log, and leave safe nicknames for the next crew.
+Welcome to your section capstone, astronaut. A web server on this ship was attacked overnight, and you are handing it over to the next shift. Scan the logs for the attacker's signals, black out the brute-force lines, dig the previous responder's exact orders out of the order log, leave safe nicknames for the next crew, build two reports with the filter tools, finish a handover note in an editor, and look up two facts in the manual pages.
 
 ## Launching the Lab
 

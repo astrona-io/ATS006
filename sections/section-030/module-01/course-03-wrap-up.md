@@ -87,9 +87,9 @@ Without `-i`, `sed` prints the changed text and leaves the file untouched: a pre
 `bash` sets up the `>` redirection first, and that empties `syslog` to zero bytes before `grep` opens it. There is nothing left to read.
 </details>
 
-## Clean up
+## Clean up the playground
 
-If a mission is still running, remove it now so it does not use memory on your machine.
+Your playground is a virtual machine running on your computer. When you are done with this module, remove it, and any mission that is still running.
 
 First, see what is still running:
 
@@ -97,7 +97,13 @@ First, see what is still running:
 astrona list
 ```
 
-Remove the mission. The command takes its **name**, not its folder path:
+Remove the playground. The command takes its **name**, not its folder path:
+
+```sh
+astrona destroy grep-sed-playground
+```
+
+If `astrona list` also showed a mission, remove it the same way:
 
 ```sh
 astrona destroy ats-006-lab-031
@@ -112,5 +118,7 @@ astrona list
 ```text
 No astrona labs running.
 ```
+
+You can start the playground again at any time with `astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c sections/section-030/module-01/playground`. It always starts clean, so nothing you broke carries over.
 
 > *Describe the shape, preview with the scanner, and only then let the redaction officer write.*
