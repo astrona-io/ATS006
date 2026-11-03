@@ -1,18 +1,31 @@
-# Solution Guide: Service Configuration Capstone
+# Solution Walkthrough
 
-This guide wraps `healthcheck.sh` as a systemd service, layers a drop-in override on top of it, and issues it a TLS key/certificate pair.
+You wrap `healthcheck.sh` as a systemd service, change its restart delay with a drop-in override, and give it a key and a self-signed certificate. The grader checks the base unit file, the drop-in, the live state of the service, and the key and certificate files.
 
----
+## Step 1: Create the service user and give it the log directory
 
-## Part 1: Create the base unit
+Create a system account with no home directory and no login shell, then hand it the log directory the bootstrap left owned by root:
 
-```bash
+```sh
 sudo useradd --system --no-create-home --shell /usr/sbin/nologin healthcheck
 sudo chown healthcheck:healthcheck /var/log/healthcheck
 ```
 
-```bash
-sudo tee /etc/systemd/system/healthcheck.service > /dev/null << 'EOF'
+Check the owner:
+
+```sh
+stat -c '%U:%G' /var/log/healthcheck
+```
+
+```text
+healthcheck:healthcheck
+```
+
+## Step 2: Write the base unit file
+
+Save this as `/etc/systemd/system/healthcheck.service` (for example with `sudo nano /etc/systemd/system/healthcheck.service`):
+
+```ini
 [Unit]
 Description=Healthcheck Service
 After=network-online.target
@@ -27,59 +40,73 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-EOF
 ```
 
-Notice `RestartSec=` is deliberately absent here — it's added only via the drop-in in Part 2, so the base unit file stays exactly as written above.
+`RestartSec=` is left out on purpose. It comes only from the drop-in in the next step, and the grader fails the lab if this base file sets it.
 
-```bash
+## Step 3: Load, enable and start the service
+
+Apply it:
+
+```sh
 sudo systemctl daemon-reload
 sudo systemctl enable --now healthcheck.service
 ```
 
----
+`daemon-reload` makes systemd read the new unit file. `enable --now` starts the service now and at every boot.
 
-## Part 2: Layer the RestartSec override with a drop-in
+## Step 4: Add the restart delay with a drop-in
 
-```bash
+Open a drop-in:
+
+```sh
 sudo systemctl edit healthcheck.service
 ```
 
-Add:
+Type this into the editor, then save and close it:
 
 ```ini
 [Service]
 RestartSec=10
 ```
 
-This creates `/etc/systemd/system/healthcheck.service.d/override.conf` — the base unit file from Part 1 is never touched again.
+`systemctl edit` saves it as `/etc/systemd/system/healthcheck.service.d/override.conf`. The base unit file is never touched again. A drop-in works the same way on a unit you wrote yourself as on one a package installed: it keeps the value you tune in its own small file.
 
-```bash
+## Step 5: Apply the drop-in and check it
+
+Apply it:
+
+```sh
 sudo systemctl daemon-reload
 sudo systemctl restart healthcheck.service
 ```
 
-Confirm the merge and the live value:
+Then check the result:
 
-```bash
+```sh
 systemctl cat healthcheck.service
 systemctl show healthcheck.service -p RestartUSec
+systemctl is-active healthcheck.service
+systemctl is-enabled healthcheck.service
 ```
 
-> **Note:** This is the same mechanism used for overriding a vendor-packaged unit — a drop-in layers on top of whatever unit already exists, whether that unit is package-owned or, as here, one you wrote yourself. The point is keeping the tunable parameter in a separate, clearly-scoped file rather than growing the base unit file every time a value needs to change.
+`systemctl cat` shows your base unit followed by the `override.conf` fragment. `systemctl show` should report `RestartUSec=10s`, which proves the drop-in is loaded on the live unit. The last two commands should print `active` and `enabled`.
 
----
+## Step 6: Generate the key and lock it down
 
-## Part 3: Generate and verify the TLS key/certificate pair
+Move into the TLS folder, generate a 2048-bit RSA key and restrict it at once:
 
-```bash
+```sh
 cd /opt/healthcheck/tls
 openssl genrsa -out healthcheck.key 2048
 chmod 600 healthcheck.key
 ```
 
-```bash
-cat > openssl-healthcheck.cnf << 'EOF'
+## Step 7: Write the configuration file and make the certificate
+
+The SAN is an X.509 extension, so `-subj` cannot set it; a configuration file can. Save this as `openssl-healthcheck.cnf` in `/opt/healthcheck/tls`:
+
+```ini
 [req]
 default_bits       = 2048
 prompt             = no
@@ -97,10 +124,11 @@ subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = healthcheck.internal.local
-EOF
 ```
 
-```bash
+Use it to make a self-signed certificate valid for 365 days:
+
+```sh
 openssl req -new -x509 \
   -key healthcheck.key \
   -out healthcheck.crt \
@@ -108,20 +136,32 @@ openssl req -new -x509 \
   -config openssl-healthcheck.cnf
 ```
 
-```bash
+`x509_extensions` is the line `openssl req -new -x509` reads, so the SAN goes into the certificate.
+
+## Step 8: Prove the key and certificate match
+
+Compare the modulus of both files:
+
+```sh
 openssl x509 -noout -modulus -in healthcheck.crt | openssl md5
 openssl rsa   -noout -modulus -in healthcheck.key | openssl md5
 ```
 
 Identical hashes confirm the key and certificate are a matching pair.
 
----
+## Step 9: Final checks and submit
 
-## Final Checks
+Run the final checks:
 
-```bash
+```sh
 systemctl is-active healthcheck.service
 systemctl is-enabled healthcheck.service
 systemctl show healthcheck.service -p RestartUSec
 openssl x509 -in /opt/healthcheck/tls/healthcheck.crt -noout -subject -dates
+```
+
+The subject should contain `healthcheck.internal.local`, and `notBefore` and `notAfter` should be about 365 days apart. When everything looks right, send the lab for grading from your own machine:
+
+```sh
+astrona submit -c labs/lab-070
 ```

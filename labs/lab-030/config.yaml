@@ -19,7 +19,7 @@ runtime:
 bootstrap:
   init:
     - name: "capstone-setup"
-      description: "Seeds the incident's access.log/service.log, seeds ~/.bash_history with the prior responder's session, and opens up permissions on the log directory"
+      description: "Seeds the incident's access.log/service.log, seeds ~/.bash_history with the prior responder's session, seeds the half-filled ~/handover.conf, and opens up permissions on the log directory"
       type: "folder"
       source: "bootstrap/"
 
@@ -54,6 +54,16 @@ validation:
       description: "Confirms the report alias actually runs and prints the correct redacted-line count"
       type: "file"
       source: "validation/validate-report-alias-functional.sh"
+
+    - name: "verify-filter-reports"
+      description: "Confirms top-sources.txt and attacker-statuses.txt hold the right counts and codes"
+      type: "file"
+      source: "validation/validate-filter-reports.sh"
+
+    - name: "verify-handover-note-and-facts"
+      description: "Confirms handover.conf was edited exactly as required and handover-facts.txt holds the two manual-page facts"
+      type: "file"
+      source: "validation/validate-handover-note-and-facts.sh"
 
 teardown:
   keepCluster: false

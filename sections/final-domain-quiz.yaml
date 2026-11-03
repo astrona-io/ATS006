@@ -1,0 +1,804 @@
+# Final domain quiz for ATS006. Listed in astrona.yaml as a `type: quiz` entry in module-080.
+schema_version: 1
+kind: question_bank
+id: ats006-final
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: domain
+  id: essential-commands
+  title: "LFCS Essential Commands"
+questions:
+  - id: ats006-final-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain why > alone does not capture error messages"
+    source_readings:
+      - sections/section-010/module-01/course.md
+    prompt: |-
+      You run `./deploy.sh > /var/log/deploy.log`, but when it fails you find the log file is empty even though the terminal printed several error lines. What is the most likely explanation?
+    options:
+      - id: a
+        text: "The script's error lines were written to stderr (file descriptor 2), which `>` alone does not redirect. Only stdout (file descriptor 1) was sent to the file."
+        explanation: "Correct. A bare `>` redirects only file descriptor 1."
+      - id: b
+        text: "`>` only ever captures the last line of output."
+        explanation: "`>` captures the whole stdout stream."
+      - id: c
+        text: "The log file needs `sudo` to be written to correctly."
+        explanation: "A permission problem would print `Permission denied`, not leave an empty file."
+      - id: d
+        text: "`deploy.sh` must be run with `bash -x` to enable logging."
+        explanation: "`-x` traces execution and does not change where streams go."
+    correct_option: a
+    explanation: "Errors normally go to stderr. Use `2>` or `> file 2>&1` to capture them."
+
+  - id: ats006-final-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Design exit codes that a caller can test with $?"
+    source_readings:
+      - sections/section-010/module-01/course-03-reading-the-exit-code.md
+    prompt: |-
+      A monitoring script runs `some_check.sh; echo $?` and needs to tell three outcomes apart: success, a warning and a hard failure. Which exit-code design is correct?
+    options:
+      - id: a
+        text: "Always exit `0` and rely on the text on stdout for the status."
+        explanation: "Callers and `&&`, `||` and `if` test the exit code, so a constant `0` hides every failure."
+      - id: b
+        text: "Exit `-1` for warnings and `-2` for hard failures."
+        explanation: "Exit codes are 0 to 255. A negative value wraps around and is not a clean design."
+      - id: c
+        text: "Use `exit true` and `exit false` as the two states."
+        explanation: "`exit` takes a number, and two states cannot show three outcomes."
+      - id: d
+        text: "Exit `0` for success and different non-zero codes for the other states (for example `1` for a warning and `2` for a hard failure), read at once through `$?`."
+        explanation: "Correct. `0` means success and any other value is a failure the caller can tell apart."
+    correct_option: d
+    explanation: "`$?` holds the exit code of the last command, so read it before running anything else."
+
+  - id: ats006-final-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain why an exported variable reaches a child process only if it was exported in the launching shell"
+    source_readings:
+      - sections/section-010/module-02/course-01-shell-variables-and-export.md
+    prompt: |-
+      You run `export DB_HOST=db01` in your interactive shell, then run a script with `./check_db.sh`. Inside that script, `echo $DB_HOST` prints nothing. What is the most likely cause?
+    options:
+      - id: a
+        text: "`export` only affects the current command, not the whole shell session."
+        explanation: "`export` marks the variable for every child started later from that shell."
+      - id: b
+        text: "Scripts can never see any variable from their parent shell."
+        explanation: "Exported variables are inherited by child processes."
+      - id: c
+        text: "The variable was set in a different shell session than the one that launched the script, or `export` was never run in that shell before the script started."
+        explanation: "Correct. A child process inherits only what the launching shell exported."
+      - id: d
+        text: "`DB_HOST` must be written in lower case to be inherited."
+        explanation: "Case has no effect on inheritance. Names are case-sensitive but any case can be exported."
+    correct_option: c
+    explanation: "Check with `env | grep DB_HOST` in the launching shell."
+
+  - id: ats006-final-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Combine umask and setgid for a shared directory"
+    source_readings:
+      - sections/section-020/module-02/course-02-making-the-umask-stick.md
+    prompt: |-
+      Every new file in `/srv/shared-team` must get group-write permission and the directory's owning group, not the creator's primary group. Which two mechanisms working together achieve this?
+    options:
+      - id: a
+        text: "`umask 022` plus `chmod +x` on the directory."
+        explanation: "`022` removes group-write, and `+x` does not affect group ownership."
+      - id: b
+        text: "A `umask` that does not strip the group-write bit (such as `002`), plus the setgid bit (`chmod g+s`) on the directory."
+        explanation: "Correct. The umask shapes the mode, and setgid makes new files inherit the directory's group."
+      - id: c
+        text: "`chattr +i` on the directory."
+        explanation: "The immutable flag stops all changes, so nobody could create files."
+      - id: d
+        text: "`chown -R` run after every file is created."
+        explanation: "It is manual, easy to forget and does not set the mode or inheritance."
+    correct_option: b
+    explanation: "The umask decides the mode of new files and setgid decides their group."
+
+  - id: ats006-final-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use find with maxdepth, type and size to avoid re-scanning moved files"
+    source_readings:
+      - sections/section-020/module-03/course-02-triage-in-the-right-order.md
+    prompt: |-
+      You must move every file under `/var/backup/archive` whose size is below 3 KiB (3072 bytes) into `/var/backup/archive/small/` in one pass, without the new `small/` directory being scanned by the same command. Which invocation is correct?
+    options:
+      - id: a
+        text: "`find /var/backup/archive -maxdepth 1 -type f -size -3072c -exec mv {} /var/backup/archive/small/ \\;`"
+        explanation: "Correct. `-maxdepth 1` stays in the top folder, so `small/` is not entered, `-type f` skips directories, and the `c` suffix counts exact bytes."
+      - id: b
+        text: "`find /var/backup/archive -size -3k -exec mv {} /var/backup/archive/small/ \\;`"
+        explanation: "It has no `-maxdepth 1`, so `find` also walks into `small/` and can handle files twice. The `k` suffix also rounds up, so it matches only files of at most 2 KiB."
+      - id: c
+        text: "`find /var/backup/archive -size 3k -delete`"
+        explanation: "It deletes files instead of moving them and matches an exact size."
+      - id: d
+        text: "`find /var/backup/archive -perm -3k -exec mv {} small \\;`"
+        explanation: "`-perm` tests permission bits. `3k` is not a valid mode."
+    correct_option: a
+    explanation: "With the `k` suffix, find rounds each size up to whole KiB, so `-size -3k` matches only files of at most 2 KiB. The `c` suffix counts bytes and has no rounding. Check the match list with `-print` first."
+
+  - id: ats006-final-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pipe grep into sed to extract and redact without changing the source"
+    source_readings:
+      - sections/section-030/module-01/course-02-extract-with-grep-redact-with-sed.md
+    prompt: |-
+      You need every line with the literal text `ERROR 500` from `/var/log/app.log`, with any email address replaced by `[REDACTED]`, without changing the original log. Which pipeline is correct?
+    options:
+      - id: a
+        text: "`sed 's/ERROR 500/[REDACTED]/' /var/log/app.log > out.log`"
+        explanation: "It replaces the error text itself and keeps all other lines."
+      - id: b
+        text: "`grep -F 'ERROR 500' -i /var/log/app.log`"
+        explanation: "It extracts the lines but redacts nothing."
+      - id: c
+        text: "`sed -i 's/@.*//' /var/log/app.log | grep 'ERROR 500'`"
+        explanation: "`-i` edits the original log in place, which is what you must not do."
+      - id: d
+        text: "`grep -F 'ERROR 500' /var/log/app.log | sed -E 's/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}/[REDACTED]/g' > out.log`"
+        explanation: "Correct. `grep -F` selects the literal lines, `sed -E` redacts the addresses and the result goes to a new file."
+    correct_option: d
+    explanation: "Read from the source, write to another file, and leave the original untouched."
+
+  - id: ats006-final-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Search the shell history for a command with partial memory"
+    source_readings:
+      - sections/section-030/module-02/course-01-recall-commands-without-retyping.md
+    prompt: |-
+      You need the command you ran three sessions ago that started with `rsync` and included `--link-dest`, but you remember nothing else. Which approaches are reasonable?
+    options:
+      - id: a
+        text: "Only `history | grep rsync`, then scan for `--link-dest`."
+        explanation: "`Ctrl+R` also works and is quicker for one match."
+      - id: b
+        text: "Only `Ctrl+R`, cycling through matches."
+        explanation: "`history | grep` also works and shows all matches at once."
+      - id: c
+        text: "`cat ~/.bash_profile | grep rsync`"
+        explanation: "`~/.bash_profile` is a startup file, not the history file."
+      - id: d
+        text: "Both `history | grep rsync` and `Ctrl+R` with `rsync` are reasonable. No single shortcut filters on several words at once."
+        explanation: "Correct. Either method finds it, and you pick the right line by eye."
+    correct_option: d
+    explanation: "`history | grep -e rsync | grep link-dest` also narrows by two words with two filters."
+
+  - id: ats006-final-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why a shell alias does not reach a non-interactive script"
+    source_readings:
+      - sections/section-030/module-03/course-02-bypass-scripts-and-safe-aliases.md
+    prompt: |-
+      You put `alias rm='rm -i'` in `~/.bashrc`. At the prompt, `rm old.log` asks for confirmation. Your cleanup script `cleanup.sh`, started with `bash cleanup.sh`, also runs `rm old.log` but deletes the file without asking. What is the correct explanation?
+    options:
+      - id: a
+        text: "The `rm` in a script is a different program from the `rm` at the prompt."
+        explanation: "Both run the same `rm` program. Only the alias at the prompt adds `-i`."
+      - id: b
+        text: "A script runs in a non-interactive shell, and a non-interactive `bash` does not expand aliases unless the script itself turns that on with `shopt -s expand_aliases`. So the script runs the real `rm` with no `-i`."
+        explanation: "Correct. Alias expansion is an interactive-shell feature. A script that needs a behaviour should say it in the command, for example `rm -i`, or use a function."
+      - id: c
+        text: "Aliases work only for the user `root`, so the script lost the alias when it ran as a normal user."
+        explanation: "Aliases do not depend on the user. They depend on whether the shell is interactive."
+      - id: d
+        text: "The alias was lost because the script has a shorter `PATH` than your prompt."
+        explanation: "`PATH` decides which program is found. It has no role in alias expansion."
+    correct_option: b
+    explanation: "Aliases are for the interactive prompt. Scripts do not see them by default, so keep scripts explicit and use functions or full paths when they need to be safe."
+
+  - id: ats006-final-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read a file from another branch without touching the working tree"
+    source_readings:
+      - sections/section-040/module-02/course-01-clone-and-inspect-branches.md
+    prompt: |-
+      You must check whether a config value exists in branch `dev4`, `dev5` or `dev6` without disturbing the branch you have checked out. Which command prints a file as it is on another branch with no risk to your working tree?
+    options:
+      - id: a
+        text: "`git show dev4:config.yaml`"
+        explanation: "Correct. It prints the blob from that branch and changes nothing in your tree."
+      - id: b
+        text: "`git checkout dev4 -- config.yaml`"
+        explanation: "It overwrites your working copy of that file."
+      - id: c
+        text: "`git stash && git switch dev4`"
+        explanation: "It changes your branch and stashes your work."
+      - id: d
+        text: "`git diff dev4 dev5`"
+        explanation: "It compares two branches but prints all differences, not one file's content."
+    correct_option: a
+    explanation: "`git show <rev>:<path>` reads from the object database only."
+
+  - id: ats006-final-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why Git does not commit an empty directory"
+    source_readings:
+      - sections/section-040/module-02/course-02-merge-and-commit-a-new-directory.md
+    prompt: |-
+      You create an empty `logs/` directory in a repository, run `git add logs && git commit -m "add logs dir"`, and `git log --stat` shows no changes. Why?
+    options:
+      - id: a
+        text: "`git add` failed silently because of permissions."
+        explanation: "A permission error would be printed."
+      - id: b
+        text: "Directories need `git mkdir` instead of the shell's `mkdir`."
+        explanation: "There is no `git mkdir` command."
+      - id: c
+        text: "The commit message must not contain the directory name."
+        explanation: "Commit messages have no such rule."
+      - id: d
+        text: "Git records file content in blobs and trees. An empty directory has no content to record, so nothing is committed until a file exists in it."
+        explanation: "Correct. A common workaround is a placeholder file such as `.gitkeep`."
+    correct_option: d
+    explanation: "Add a file such as `logs/.gitkeep` to track the directory."
+
+  - id: ats006-final-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Rebase a topic branch onto the latest main"
+    source_readings:
+      - sections/section-040/module-03/course-02-fetch-rebase-or-merge.md
+    prompt: |-
+      Your branch `feature/retry-limit` is based on an old commit of `main`, and `main` has moved on. You want your commits to appear on top of the latest `main` as a clean linear history with no merge commit. Which command do you run on the branch?
+    options:
+      - id: a
+        text: "`git merge main`"
+        explanation: "It creates a merge commit unless the history is already a straight line."
+      - id: b
+        text: "`git cherry-pick main`"
+        explanation: "It copies one commit and does not rebase a branch."
+      - id: c
+        text: "`git rebase main`"
+        explanation: "Correct. It replays your commits on top of the current `main`."
+      - id: d
+        text: "`git reset --hard origin/main`"
+        explanation: "It throws your commits away."
+    correct_option: c
+    explanation: "Rebase rewrites your commits, so do not rebase commits that others already use."
+
+  - id: ats006-final-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Convert one archive format to another with a compression level"
+    source_readings:
+      - sections/section-050/module-01/course-02-convert-and-prove.md
+    prompt: |-
+      You must turn `/data/import001.tar.bz2` into `/data/import001.tar.gz` with the strongest gzip level, without unpacking files next to the original or changing it. Which command does this?
+    options:
+      - id: a
+        text: "`tar -czf import001.tar.gz import001.tar.bz2`"
+        explanation: "It puts the whole bz2 file inside a new tar, which is a nested archive."
+      - id: b
+        text: "`bzip2 -dc import001.tar.bz2 | gzip -9 > import001.tar.gz`"
+        explanation: "Correct. It decompresses to a stream and recompresses with `gzip -9`, so the tar content is untouched and nothing is unpacked."
+      - id: c
+        text: "`tar -xjf import001.tar.bz2 && tar -czf import001.tar.gz *`"
+        explanation: "It unpacks files into the current directory and the second command packs whatever is there."
+      - id: d
+        text: "`mv import001.tar.bz2 import001.tar.gz`"
+        explanation: "It only renames the file, so the name lies about the format."
+    correct_option: b
+    explanation: "Prove the result with `gzip -t` and `tar -tzf`."
+
+  - id: ats006-final-q13
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Use --listed-incremental for tar incremental backups"
+    source_readings:
+      - sections/section-050/module-02/course-02-full-and-incremental-backups.md
+    prompt: |-
+      A backup of `/srv/appdata` must exclude a large `cache/` folder, run a full backup weekly and run daily incrementals that only hold files changed since the last run. Which `tar` option makes true incremental backups possible?
+    options:
+      - id: a
+        text: "`--listed-incremental=<snapshot-file>`"
+        explanation: "Correct. The snapshot file records what was seen, so the next run only archives changes."
+      - id: b
+        text: "`--exclude`"
+        explanation: "It skips paths but does not track changes."
+      - id: c
+        text: "`--verbose`"
+        explanation: "It only prints the names being archived."
+      - id: d
+        text: "`--same-owner`"
+        explanation: "It controls ownership on extract, not what is archived."
+    correct_option: a
+    explanation: "Delete the snapshot file for a full backup and reuse it for the incrementals."
+
+  - id: ats006-final-q14
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Find space that df counts but du cannot see"
+    source_readings:
+      - sections/section-060/module-01/course-02-find-and-reclaim-the-lost-space.md
+    prompt: |-
+      `df -h` shows `/var` at 98% full, but `du -sh /var/* | sort -rh` accounts for only a fraction of that. What is the most likely explanation and the command that confirms it?
+    options:
+      - id: a
+        text: "`du` is buggy and undercounts, so reboot to fix it."
+        explanation: "`du` counts the files it can reach correctly."
+      - id: b
+        text: "`df` always overstates usage and should be ignored."
+        explanation: "`df` reports real allocated blocks."
+      - id: c
+        text: "The filesystem must be reformatted to reclaim the space."
+        explanation: "Closing the handle frees the space, so reformatting would destroy data for no reason."
+      - id: d
+        text: "A process still holds an open handle to a deleted file. `du` cannot see it, but the kernel keeps its blocks until the handle closes. Confirm with `sudo lsof +L1`."
+        explanation: "Correct. `lsof +L1` lists open files with a link count below one."
+    correct_option: d
+    explanation: "Truncate the open file or restart the holding service to get the space back."
+
+  - id: ats006-final-q15
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Mirror a directory with rsync delete and exclude"
+    source_readings:
+      - sections/section-060/module-02/course-01-mirror-a-directory-safely.md
+    prompt: |-
+      You must mirror `/srv/www` from `web01` to `web02` so that files deleted on the source are removed on the destination too, and exclude the `tmp/` folder. Which command is correct?
+    options:
+      - id: a
+        text: "`rsync -av /srv/www/ web02:/srv/www/`"
+        explanation: "It never deletes anything on the destination and does not exclude `tmp/`."
+      - id: b
+        text: "`rsync -av --exclude='tmp' web02:/srv/www/ /srv/www/`"
+        explanation: "The direction is reversed, so it pulls from `web02`."
+      - id: c
+        text: "`rsync -av --delete --exclude='tmp/' /srv/www/ web02:/srv/www/`"
+        explanation: "Correct. `--delete` removes extra files and `--exclude` skips `tmp/`."
+      - id: d
+        text: "`scp -r /srv/www web02:/srv/www`"
+        explanation: "`scp` has no delete or exclude option."
+    correct_option: c
+    explanation: "Preview with `--dry-run` before you use `--delete`."
+
+  - id: ats006-final-q16
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Wrap a script as a supervised systemd service"
+    source_readings:
+      - sections/section-070/module-01/course-02-load-start-and-enable-a-service.md
+    prompt: |-
+      A plain bash script `/opt/monitor/watcher.sh` must run in the background, restart after a crash and start at every boot. What is the correct way under systemd?
+    options:
+      - id: a
+        text: "Add `/opt/monitor/watcher.sh &` to `/etc/rc.local`."
+        explanation: "It starts once, does not restart a crashed script, and `rc.local` is not used by default on Ubuntu 24.04."
+      - id: b
+        text: "Create `/etc/systemd/system/watcher.service` with `ExecStart=/opt/monitor/watcher.sh` and `Restart=on-failure`, then run `systemctl enable --now watcher.service`."
+        explanation: "Correct. systemd supervises the process and the unit starts at boot."
+      - id: c
+        text: "Add a cron entry `@reboot /opt/monitor/watcher.sh`."
+        explanation: "It starts at boot but never restarts after a crash."
+      - id: d
+        text: "Run `nohup /opt/monitor/watcher.sh &` after each reboot."
+        explanation: "It is manual and does not supervise the script."
+    correct_option: b
+    explanation: "Run `systemctl daemon-reload` after you create or change a unit file."
+
+  - id: ats006-final-q17
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Override a vendor unit with a drop-in"
+    source_readings:
+      - sections/section-070/module-02/course-02-apply-prove-and-revert-an-override.md
+    prompt: |-
+      `nginx.service` is a vendor unit. You must add `Restart=on-failure` without editing `/lib/systemd/system/nginx.service` directly, so an upgrade does not wipe the change. What is the correct approach?
+    options:
+      - id: a
+        text: "Run `systemctl edit nginx.service`, put the setting under `[Service]` in the drop-in, then reload and restart."
+        explanation: "Correct. The drop-in lives in `/etc/systemd/system/nginx.service.d/` and survives package upgrades."
+      - id: b
+        text: "Edit `/lib/systemd/system/nginx.service` directly and run `systemctl daemon-reload`."
+        explanation: "A package upgrade can overwrite your change."
+      - id: c
+        text: "Copy the whole unit file to `/etc/systemd/system/`, delete the original and edit the copy."
+        explanation: "It hides all later vendor fixes and removes a packaged file."
+      - id: d
+        text: "Add the setting to `/etc/nginx/nginx.conf`."
+        explanation: "That file configures nginx, not the systemd unit."
+    correct_option: a
+    explanation: "`systemctl edit` reloads systemd for you. Revert with `systemctl revert`."
+
+  - id: ats006-final-q18
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Create a self-signed certificate and key in one command"
+    source_readings:
+      - sections/section-070/module-03/course-02-self-signed-certificates-and-signing-requests.md
+    prompt: |-
+      You must create a self-signed certificate and private key for `internal.web-srv1.local`, valid 365 days, with a 2048-bit RSA key, in one command. Which `openssl` call does it?
+    options:
+      - id: a
+        text: "`openssl genrsa -out server.key 2048`"
+        explanation: "It makes only a key."
+      - id: b
+        text: "`openssl x509 -in server.crt -text -noout`"
+        explanation: "It prints an existing certificate."
+      - id: c
+        text: "`openssl verify server.crt`"
+        explanation: "It checks a certificate chain."
+      - id: d
+        text: "`openssl req -x509 -newkey rsa:2048 -keyout server.key -out server.crt -days 365 -nodes -subj \"/CN=internal.web-srv1.local\"`"
+        explanation: "Correct. It creates the key and the self-signed certificate together."
+    correct_option: d
+    explanation: "Modern clients also check the subject alternative name, so add `-addext \"subjectAltName=DNS:internal.web-srv1.local\"`."
+
+  - id: ats006-final-q19
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Check that a key and a certificate belong together"
+    source_readings:
+      - sections/section-070/module-03/course-03-read-and-verify-a-certificate.md
+    prompt: |-
+      Before deployment you must confirm that `server.key` and `server.crt` are a matching pair. Which technique is correct?
+    options:
+      - id: a
+        text: "Compare the file sizes."
+        explanation: "Sizes say nothing about the key material."
+      - id: b
+        text: "Check that both were created on the same date with `stat`."
+        explanation: "A time stamp can match by chance or be changed."
+      - id: c
+        text: "Compare the modulus: `openssl rsa -noout -modulus -in server.key | openssl md5` and `openssl x509 -noout -modulus -in server.crt | openssl md5` must print the same hash."
+        explanation: "Correct. The public modulus is shared by the key and its certificate."
+      - id: d
+        text: "Compare the two files in an editor."
+        explanation: "The files hold different encoded data and cannot be compared by eye."
+    correct_option: c
+    explanation: "For RSA keys the modulus matches. An EC key needs a comparison of the public key instead."
+
+  - id: ats006-final-q20
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Preview a find expression before a destructive action"
+    source_readings:
+      - sections/section-020/module-03/course-02-triage-in-the-right-order.md
+    prompt: |-
+      A `find ... -exec mv {} dir/ \;` cleanup seems to have moved some files twice. Before running it again, what is the safest first step?
+    options:
+      - id: a
+        text: "Run the same command again at once."
+        explanation: "It repeats the mistake."
+      - id: b
+        text: "Run the same `find` expression with `-print` (or no action) and review the matched list before you add `-exec` back."
+        explanation: "Correct. The default action is `-print`, so you see the matches without changing anything."
+      - id: c
+        text: "Run `rm -rf` on the destination and start again."
+        explanation: "It destroys data for no reason."
+      - id: d
+        text: "Add `2>/dev/null` and run again."
+        explanation: "It hides the errors that could explain the problem."
+    correct_option: b
+    explanation: "Test first, then act."
+
+  - id: ats006-final-q21
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read the exit code and the argument count in a script"
+    source_readings:
+      - sections/section-010/module-03/course-01-arguments-and-tests.md
+    prompt: |-
+      A script starts with `if [[ $# -eq 0 ]]; then echo "usage: tool.sh <path>" >&2; exit 2; fi`. You run `./tool.sh; echo $?`. What do you see?
+    options:
+      - id: a
+        text: "The usage line on the terminal (stderr) and then `2`."
+        explanation: "Correct. `$#` is `0`, so the script prints on stderr and exits with `2`."
+      - id: b
+        text: "Nothing and then `0`."
+        explanation: "`$#` is `0`, so the block runs."
+      - id: c
+        text: "The usage line and then `0`."
+        explanation: "`exit 2` sets the code to `2`, not `0`."
+      - id: d
+        text: "`command not found` and then `127`."
+        explanation: "The script exists and is executable, so it runs."
+    correct_option: a
+    explanation: "`$#` counts the arguments. `>&2` sends the text to stderr."
+
+  - id: ats006-final-q22
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Quote variables in a loop over file names"
+    source_readings:
+      - sections/section-010/module-03/course-02-loops-and-functions.md
+    prompt: |-
+      A loop `for f in *.txt; do wc -l $f; done` fails on a file called `my notes.txt`. What is the fix?
+    options:
+      - id: a
+        text: "Rename every file to use capital letters."
+        explanation: "Case has nothing to do with word splitting."
+      - id: b
+        text: "Replace `for` with `ls | while read`."
+        explanation: "Reading `ls` output breaks on odd names even more easily."
+      - id: c
+        text: "Add `sudo` before `wc`."
+        explanation: "The failure is word splitting, not permission."
+      - id: d
+        text: "Quote the variable: `wc -l \"$f\"`."
+        explanation: "Correct. Without quotes the shell splits the name at the space into two arguments."
+    correct_option: d
+    explanation: "Always write `\"$f\"` and `\"$@\"`."
+
+  - id: ats006-final-q23
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the correct test operator"
+    source_readings:
+      - sections/section-010/module-03/course-01-arguments-and-tests.md
+    prompt: |-
+      Which test is true only when `/var/log` exists and is a directory?
+    options:
+      - id: a
+        text: "`[[ -f /var/log ]]`"
+        explanation: "`-f` is true only for a regular file."
+      - id: b
+        text: "`[[ -z /var/log ]]`"
+        explanation: "`-z` tests whether a string is empty."
+      - id: c
+        text: "`[[ -d /var/log ]]`"
+        explanation: "Correct. `-d` tests for a directory."
+      - id: d
+        text: "`[[ /var/log -eq 1 ]]`"
+        explanation: "`-eq` compares numbers."
+    correct_option: c
+    explanation: "`-e` is true for any existing path."
+
+  - id: ats006-final-q24
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Distinguish a hard link from a symbolic link"
+    source_readings:
+      - sections/section-020/module-04/course-02-hard-and-symbolic-links.md
+    prompt: |-
+      You make `ln crew.txt hard.txt` and `ln -s crew.txt soft.txt`, then run `rm crew.txt`. What happens?
+    options:
+      - id: a
+        text: "`hard.txt` still shows the content and `soft.txt` is a dangling link that fails with `No such file or directory`."
+        explanation: "Correct. The hard link is a second name for the same inode, and the symbolic link only holds the path."
+      - id: b
+        text: "Both still show the content."
+        explanation: "The symbolic link points to a name that is gone."
+      - id: c
+        text: "Both fail."
+        explanation: "The hard link keeps the inode alive."
+      - id: d
+        text: "`hard.txt` fails and `soft.txt` still works."
+        explanation: "It is the other way round."
+    correct_option: a
+    explanation: "`stat -c '%h'` shows the link count."
+
+  - id: ats006-final-q25
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Copy a file and keep its mode and time"
+    source_readings:
+      - sections/section-020/module-04/course-01-create-copy-move-and-remove.md
+    prompt: |-
+      You copy `manifest.txt` and the copy has today's date instead of the original's modification time. Which option keeps the mode and times?
+    options:
+      - id: a
+        text: "`cp -p manifest.txt copy.txt`"
+        explanation: "Correct. `-p` preserves mode, ownership where allowed and time stamps."
+      - id: b
+        text: "`cp -r manifest.txt copy.txt`"
+        explanation: "`-r` is for folders and does not keep times."
+      - id: c
+        text: "`cp -f manifest.txt copy.txt`"
+        explanation: "`-f` forces an overwrite."
+      - id: d
+        text: "`mv manifest.txt copy.txt`"
+        explanation: "It moves the file instead of copying it."
+    correct_option: a
+    explanation: "`cp -a` is the usual choice for a whole tree."
+
+  - id: ats006-final-q26
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Change the group of a whole tree"
+    source_readings:
+      - sections/section-020/module-04/course-03-owners-and-groups.md
+    prompt: |-
+      You must give the folder `crates` and everything in it to the group `loaders`, leaving the owner unchanged. Which command is correct?
+    options:
+      - id: a
+        text: "`chgrp loaders crates`"
+        explanation: "Without `-R`, the files inside keep the old group."
+      - id: b
+        text: "`sudo chown -R loaders crates`"
+        explanation: "It sets `loaders` as the owner, which is a user name."
+      - id: c
+        text: "`chmod -R loaders crates`"
+        explanation: "`chmod` changes mode bits, not groups."
+      - id: d
+        text: "`sudo chgrp -R loaders crates`"
+        explanation: "Correct. `-R` goes through the tree and `chgrp` only changes the group."
+    correct_option: d
+    explanation: "Verify with `stat -c '%U:%G %n'`."
+
+  - id: ats006-final-q27
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Rank values with sort and uniq"
+    source_readings:
+      - sections/section-030/module-04/course-01-sort-count-and-cut.md
+    prompt: |-
+      `visits.log` has one station name per line. Which pipeline lists each station with its count, most frequent first?
+    options:
+      - id: a
+        text: "`uniq -c visits.log | sort -rn`"
+        explanation: "`uniq` only merges neighbouring repeats, so unsorted input gives wrong counts."
+      - id: b
+        text: "`sort -u visits.log | wc -l`"
+        explanation: "It counts the distinct names, not how often each occurs."
+      - id: c
+        text: "`cut -c1 visits.log | sort`"
+        explanation: "It keeps only the first letter of each name."
+      - id: d
+        text: "`sort visits.log | uniq -c | sort -rn`"
+        explanation: "Correct. `uniq` needs sorted input, and `sort -rn` ranks the counts."
+    correct_option: d
+    explanation: "`sort | uniq -c | sort -rn` is the standard ranking pattern."
+
+  - id: ats006-final-q28
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Sort a table by a numeric column"
+    source_readings:
+      - sections/section-030/module-04/course-01-sort-count-and-cut.md
+    prompt: |-
+      In a comma-separated file with the hours in column 4, which command orders the data rows by hours from the highest to the lowest?
+    options:
+      - id: a
+        text: "`sort -k4 crew.csv`"
+        explanation: "The default separator is blank space and the compare is text."
+      - id: b
+        text: "`tail -n +2 crew.csv | sort -t, -k4 -n -r`"
+        explanation: "Correct. It removes the header, sets the separator, picks column 4 and sorts as numbers in reverse."
+      - id: c
+        text: "`sort -t, -k4 crew.csv`"
+        explanation: "The compare is as text, so `9` sorts after `10`."
+      - id: d
+        text: "`cut -d, -f4 crew.csv | sort`"
+        explanation: "It drops the other columns."
+    correct_option: b
+    explanation: "Add `-n` whenever you sort numbers."
+
+  - id: ats006-final-q29
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Sum a column with awk"
+    source_readings:
+      - sections/section-030/module-04/course-02-tr-awk-diff-and-tee.md
+    prompt: |-
+      Which command prints the sum of column 4 of `crew.csv`, skipping the header line?
+    options:
+      - id: a
+        text: "`cut -d, -f4 crew.csv | wc -l`"
+        explanation: "It counts lines and does not add values."
+      - id: b
+        text: "`awk -F, 'NR>1 {sum += $4} END {print sum}' crew.csv`"
+        explanation: "Correct. `NR>1` skips the header and `END` prints after the last line."
+      - id: c
+        text: "`awk '{print $4}' crew.csv`"
+        explanation: "The default separator is a blank, and it adds nothing."
+      - id: d
+        text: "`sort -n -k4 crew.csv | tail -n 1`"
+        explanation: "It shows the largest row, not the sum."
+    correct_option: b
+    explanation: "Quote the awk program in single quotes so the shell does not expand `$4`."
+
+  - id: ats006-final-q30
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read the exit code of diff"
+    source_readings:
+      - sections/section-030/module-04/course-02-tr-awk-diff-and-tee.md
+    prompt: |-
+      A script runs `diff -q old.conf new.conf` and tests the result. What exit code means that the files differ?
+    options:
+      - id: a
+        text: "`0`"
+        explanation: "`0` means no difference."
+      - id: b
+        text: "`2`"
+        explanation: "`2` means an error such as a missing file."
+      - id: c
+        text: "`1`"
+        explanation: "Correct. `diff` exits `0` for identical files, `1` for different files and `2` on trouble."
+      - id: d
+        text: "`255`"
+        explanation: "`diff` does not use `255` for a difference."
+    correct_option: c
+    explanation: "The exit code lets scripts test for differences."
+
+  - id: ats006-final-q31
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Open the right manual section"
+    source_readings:
+      - sections/section-030/module-05/course-01-manual-pages-and-help.md
+    prompt: |-
+      `man passwd` shows the command. Which command shows the manual page for the `/etc/passwd` file format?
+    options:
+      - id: a
+        text: "`man 1 passwd`"
+        explanation: "Section 1 is the command."
+      - id: b
+        text: "`man 5 passwd`"
+        explanation: "Correct. Section 5 holds file formats."
+      - id: c
+        text: "`man 8 passwd`"
+        explanation: "Section 8 is for administration commands."
+      - id: d
+        text: "`man -k passwd`"
+        explanation: "It searches descriptions and does not open a page."
+    correct_option: b
+    explanation: "Use `man -k topic` or `apropos topic` to find the section."
+
+  - id: ats006-final-q32
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Leave vim without saving"
+    source_readings:
+      - sections/section-030/module-05/course-02-editing-with-vim-and-nano.md
+    prompt: |-
+      You opened a file in `vim` and typed by mistake. How do you leave without saving?
+    options:
+      - id: a
+        text: "Press `Esc`, then type `:q!` and Enter."
+        explanation: "Correct. `:q!` quits and discards changes."
+      - id: b
+        text: "Press `Ctrl+X`."
+        explanation: "`Ctrl+X` quits `nano`, not `vim`."
+      - id: c
+        text: "Type `:wq`."
+        explanation: "It saves your mistakes."
+      - id: d
+        text: "Press `Ctrl+C` twice."
+        explanation: "It does not quit `vim`."
+    correct_option: a
+    explanation: "`:wq` saves and quits."
+
+  - id: ats006-final-q33
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Replace text in vim"
+    source_readings:
+      - sections/section-030/module-05/course-02-editing-with-vim-and-nano.md
+    prompt: |-
+      Which command, typed in vim's normal mode, replaces every `PLACEHOLDER` in the file with `TBD`?
+    options:
+      - id: a
+        text: "`:s/PLACEHOLDER/TBD/`"
+        explanation: "It changes only the first match on the current line."
+      - id: b
+        text: "`/PLACEHOLDER/TBD`"
+        explanation: "`/` only searches."
+      - id: c
+        text: "`:%s/PLACEHOLDER/TBD/g`"
+        explanation: "Correct. `%` is every line and `g` replaces every match on a line."
+      - id: d
+        text: "`:r PLACEHOLDER TBD`"
+        explanation: "`:r` reads a file into the buffer."
+    correct_option: c
+    explanation: "Run `grep -c TBD file` afterwards to check."

@@ -2,25 +2,38 @@
 
 Solve this question on: `terminal`
 
-Your team is standing up a new shared workspace at `/srv/teamspace` for the `ops` group, and it needs its default file behavior, its shared directories, and a legacy incoming folder all brought under control in one pass.
+Astronaut, your team is opening a new shared compartment at `/srv/teamspace` for the `ops` group. Its default locks, its shared folders and a messy legacy incoming folder must all be brought under control in one mission. The group `ops` and its member `opsuser` already exist.
 
 ## Part 1: Default permissions for `opsuser`
 
-New files `opsuser` creates anywhere should default to `640` and new directories should default to `750` — persistently, for every future login. Do not use `chmod` to achieve this; it must come from the account's default permission mask.
+New files that `opsuser` creates anywhere must default to `640`, and new directories to `750`, for every future login. Do not use `chmod` for this: it must come from the user's default permission mask, the `umask`.
 
 ## Part 2: Shared workspace permissions
 
-1. `/srv/teamspace/shared` should be readable, writable, and enterable by the owning group `ops` and its owner, but not accessible at all to anyone else — and any new file created inside it by any team member must automatically belong to group `ops`, not that user's own primary group.
-2. `/srv/teamspace/bin/deploy.sh` should be executable by its owner only, and by no one else at all, including the group.
-3. `/srv/teamspace/dropbox` is a shared drop location where any team member can create files, but a team member should only be able to delete their *own* files from it, never someone else's, even though everyone has write access to the directory itself.
+1. `/srv/teamspace/shared` must be readable, writable and enterable by its owner and its group `ops`, and not accessible at all to anyone else. Any new file a team member creates inside it must automatically belong to group `ops`, not to that user's own primary group. The directory must keep `ops` as its group.
+2. `/srv/teamspace/bin/deploy.sh` must be readable, writable and executable by its owner only, and by no one else at all, including the group.
+3. `/srv/teamspace/dropbox` is a shared drop folder. Everyone must be able to read, write and enter it, but a person may delete only their *own* files from it, never someone else's.
 
 ## Part 3: Triage the legacy incoming folder
 
-There is a legacy folder at `/srv/teamspace/incoming` that needs cleaning up, in this exact order:
+Clean up `/srv/teamspace/incoming` with these steps, in this exact order:
 
-1. Delete all files modified before `06/01/2021`.
-2. For the remaining files: find all files smaller than `2KiB` and move them to `/srv/teamspace/incoming/archive/small/`.
-3. Find all files larger than `8KiB` and move them to `/srv/teamspace/incoming/archive/large/`.
-4. Find all files with permission `777` and move them to `/srv/teamspace/incoming/quarantine/`.
+1. Delete all files modified before `06/01/2021` (1 June 2021).
+2. From the remaining files, move all files smaller than `2KiB` to `/srv/teamspace/incoming/archive/small/`.
+3. Move all files larger than `8KiB` to `/srv/teamspace/incoming/archive/large/`.
+4. Move all files with permission `777` to `/srv/teamspace/incoming/quarantine/`.
 
-Perform these steps in the order given — later steps should only ever act on whatever is still left in the top level of `/srv/teamspace/incoming` after the previous steps ran.
+Each later step must only act on the files still left in the top level of `/srv/teamspace/incoming` after the earlier steps ran. A file that fits more than one rule goes where the earliest matching step puts it.
+
+## Part 4: Stage a release
+
+The release files wait in `/srv/teamspace/release-src`. Everything here belongs to `root`, so use `sudo` where you must.
+
+1. Create the directory tree `/srv/teamspace/releases/2026/q1` with one command. The parent folders do not exist yet.
+2. Copy `/srv/teamspace/release-src/app.conf` into `/srv/teamspace/releases/2026/q1/`. The copy must keep the **mode** and the **modification time** of the original. Leave the original where it is.
+3. **Move** `/srv/teamspace/release-src/old-release.txt` into `/srv/teamspace/releases/2026/`. It must no longer exist in the old place.
+4. Create a **hard link** `/srv/teamspace/releases/app-hard.conf` to the copy `/srv/teamspace/releases/2026/q1/app.conf`, and a **symbolic link** `/srv/teamspace/releases/current` that points at the directory `2026/q1` with a relative target.
+5. **Remove** the folder `/srv/teamspace/release-src/tmp-build` with everything inside it.
+6. Give the group `ops` ownership of `/srv/teamspace/releases` and everything inside it. The owner stays `root`.
+
+The grader starts a fresh login for `opsuser` and checks the modes of a new file and directory, checks the exact modes of the three workspace paths, creates a file in `/srv/teamspace/shared` as `opsuser` and checks its group, checks where every file in `/srv/teamspace/incoming` ended up, and checks the release tree, the preserved mode and time, the hard link's inode, the symbolic link's target and the group of every file and folder under `/srv/teamspace/releases`.

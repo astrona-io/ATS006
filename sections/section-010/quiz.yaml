@@ -1,0 +1,300 @@
+# Knowledge check for section 010. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats006-010
+course_id: ATS006
+exam_code: LFCS
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-010
+  title: "Shell Semantics: Redirection, Exit Codes & Environment"
+questions:
+  - id: ats006-010-q01
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why the order of 2>&1 and a file redirection matters"
+    source_readings:
+      - sections/section-010/module-01/course-02-combining-both-streams.md
+    prompt: |-
+      You run `report-tool 2>&1 > audit.log` expecting `audit.log` to hold both the normal output and the error messages. Afterwards `audit.log` has only the normal output, and the errors appeared on your terminal. What is the cause?
+    options:
+      - id: a
+        text: "Redirections are read left to right: `2>&1` pointed fd 2 at the terminal, where fd 1 pointed at that moment, and only then `> audit.log` moved fd 1 to the file."
+        explanation: "Correct. Each redirection uses the state at that instant, so fd 2 never followed fd 1 into the file."
+      - id: b
+        text: "`2>&1` is invalid syntax and the shell ignored it."
+        explanation: "`2>&1` is valid. It just did not do what was assumed in this position."
+      - id: c
+        text: "`audit.log` must be created with `touch` before this works."
+        explanation: "`>` creates the file when it does not exist."
+      - id: d
+        text: "`report-tool` never wrote anything to stderr, so there was nothing to capture."
+        explanation: "The errors appeared on the terminal, so stderr did carry output."
+    correct_option: a
+    explanation: "Redirections are applied from left to right. Write `> audit.log 2>&1` so that fd 1 points at the file first and fd 2 is then copied from it."
+
+  - id: ats006-010-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain that $? holds only the status of the last command"
+    source_readings:
+      - sections/section-010/module-01/course-03-reading-the-exit-code.md
+    prompt: |-
+      A script runs `deploy-check`, then `echo "checking result..."`, and only then `echo $? > result.log`. The log never shows the failures of `deploy-check`. What is the root cause?
+    options:
+      - id: a
+        text: "`echo $?` cannot be redirected into a file."
+        explanation: "Redirecting `echo $?` into a file is normal and works."
+      - id: b
+        text: "`deploy-check` needs `sudo` before its exit status can be read."
+        explanation: "Privilege has no effect on reading `$?`."
+      - id: c
+        text: "`$?` only works on the same line as the command that set it."
+        explanation: "`$?` can be read on a later line. What matters is which command ran last."
+      - id: d
+        text: "The `echo` that printed the message succeeded and replaced `$?` with its own status `0`."
+        explanation: "Correct. `$?` always holds the status of the most recent command."
+    correct_option: d
+    explanation: "Save the status at once, for example `rc=$?`, before running any other command."
+
+  - id: ats006-010-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Discard only stderr and keep stdout on the terminal"
+    source_readings:
+      - sections/section-010/module-01/course-01-three-signal-lines.md
+    prompt: |-
+      A well-behaved tool writes results to stdout and diagnostics to stderr. You want to hide only the diagnostics and still see the results on the terminal. Which command does this?
+    options:
+      - id: a
+        text: "`noisy-tool 2>&1 > /dev/null`"
+        explanation: "Here fd 2 is copied from the terminal first, then stdout is discarded, which is the reverse of the goal."
+      - id: b
+        text: "`noisy-tool > /dev/null`"
+        explanation: "This discards stdout, the results, and leaves the noise on screen."
+      - id: c
+        text: "`noisy-tool 2> /dev/null`"
+        explanation: "Correct. Only fd 2 is sent to the void and fd 1 is untouched."
+      - id: d
+        text: "`noisy-tool &> /dev/null`"
+        explanation: "`&>` discards both streams, so the results are lost too."
+    correct_option: c
+    explanation: "`2> /dev/null` discards the error stream only."
+
+  - id: ats006-010-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain why an unexported variable is not seen by a child process"
+    source_readings:
+      - sections/section-010/module-02/course-01-shell-variables-and-export.md
+    prompt: |-
+      A script sets `API_KEY=abc123` without `export` and then runs `./curl-wrapper.sh`, which reads `$API_KEY` and finds it empty. What is the most likely cause?
+    options:
+      - id: a
+        text: "Variable names longer than 8 characters are not supported."
+        explanation: "Bash has no such limit."
+      - id: b
+        text: "`API_KEY` is a plain shell variable, so the child process started by `./curl-wrapper.sh` did not inherit it."
+        explanation: "Correct. A child inherits only the exported variables of its parent."
+      - id: c
+        text: "`curl-wrapper.sh` must be sourced for any variable to work."
+        explanation: "Running it as a child is the normal way. Sourcing is a different mechanism."
+      - id: d
+        text: "Scripts cannot pass data to each other."
+        explanation: "Exported variables are the usual way to pass settings to a child."
+    correct_option: b
+    explanation: "Add `export API_KEY` or write `export API_KEY=abc123` so the child receives it."
+
+  - id: ats006-010-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Recognise that single quotes stop variable expansion"
+    source_readings:
+      - sections/section-010/module-02/course-02-scope-in-scripts.md
+    prompt: |-
+      After `export RELEASE_TAG='${RELEASE_TAG}_final'` a child process sees the literal text `${RELEASE_TAG}_final`. What went wrong?
+    options:
+      - id: a
+        text: "Single quotes switch off all expansion, so the text was exported literally."
+        explanation: "Correct. Use double quotes so the shell expands `${RELEASE_TAG}` first."
+      - id: b
+        text: "The braces around `RELEASE_TAG` are invalid."
+        explanation: "`${NAME}` is valid syntax."
+      - id: c
+        text: "`_final` is a reserved suffix that blocks expansion."
+        explanation: "Bash has no such reserved suffix."
+      - id: d
+        text: "`export` cannot reassign a variable from its own value."
+        explanation: "`VAR=\"${VAR}_x\"` is a normal pattern."
+    correct_option: a
+    explanation: "Write `export RELEASE_TAG=\"${RELEASE_TAG}_final\"` with double quotes."
+
+  - id: ats006-010-q06
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Read the exit code of a failed command"
+    source_readings:
+      - sections/section-010/module-01/course-03-reading-the-exit-code.md
+    prompt: |-
+      You run `ls /nonexistent 2> err.txt` and then `echo $?`. What do you see?
+    options:
+      - id: a
+        text: "Nothing, because `$?` is cleared by redirection."
+        explanation: "`$?` is always set after a command ends."
+      - id: b
+        text: "The text of the error message."
+        explanation: "`$?` holds a number, never text."
+      - id: c
+        text: "`0`, because the error was redirected."
+        explanation: "Redirecting stderr does not change the exit code."
+      - id: d
+        text: "A non-zero number such as `2`, and the error message is in `err.txt`."
+        explanation: "Correct. GNU `ls` returns 2 for a missing path, and the message went to the file."
+    correct_option: d
+    explanation: "A failed command leaves a non-zero code in `$?`. Redirection only moves the text."
+
+  - id: ats006-010-q07
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Count the arguments of a script"
+    source_readings:
+      - sections/section-010/module-03/course-01-arguments-and-tests.md
+    prompt: |-
+      A script prints `$#` and you run `./args.sh one two three`. What is printed?
+    options:
+      - id: a
+        text: "`args.sh`"
+        explanation: "The script name is in `$0`."
+      - id: b
+        text: "`1`"
+        explanation: "`1` would be the first argument's position, not the count."
+      - id: c
+        text: "`2`"
+        explanation: "The count includes all three words."
+      - id: d
+        text: "`3`"
+        explanation: "Correct. `$#` is the number of arguments."
+    correct_option: d
+    explanation: "`$#` is the count, `$1` the first argument and `$0` the script name."
+
+  - id: ats006-010-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Send an error message to stderr from a script"
+    source_readings:
+      - sections/section-010/module-03/course-01-arguments-and-tests.md
+    prompt: |-
+      A script must print its usage text so that it does not mix with normal output. Which line does this?
+    options:
+      - id: a
+        text: "`echo \"usage: x.sh <dir>\"`"
+        explanation: "This writes to stdout and mixes with normal output."
+      - id: b
+        text: "`echo \"usage: x.sh <dir>\" > /dev/null`"
+        explanation: "This throws the text away."
+      - id: c
+        text: "`echo \"usage: x.sh <dir>\" 2>&1`"
+        explanation: "This leaves the text on stdout."
+      - id: d
+        text: "`echo \"usage: x.sh <dir>\" >&2`"
+        explanation: "Correct. `>&2` sends the text to stderr."
+    correct_option: d
+    explanation: "Use `>&2` for error text and finish with `exit` and a non-zero code."
+
+  - id: ats006-010-q09
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose the right file test"
+    source_readings:
+      - sections/section-010/module-03/course-01-arguments-and-tests.md
+    prompt: |-
+      Which test is true only when `$1` is an existing folder?
+    options:
+      - id: a
+        text: "`[[ -d \"$1\" ]]`"
+        explanation: "Correct. `-d` tests for a directory."
+      - id: b
+        text: "`[[ -z \"$1\" ]]`"
+        explanation: "`-z` tests for an empty string."
+      - id: c
+        text: "`[[ \"$1\" -eq 0 ]]`"
+        explanation: "`-eq` compares numbers."
+      - id: d
+        text: "`[[ -f \"$1\" ]]`"
+        explanation: "`-f` is true for a regular file."
+    correct_option: a
+    explanation: "`-d` is for folders, `-f` for regular files and `-e` for anything that exists."
+
+  - id: ats006-010-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Quote variables in a loop"
+    source_readings:
+      - sections/section-010/module-03/course-02-loops-and-functions.md
+    prompt: |-
+      A loop runs `wc -l $f` and fails for a file named `my notes.txt` with two errors. What is the fix?
+    options:
+      - id: a
+        text: "Run the script with `sudo`."
+        explanation: "The error is word splitting, not permission."
+      - id: b
+        text: "Replace `for` with `while`."
+        explanation: "The loop type does not change the splitting."
+      - id: c
+        text: "Use `wc -l \"$f\"` so the name stays one word."
+        explanation: "Correct. Unquoted, the shell splits the name at the space."
+      - id: d
+        text: "Rename every file to upper case."
+        explanation: "The case of a name does not matter."
+    correct_option: c
+    explanation: "Always write `\"$f\"` and `\"$@\"` with double quotes."
+
+  - id: ats006-010-q11
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Predict the result of a glob with no match"
+    source_readings:
+      - sections/section-010/module-03/course-02-loops-and-functions.md
+    prompt: |-
+      In a folder with no `.txt` file, `for f in *.txt; do echo "$f"; done` runs in bash with default settings. What happens?
+    options:
+      - id: a
+        text: "The loop prints every file of the folder."
+        explanation: "There is no file that matches, and the pattern is not widened."
+      - id: b
+        text: "The loop does not run at all."
+        explanation: "Only with `nullglob`, which is off by default."
+      - id: c
+        text: "The loop runs once and prints the text `*.txt`."
+        explanation: "Correct. An unmatched glob stays as literal text."
+      - id: d
+        text: "Bash stops with a syntax error."
+        explanation: "There is no error. The pattern stays unexpanded."
+    correct_option: c
+    explanation: "Guard with `[[ -f \"$f\" ]] || continue` inside the loop."
+
+  - id: ats006-010-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain that a child cannot change its parent's variable"
+    source_readings:
+      - sections/section-010/module-02/course-01-shell-variables-and-export.md
+    prompt: |-
+      A child script changes an exported variable `LEVEL` from `1` to `2` and ends. What does the parent shell show for `echo $LEVEL`?
+    options:
+      - id: a
+        text: "`2`, because it was exported."
+        explanation: "Export copies the value to the child once. It does not link them."
+      - id: b
+        text: "`1`, because the child changed only its own copy."
+        explanation: "Correct. A child cannot change the environment of its parent."
+      - id: c
+        text: "An empty line."
+        explanation: "The parent still has its variable."
+      - id: d
+        text: "An error, because the variable is locked."
+        explanation: "Bash has no such lock."
+    correct_option: b
+    explanation: "The environment flows from parent to child only."

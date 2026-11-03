@@ -1,6 +1,6 @@
-# Solution Guide: Branch Inspection & Merge
+# Solution Walkthrough
 
-This guide shows how to identify the correct branch without checking it out, merge it, and commit an otherwise-empty directory.
+Astronaut, this mission is about reading three flight paths from the chart without flying any of them, joining only the right one, and then committing a directory Git would otherwise ignore. Work through the steps in order.
 
 ---
 
@@ -11,11 +11,11 @@ git clone /repositories/auto-verifier /home/candidate/repositories/auto-verifier
 cd /home/candidate/repositories/auto-verifier
 ```
 
-Cloning from a local path works exactly like a network clone — the entire object database, including every branch, comes along.
+Cloning from a local path works exactly like a network clone. The whole object database comes along, including every branch, as `origin/dev4`, `origin/dev5` and `origin/dev6`.
 
 ---
 
-## Step 2: Inspect `config.yaml` on each candidate branch without checking out
+## Step 2: Read `config.yaml` on each candidate branch without checking it out
 
 ```bash
 for b in dev4 dev5 dev6; do
@@ -24,18 +24,37 @@ for b in dev4 dev5 dev6; do
 done
 ```
 
-`git show <ref>:<path>` prints a file's content at that branch's tip with no checkout, no stash, and no change to your working tree. Suppose the output shows `dev5` is the branch with `user_registration_level: open`.
+```text
+== dev4 ==
+user_registration_level: invite_only
+== dev5 ==
+user_registration_level: open
+== dev6 ==
+user_registration_level: waitlist
+```
+
+`git show <ref>:<path>` prints a file as it is at that branch's tip, with no checkout, no stash and no change to your working tree. The output shows that `dev5` is the branch with `user_registration_level: open`.
 
 ---
 
-## Step 3: Make sure you're on `main`, then merge only the matching branch
+## Step 3: Make sure you are on `main`, then merge only the matching branch
 
 ```bash
 git switch main
 git merge origin/dev5
 ```
 
-`git merge` always applies to your currently checked-out branch, which is why confirming (or switching to) `main` first matters. Only `dev5` gets merged — not `dev4` or `dev6`.
+`git merge` always lands on the branch you have checked out, which is why you switch to `main` first. Only `dev5` gets merged, not `dev4` or `dev6`.
+
+Check the setting on `main`:
+
+```bash
+grep user_registration_level config.yaml
+```
+
+```text
+user_registration_level: open
+```
 
 ---
 
@@ -46,7 +65,7 @@ mkdir -p logs
 touch logs/.keep
 ```
 
-Git only tracks content, not directories — an empty `logs/` directory is invisible to Git until something exists inside it. `.keep` is a filename convention, not a Git feature.
+Git only tracks content, not directories. An empty `logs/` directory stays invisible to Git until something exists inside it. `.keep` is a naming habit, not a Git feature.
 
 ---
 
@@ -58,4 +77,26 @@ git status
 git commit -m "added log directory"
 ```
 
-**Note:** grading on Git tasks like this typically checks the commit message verbatim, so match the wording and capitalization exactly.
+`git status` should show only `logs/.keep` as a new file to be committed, on branch `main`. The grader checks that this commit changes `logs/.keep` and nothing else, and it compares the message word for word.
+
+---
+
+## Step 6: Check the result and submit
+
+Check the branch and the last commit message:
+
+```bash
+git branch --show-current
+git log -1 --format=%s
+```
+
+```text
+main
+added log directory
+```
+
+When everything matches, send the mission for grading from your own computer:
+
+```sh
+astrona submit -c labs/lab-042
+```

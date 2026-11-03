@@ -1,9 +1,33 @@
-# lab-043: Git Upstream Reconciliation Lab
+---
+estimated_duration: 25m
+---
 
-QEMU VM for the LFCS course — cloning a shared upstream, working on a topic branch, simulating upstream moving on without you, and reconciling with a rebase.
+# Git Upstream Reconciliation Lab
 
-## Run
+Welcome to a reconciliation mission, astronaut. You branch off a shared upstream to make one focused change, and while you work a teammate pushes a change of their own. Your job is to fetch that change and rebase your topic branch on top of it, so your commit sits directly on the teammate's commit with no merge commit.
+
+## Launching the Lab
+
+Run this command to start the lab machine:
 
 ```bash
-astrona run --git git@github.com:astrona-io/ATS006.git -c labs/lab-043
+astrona run --git ssh://git@github.com/astrona-io/ATS006.git -c labs/lab-043
+```
+
+Open a terminal on it:
+
+```bash
+astrona ssh ats-006-lab-043
+```
+
+When you think you have finished, send it for grading:
+
+```bash
+astrona submit -c labs/lab-043
+```
+
+When you are done, remove the lab:
+
+```bash
+astrona destroy ats-006-lab-043
 ```

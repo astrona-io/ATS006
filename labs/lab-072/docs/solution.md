@@ -1,27 +1,27 @@
-# Solution Guide: Overriding nginx.service Safely
+# Solution Walkthrough
 
-This guide shows how to change `nginx.service`'s restart behavior and environment without touching the vendor unit file.
+You change `nginx.service` with a drop-in override, a small file systemd lays on top of the vendor unit, instead of editing the file the package owns. The grader checks that the vendor file is unchanged, that a drop-in exists, that the effective values are in force, and that `nginx` is running.
 
----
+## Step 1: Look at the current, unmodified unit
 
-## Step 1: Inspect the current, unmodified unit
+Show the unit as systemd loads it today, and where it comes from:
 
-```bash
+```sh
 systemctl cat nginx
 systemctl show nginx -p Restart -p FragmentPath
 ```
 
-`FragmentPath` confirms the base unit is loaded from a package-owned location (`/usr/lib/systemd/system/nginx.service`) — this is the file you will not touch.
+`FragmentPath` shows that the base unit is loaded from the package-owned location, `/usr/lib/systemd/system/nginx.service`. That is the file you will not touch.
 
----
+## Step 2: Write the drop-in override
 
-## Step 2: Open a drop-in override
+Open a drop-in:
 
-```bash
+```sh
 sudo systemctl edit nginx.service
 ```
 
-Add:
+Type this into the editor, then save and close it:
 
 ```ini
 [Service]
@@ -30,36 +30,45 @@ RestartSec=5
 Environment=APP_ENV=production
 ```
 
-This creates `/etc/systemd/system/nginx.service.d/override.conf`. `Restart=` and `RestartSec=` are new directives the vendor unit doesn't set, so they apply cleanly with no conflict. `Environment=` is additive by design, so no clearing trick is needed for it either — unlike `ExecStart=`, which would require a bare `ExecStart=` line first if you were replacing it.
+`systemctl edit` saves it as `/etc/systemd/system/nginx.service.d/override.conf`. `Restart=` and `RestartSec=` hold one value each, so the drop-in's value wins. `Environment=` adds up, so your variable simply joins any the vendor unit sets. No clearing line is needed here. That would only be needed for `ExecStart=`, which collects a list: replacing it takes an empty `ExecStart=` line first. This lab does not change `ExecStart=`.
 
----
+## Step 3: Reload and restart
 
-## Step 3: Reload and restart to apply
+Apply it:
 
-```bash
+```sh
 sudo systemctl daemon-reload
 sudo systemctl restart nginx
 ```
 
-A config-reload signal wouldn't apply `Restart=`/`Environment=` changes — those are properties systemd enforces about process supervision itself, so a full `restart` (not `reload`) is required.
+`daemon-reload` makes systemd read the new drop-in. `Restart=` and `Environment=` are properties systemd enforces when it launches and watches the process, so a full `restart` is required; `reload` would not apply them.
 
----
+## Step 4: Check the merged result
 
-## Step 4: Confirm the merge and the running state
+Then check the result:
 
-```bash
+```sh
 systemctl cat nginx
 systemctl show nginx -p Restart -p RestartUSec -p Environment
+systemctl is-active nginx
 ```
 
-`systemctl cat` shows the vendor fragment followed by your `override.conf` fragment, in that order — the authoritative way to confirm the merge rather than mentally combining two files. `systemctl show` confirms systemd is actually enforcing the new values on the live unit right now.
-
----
+`systemctl cat` shows the vendor fragment followed by your `override.conf` fragment, in that order. `systemctl show` should report `Restart=on-failure`, and the `Environment=` line should contain `APP_ENV=production`. `systemctl is-active` should print `active`.
 
 ## Step 5: Confirm the vendor file is untouched
 
-```bash
+Look at the vendor file itself:
+
+```sh
 sudo cat /usr/lib/systemd/system/nginx.service | grep -i restart
 ```
 
-> **Note:** If you ever need to change `ExecStart=` (not required here), remember that it accumulates as a list rather than being replaced — a naive second `ExecStart=` line in a drop-in does not overwrite the vendor unit's original command. You'd need a bare `ExecStart=` line first to explicitly clear it before setting a replacement. This lab only touches `Restart=`, `RestartSec=`, and `Environment=`, none of which need that clearing step.
+Your `Restart=on-failure` and `RestartSec=5` lines are not in this file: they live only in the drop-in. The bootstrap recorded a checksum of this file, and the grader checks it is unchanged.
+
+## Step 6: Submit
+
+When every check looks right, send the lab for grading from your own machine:
+
+```sh
+astrona submit -c labs/lab-072
+```
