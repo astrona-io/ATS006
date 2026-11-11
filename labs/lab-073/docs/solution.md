@@ -99,3 +99,17 @@ When every check looks right, send the lab for grading from your own machine:
 ```sh
 astrona submit -c labs/lab-073
 ```
+
+## Check the request and current validity
+
+A certificate with a 365-day lifetime may already have expired. Verify it against the current clock and the exact hostname:
+
+```sh
+cd /opt/tls/internal-web-srv1
+openssl verify -CAfile internal.web-srv1.local.crt -verify_hostname internal.web-srv1.local internal.web-srv1.local.crt
+openssl req -in internal.web-srv1.local.csr -noout -verify
+openssl req -in internal.web-srv1.local.csr -noout -modulus
+openssl rsa -in internal.web-srv1.local.key -noout -modulus
+```
+
+The last two values must match. A request with the correct name but another key would produce a certificate this service cannot use. The grader verifies current validity and the request's signature and key as well as the certificate's fields. Trusting this self-signed certificate explicitly is only appropriate inside this lab.

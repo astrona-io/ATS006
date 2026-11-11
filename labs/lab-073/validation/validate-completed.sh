@@ -18,7 +18,7 @@ if [[ "$key_perms" != "600" ]]; then
   exit 1
 fi
 
-key_bits=$(openssl rsa -in "$KEY" -noout -text 2>/dev/null | grep -m1 "Private-Key" | grep -oE '[0-9]+')
+key_bits=$(openssl rsa -in "$KEY" -noout -text 2>/dev/null | sed -nE 's/.*Private-Key: \(([0-9]+) bit.*/\1/p')
 if [[ "$key_bits" != "2048" ]]; then
   echo "FAIL: private key is ${key_bits:-unknown} bits, expected 2048"
   exit 1
@@ -69,7 +69,23 @@ if [[ "$csr_san" != *"DNS:internal.web-srv1.local"* ]]; then
   exit 1
 fi
 
-# 4. Key and certificate are a matching pair.
+# 4. Verify current validity, hostname, CSR signature, and all public keys.
+if ! openssl verify -CAfile "$CRT" -verify_hostname internal.web-srv1.local "$CRT" >/dev/null 2>&1; then
+  echo 'FAIL: certificate is not currently valid for internal.web-srv1.local'
+  exit 1
+fi
+if ! openssl req -in "$CSR" -noout -verify >/dev/null 2>&1; then
+  echo 'FAIL: CSR signature is invalid'
+  exit 1
+fi
+csr_modulus=$(openssl req -in "$CSR" -noout -modulus 2>/dev/null)
+key_modulus=$(openssl rsa -in "$KEY" -noout -modulus 2>/dev/null)
+if [[ -z "$csr_modulus" || "$csr_modulus" != "$key_modulus" ]]; then
+  echo 'FAIL: CSR public key does not match private key'
+  exit 1
+fi
+
+# 5. Key and certificate are a matching pair.
 crt_modulus=$(openssl x509 -noout -modulus -in "$CRT" 2>/dev/null)
 key_modulus=$(openssl rsa -noout -modulus -in "$KEY" 2>/dev/null)
 if [[ -z "$crt_modulus" ]] || [[ "$crt_modulus" != "$key_modulus" ]]; then
