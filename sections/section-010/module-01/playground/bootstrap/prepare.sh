@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Shell Streams, Redirection and Exit Codes
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -25,3 +27,4 @@ sudo chmod 0755 /usr/local/bin/backup-tool
 as_learner mkdir -p "$LEARNER_HOME/streams-practice"
 
 echo "[playground] ready. Try:  backup-tool   backup-tool > out.log   echo \$?"
+ASTRONA_STUDENT_SCRIPT

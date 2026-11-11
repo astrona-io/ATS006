@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 # 1. Dedicated non-root system user exists with no login shell.
@@ -72,3 +74,4 @@ fi
 
 echo "PASS: metrics-collector.service is correctly configured, running, and enabled"
 exit 0
+ASTRONA_STUDENT_SCRIPT

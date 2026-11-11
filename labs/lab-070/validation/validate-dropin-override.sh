@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms RestartSec=10 was applied via a systemctl edit drop-in under
 # healthcheck.service.d/, not by editing the base unit file.
 
@@ -24,3 +26,4 @@ fi
 
 echo "PASS: RestartSec=10 applied via drop-in override, base unit left untouched"
 exit 0
+ASTRONA_STUDENT_SCRIPT

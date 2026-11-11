@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms /backup/appdata contains an exact mirror of the real files
 # from data-001's /srv/appdata (app.conf, data1.txt, data2.txt).
 
@@ -20,3 +22,4 @@ fi
 
 echo "PASS: $MIRROR contains a full mirror of /srv/appdata's real files"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 REL=/srv/teamspace/releases
@@ -51,3 +53,4 @@ fi
 
 echo "PASS: hard link shares the copy's inode, current points at 2026/q1, everything under releases has group ops"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the TLS private key and self-signed certificate for
 # healthcheck.internal.local exist with the correct properties.
 
@@ -59,3 +61,4 @@ fi
 
 echo "PASS: healthcheck.key and healthcheck.crt are correctly generated"
 exit 0
+ASTRONA_STUDENT_SCRIPT

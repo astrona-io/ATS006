@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms probe.exit captured "0" and that run-check.sh itself exits
 # with that same code -- proving $? was captured immediately and
 # propagated correctly, not clobbered by an intervening command.
@@ -35,3 +37,4 @@ fi
 
 echo "PASS: probe.exit correctly captured '0' and run-check.sh propagated the same exit code"
 exit 0
+ASTRONA_STUDENT_SCRIPT

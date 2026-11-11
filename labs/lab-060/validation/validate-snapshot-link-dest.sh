@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms /backup/audit-svc-snap2 is a complete, browsable snapshot:
 # the three unchanged logs are hardlinked against the full backup
 # (link count >1), and audit.log.4 is present with the correct content
@@ -34,3 +36,4 @@ fi
 
 echo "PASS: $SNAP is a complete snapshot, hardlinked against $FULL for unchanged files, with audit.log.4 transferred fresh"
 exit 0
+ASTRONA_STUDENT_SCRIPT

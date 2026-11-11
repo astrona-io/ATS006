@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the legitimate audit.log.1/2/3 files were not deleted as part
 # of the space-reclamation fix.
 
@@ -13,3 +15,4 @@ done
 
 echo "PASS: all legitimate audit-svc log files are still present"
 exit 0
+ASTRONA_STUDENT_SCRIPT

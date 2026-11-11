@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: builds the capstone's starting state -- the two incident log
 # files with a mix of matching/decoy lines, and a seeded shell history
 # recording the previous responder's session. Bootstrap does NOT perform
@@ -51,3 +53,4 @@ blocked_ip=PLACEHOLDER
 reviewed=no
 mode=lockdown
 EOF
+ASTRONA_STUDENT_SCRIPT

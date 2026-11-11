@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 FULL=/backup/full-backup.tar.gz
@@ -129,3 +131,4 @@ fi
 
 echo "PASS: full+incremental backup strategy correct, cache excluded, permissions preserved, both restores verified"
 exit 0
+ASTRONA_STUDENT_SCRIPT

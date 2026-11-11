@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 SHARED=/srv/teamspace/shared
@@ -34,3 +36,4 @@ fi
 
 echo "PASS: $SHARED is 2770 with group inheritance to 'ops' confirmed"
 exit 0
+ASTRONA_STUDENT_SCRIPT

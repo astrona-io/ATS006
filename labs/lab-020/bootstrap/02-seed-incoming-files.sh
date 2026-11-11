@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: seeds /srv/teamspace/incoming with 10 files spanning every
 # axis the graded triage task cares about -- two files pre-dating the
 # 2021-06-01 cutoff (deleted outright regardless of size/permission), a
@@ -65,3 +67,4 @@ sudo chmod 644 "$DIR/keep1.dat"
 
 sudo head -c 3584 /dev/zero | sudo tee "$DIR/keep2.dat" > /dev/null
 sudo chmod 640 "$DIR/keep2.dat"
+ASTRONA_STUDENT_SCRIPT

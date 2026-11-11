@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: stages the unmanaged healthcheck.sh script, its (root-owned)
 # log directory, and an empty TLS working directory. Does NOT create the
 # "healthcheck" user, the systemd unit, the drop-in override, or any TLS
@@ -33,3 +35,4 @@ if ! command -v openssl >/dev/null 2>&1; then
 fi
 
 sudo udevadm settle --timeout=30 || true
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: installs the vendor-packaged nginx.service and records a
 # checksum of the untouched vendor unit file so validation can later prove
 # it was never hand-edited. Does NOT create the drop-in override -- that is
@@ -21,3 +23,4 @@ fi
 sudo mkdir -p /var/lib/ats006-lab072
 sha256sum "$VENDOR_UNIT" | sudo tee /var/lib/ats006-lab072/original-nginx-unit.sha256 > /dev/null
 echo "$VENDOR_UNIT" | sudo tee /var/lib/ats006-lab072/vendor-unit-path.txt > /dev/null
+ASTRONA_STUDENT_SCRIPT

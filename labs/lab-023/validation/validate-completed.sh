@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 DIR=/var/backup/backup-015
@@ -70,3 +72,4 @@ fi
 
 echo "PASS: old files deleted, and remaining files correctly triaged into small/, large/, and compromised/"
 exit 0
+ASTRONA_STUDENT_SCRIPT

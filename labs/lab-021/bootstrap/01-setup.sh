@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: creates the "analysts" group and a test member user, then
 # pre-stages the three scenario targets with intentionally WRONG/incomplete
 # permissions -- the setgid bit, the owner-only lockdown, and the sticky
@@ -34,3 +36,4 @@ sudo chmod 664 /opt/tools/backup-runner.sh
 # the student must add it so team members can't delete each other's files.
 sudo mkdir -p /srv/shared/dropbox
 sudo chmod 777 /srv/shared/dropbox
+ASTRONA_STUDENT_SCRIPT

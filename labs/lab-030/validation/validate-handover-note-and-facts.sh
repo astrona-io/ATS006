@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 NOTE="$HOME/handover.conf"
@@ -38,3 +40,4 @@ fi
 
 echo "PASS: handover.conf was edited correctly and handover-facts.txt holds both facts"
 exit 0
+ASTRONA_STUDENT_SCRIPT

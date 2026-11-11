@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Shell Scripting Basics
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -18,3 +20,4 @@ as_learner mkdir -p "$LEARNER_HOME/inbox/archive" "$LEARNER_HOME/scripts"
 as_learner bash -c 'seq 1 2 > "$HOME/inbox/alpha.txt"; seq 1 5 > "$HOME/inbox/bravo.txt"; seq 1 9 > "$HOME/inbox/charlie.txt"; echo "service started" > "$HOME/inbox/service.log"'
 
 echo "[playground] ready. Try:  ls ~/inbox   wc -l ~/inbox/*.txt"
+ASTRONA_STUDENT_SCRIPT

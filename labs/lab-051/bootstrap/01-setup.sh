@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: seeds /imports/import001.tar.bz2 with a small multi-file
 # dataset (loose files plus one subdirectory) so the student has real
 # content to convert and verify. Does NOT create the gzip archive or the
@@ -41,3 +43,4 @@ rm -rf "$STAGE"
 # "touch" or metadata-only change wouldn't necessarily disturb reliably.
 sudo mkdir -p /var/lib/astrona-lab
 sha256sum /imports/import001.tar.bz2 | sudo tee /var/lib/astrona-lab/import001.tar.bz2.sha256 > /dev/null
+ASTRONA_STUDENT_SCRIPT

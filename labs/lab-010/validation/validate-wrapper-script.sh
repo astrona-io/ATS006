@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms run-check.sh exists, is executable, exports PROBE_MODE=strict
 # for the child probe, and never exports CHECK_ID (which must stay
 # shell-local to the wrapper itself).
@@ -34,3 +36,4 @@ fi
 
 echo "PASS: run-check.sh is executable and scopes PROBE_MODE/CHECK_ID correctly"
 exit 0
+ASTRONA_STUDENT_SCRIPT

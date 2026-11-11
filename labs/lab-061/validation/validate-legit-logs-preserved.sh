@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the legitimate reporting-app.log.* files were not deleted as
 # part of the fix -- the task must be solved without touching real data.
 
@@ -13,3 +15,4 @@ done
 
 echo "PASS: all legitimate reporting-app log files are still present"
 exit 0
+ASTRONA_STUDENT_SCRIPT

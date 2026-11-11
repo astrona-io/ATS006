@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap for the "data-002" VM: rsync destination host. Installs
 # rsync/openssh and pre-creates /backup/appdata as if a previous (now
 # stale) mirror already existed there, holding one file that no longer
@@ -26,3 +28,4 @@ sudo mkdir -p /backup/snapshots
 if ! grep -q '[[:space:]]data-001$' /etc/hosts; then
   echo "10.10.60.5 data-001" | sudo tee -a /etc/hosts >/dev/null
 fi
+ASTRONA_STUDENT_SCRIPT

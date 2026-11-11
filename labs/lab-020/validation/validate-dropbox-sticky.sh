@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 DROPBOX=/srv/teamspace/dropbox
@@ -11,3 +13,4 @@ fi
 
 echo "PASS: $DROPBOX has the sticky bit set (1777)"
 exit 0
+ASTRONA_STUDENT_SCRIPT

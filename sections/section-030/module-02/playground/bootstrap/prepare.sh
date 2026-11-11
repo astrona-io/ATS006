@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Shell History
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -26,3 +28,4 @@ whoami
 EOF
 
 echo "[playground] ready. Try:  history | tail   echo \$HISTSIZE \$HISTCONTROL"
+ASTRONA_STUDENT_SCRIPT

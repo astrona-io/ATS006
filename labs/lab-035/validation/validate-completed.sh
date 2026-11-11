@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 fail() { echo "FAIL: $1"; exit 1; }
@@ -16,3 +18,4 @@ expected=$(printf 'passwd-file-section=5\nls-sort-by-time=-t')
 
 echo "PASS: the flight plan is edited and both manual facts are correct"
 exit 0
+ASTRONA_STUDENT_SCRIPT

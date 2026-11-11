@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: formats and mounts the extraDisk at /var/log/reporting-app,
 # seeds three legitimate rotated log files (the visible data du can
 # actually see), and installs+starts a reporting-app.service that opens
@@ -88,3 +90,4 @@ sudo systemctl enable --now reporting-app.service
 # Give the service a moment to finish its one-time seed-fill before the
 # student's session starts, so df already reads close to full.
 sleep 5
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 BASHRC="$HOME/.bashrc"
@@ -45,3 +47,4 @@ fi
 
 echo "PASS: history configuration is persisted and both recovered commands are correct"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: installs a fixed-output diagnostic program at /bin/output-generator.
 # It always writes one line to stdout, one line to stderr, and exits 7 --
 # never 0 -- so the exit-code capture step in the lab is unambiguous and
@@ -17,3 +19,4 @@ sudo chmod +x /bin/output-generator
 
 # The lab's own task is to create /var/output-generator itself as the first
 # step, so bootstrap deliberately does NOT create it here.
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: seeds the two log files the scenario describes, with a mix
 # of lines that should and should not survive the student's grep/sed
 # task. Bootstrap does NOT perform the extraction or redaction itself.
@@ -27,3 +29,4 @@ EOF
 # The default login user needs to read/write these without needing to
 # know their own username in advance -- open the permissions instead.
 sudo chmod -R a+rwX /var/log-collector
+ASTRONA_STUDENT_SCRIPT

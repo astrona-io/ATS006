@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 CARGO=/home/candidate/cargo
@@ -34,3 +36,4 @@ done
 
 echo "PASS: the tree, the preserved copy, the move, both links, the removal and the group ownership are correct"
 exit 0
+ASTRONA_STUDENT_SCRIPT

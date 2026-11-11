@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 FULL=/backup/services-full.tar.gz
@@ -38,3 +40,4 @@ fi
 
 echo "PASS: full backup exists, excludes data/tmp, contains expected files, and uses relative paths"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms healthcheck.service is active and enabled, and that the merged
 # RestartSec=10 from the drop-in is actually the value systemd is enforcing
 # on the live unit (proving daemon-reload + restart were actually run).
@@ -25,3 +27,4 @@ fi
 
 echo "PASS: healthcheck.service is active, enabled, and the RestartSec=10 override is live"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 DIR=/var/output-generator
@@ -48,3 +50,4 @@ fi
 
 echo "PASS: stdout, stderr, combined output, and exit code were all captured correctly"
 exit 0
+ASTRONA_STUDENT_SCRIPT

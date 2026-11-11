@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 DIR=/srv/teamspace/incoming
@@ -42,3 +44,4 @@ fi
 
 echo "PASS: permission-777 files correctly quarantined, and untouched files remain in place"
 exit 0
+ASTRONA_STUDENT_SCRIPT

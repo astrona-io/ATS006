@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: seeds /srv/appdata with a notes file, a stable reports file
 # that never changes during the lab (used to prove the incremental backup
 # skips unchanged files), and a disposable cache/ directory that must
@@ -24,3 +26,4 @@ echo "transient session data" | sudo tee /srv/appdata/cache/session-abc123.tmp >
 echo "transient session data" | sudo tee /srv/appdata/cache/session-def456.tmp > /dev/null
 
 sudo chown -R root:root /srv/appdata
+ASTRONA_STUDENT_SCRIPT

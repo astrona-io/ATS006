@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 SCRIPT=/home/candidate/scripts/count-lines.sh
@@ -50,3 +52,4 @@ run_script "$WORK/empty"
 
 echo "PASS: the script checks its argument, loops over the text files and exits with the right codes"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: seeds /srv/teamspace/release-src for the release-staging part.
 # app.conf has a fixed mode (640) and a fixed modification time, so the
 # grader can tell a copy that kept them from a plain copy. The staging
@@ -24,3 +26,4 @@ EOT
 sudo mkdir -p "$DIR/tmp-build/cache"
 echo "scratch" | sudo tee "$DIR/tmp-build/cache/build.tmp" > /dev/null
 echo "scratch" | sudo tee "$DIR/tmp-build/output.tmp" > /dev/null
+ASTRONA_STUDENT_SCRIPT

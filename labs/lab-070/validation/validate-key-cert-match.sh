@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the TLS private key and certificate are a cryptographically
 # matching pair via RSA modulus comparison.
 
@@ -28,3 +30,4 @@ fi
 
 echo "PASS: TLS private key and certificate are a matching pair"
 exit 0
+ASTRONA_STUDENT_SCRIPT

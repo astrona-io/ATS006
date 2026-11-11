@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: creates the "candidate" user with a home directory and bash
 # login shell, and does NOT set any persistent umask override -- the
 # system default (whatever /etc/login.defs or bash's built-in default is)
@@ -16,3 +18,4 @@ fi
 # without pre-seeding any umask directive into it.
 sudo touch /home/candidate/.bash_profile
 sudo chown candidate:candidate /home/candidate/.bash_profile
+ASTRONA_STUDENT_SCRIPT

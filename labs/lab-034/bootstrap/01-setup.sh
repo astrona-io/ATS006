@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap for lab-034: creates the candidate user and a data folder with a crew table, a visit log and two settings files.
 # It sets up the starting state only, never the graded result.
 set -eu
@@ -57,3 +59,4 @@ crew_limit=10
 log_level=info
 alarm=on
 EOF
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Archives and Compression
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -24,3 +26,4 @@ tar -cjf sample.tar.bz2 reports
 '
 
 echo "[playground] ready. Try:  tar -tvf ~/archive-practice/sample.tar.bz2"
+ASTRONA_STUDENT_SCRIPT

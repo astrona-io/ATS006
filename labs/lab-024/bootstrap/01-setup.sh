@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap for lab-024: creates the candidate user, the group loaders and a cargo folder with files, a scratch folder and a crates folder.
 # It sets up the starting state only, never the graded result.
 set -eu
@@ -25,3 +27,4 @@ echo "junk" | as_learner tee "$LEARNER_HOME/cargo/scratch/junk.txt" >/dev/null
 
 as_learner chmod 0664 "$LEARNER_HOME/cargo/manifest.txt"
 as_learner touch -d "2026-01-15 10:00" "$LEARNER_HOME/cargo/manifest.txt"
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms run-check.sh builds probe.summary from its optional first
 # argument, an if test and a for loop, and still works with no argument.
 
@@ -59,3 +61,4 @@ fi
 
 echo "PASS: probe.summary is built from the label argument, an if test and a for loop"
 exit 0
+ASTRONA_STUDENT_SCRIPT

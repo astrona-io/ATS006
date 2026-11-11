@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 ACCESS_LOG=/var/log-collector/incident/access.log
@@ -28,3 +30,4 @@ fi
 
 echo "PASS: attacker-requests.log contains exactly the 3 matching lines, and access.log is untouched"
 exit 0
+ASTRONA_STUDENT_SCRIPT

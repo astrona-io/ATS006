@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: creates the bare "deploy-configs" upstream repository, seeds
 # main with a single initial commit, and creates three candidate
 # environment branches (env-staging, env-canary, env-prod) off that same
@@ -64,3 +66,4 @@ git -C "$SEED" commit -q -am "confirm feature flag stays disabled in prod"
 git -C "$SEED" push -q origin env-prod
 
 rm -rf "$SEED"
+ASTRONA_STUDENT_SCRIPT

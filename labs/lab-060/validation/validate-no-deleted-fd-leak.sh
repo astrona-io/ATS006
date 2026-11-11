@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms no deleted-but-open audit-svc file descriptors remain --
 # either truncated live via /proc/PID/fd or cleared by a service restart.
 
@@ -13,3 +15,4 @@ fi
 
 echo "PASS: no deleted-but-open audit-svc file descriptors remain"
 exit 0
+ASTRONA_STUDENT_SCRIPT

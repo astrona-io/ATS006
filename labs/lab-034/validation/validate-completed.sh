@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 DIR=/home/candidate/report
@@ -34,3 +36,4 @@ expected=$(printf 'COOK\nENGINEER\nMEDIC\nPILOT')
 
 echo "PASS: all five reports hold the expected content"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 NGINX_LOG=/var/log-collector/003/nginx.log
@@ -48,3 +50,4 @@ fi
 
 echo "PASS: nginx.log.extracted contains exactly the matching lines and server.log was redacted correctly"
 exit 0
+ASTRONA_STUDENT_SCRIPT

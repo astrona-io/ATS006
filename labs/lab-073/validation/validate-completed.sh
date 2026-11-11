@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 DIR=/opt/tls/internal-web-srv1
@@ -95,3 +97,4 @@ fi
 
 echo "PASS: RSA key, SAN certificate, and CSR generated correctly and the key/cert pair matches"
 exit 0
+ASTRONA_STUDENT_SCRIPT

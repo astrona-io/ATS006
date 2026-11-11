@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap for the "data-001" VM: rsync source + SSH client role. Installs
 # rsync/openssh and seeds /srv/appdata with a small working tree
 # (including a tmp/ subdirectory that must be excluded from the sync),
@@ -27,3 +29,4 @@ echo "scratch space, must never be synced" | sudo tee /srv/appdata/tmp/scratch.t
 if ! grep -q '[[:space:]]data-002$' /etc/hosts; then
   echo "10.10.60.10 data-002" | sudo tee -a /etc/hosts >/dev/null
 fi
+ASTRONA_STUDENT_SCRIPT

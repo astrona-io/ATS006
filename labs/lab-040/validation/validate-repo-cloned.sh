@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the deploy-configs repository was cloned to the expected path
 # and points at the shared bare upstream.
 
@@ -20,3 +22,4 @@ fi
 
 echo "PASS: deploy-configs cloned to $REPO with origin pointing at $UPSTREAM"
 exit 0
+ASTRONA_STUDENT_SCRIPT

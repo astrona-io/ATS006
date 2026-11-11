@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 REPO=/home/candidate/repositories/auto-verifier
@@ -54,3 +56,4 @@ fi
 
 echo "PASS: dev5 merged into main, and logs/.keep committed correctly"
 exit 0
+ASTRONA_STUDENT_SCRIPT

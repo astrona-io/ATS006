@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 BLOCKING="$HOME/blocking-command.txt"
@@ -30,3 +32,4 @@ fi
 
 echo "PASS: both recovered history commands are correct"
 exit 0
+ASTRONA_STUDENT_SCRIPT

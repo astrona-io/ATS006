@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 SRC=/srv/teamspace/release-src
@@ -54,3 +56,4 @@ fi
 
 echo "PASS: release tree built, app.conf copied with mode and time kept, old-release.txt moved, tmp-build removed"
 exit 0
+ASTRONA_STUDENT_SCRIPT

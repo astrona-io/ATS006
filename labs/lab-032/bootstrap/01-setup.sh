@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: seeds a plausible prior investigation session into this
 # user's bash history file so there's real content to search and
 # reconstruct. This does NOT configure any of the HISTSIZE/HISTFILESIZE/
@@ -22,3 +24,4 @@ exit
 EOF
 
 chmod 600 "$HOME/.bash_history"
+ASTRONA_STUDENT_SCRIPT
