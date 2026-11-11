@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 sudo -H -u candidate bash <<'CANDIDATE_SOLUTION'
 set -euo pipefail
 cat >/home/candidate/scripts/count-lines.sh <<'REFERENCE_FILE'

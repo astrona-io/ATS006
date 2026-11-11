@@ -77,8 +77,8 @@ if [[ ! -d "$RESTORE_FULL/etc" ]] || [[ ! -d "$RESTORE_FULL/srv/appdata" ]]; the
   exit 1
 fi
 
-if ! sudo diff -rq "$expected/etc" "$RESTORE_FULL/etc" >/dev/null 2>&1; then
-  echo "FAIL: sudo diff -r /etc $RESTORE_FULL/etc found differences -- full restore of /etc is not correct"
+if ! sudo diff --no-dereference -rq "$expected/etc" "$RESTORE_FULL/etc" >/dev/null 2>&1; then
+  echo "FAIL: full restore of /etc differs from the full archive"
   exit 1
 fi
 
@@ -105,8 +105,8 @@ if [[ ! -d "$RESTORE_INCR/etc" ]] || [[ ! -d "$RESTORE_INCR/srv/appdata" ]]; the
   exit 1
 fi
 
-if ! sudo diff -rq "$expected/etc" "$RESTORE_INCR/etc" >/dev/null 2>&1; then
-  echo "FAIL: sudo diff -r /etc $RESTORE_INCR/etc found differences -- layered restore of /etc is not correct"
+if ! sudo diff --no-dereference -rq "$expected/etc" "$RESTORE_INCR/etc" >/dev/null 2>&1; then
+  echo "FAIL: layered restore of /etc differs from the full and incremental archives"
   exit 1
 fi
 

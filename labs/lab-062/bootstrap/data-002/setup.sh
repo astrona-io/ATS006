@@ -21,6 +21,8 @@ fi
 sudo mkdir -p /backup/appdata
 echo "a report nobody has needed in years" | sudo tee /backup/appdata/decommissioned-report.txt > /dev/null
 sudo mkdir -p /backup/snapshots
+# The SSH account receives the unprivileged rsync transfer.
+sudo chown -R student:student /backup/appdata /backup/snapshots
 
 # data-001's static IP on the lab-net network -- so "ssh data-001" style
 # hostname usage resolves without depending on the astrona runtime's own

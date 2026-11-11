@@ -32,5 +32,5 @@ REFERENCE_FILE
 chmod +x /opt/monitor/run-check.sh
 status=0
 /opt/monitor/run-check.sh nightly-check || status=$?
-test "$status" -ne 0
+test "$status" -eq 0
 

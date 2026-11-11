@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+sudo -n bash <<'ARCHIVE_REFERENCE'
 set -euo pipefail
 tar -tjf /exports/reports-2026-08.tar.bz2 | sort > /exports/reports-2026-08.tar.bz2_list
 work=$(mktemp -d)
@@ -16,3 +17,4 @@ sudo tar -xzpf /backup/services-full.tar.gz -C /restore/services-full
 sudo tar -xzpf /backup/services-full.tar.gz -C /restore/services-current
 sudo tar -xzpf /backup/services-incr.tar.gz -C /restore/services-current
 
+ARCHIVE_REFERENCE

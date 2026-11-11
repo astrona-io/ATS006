@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 sudo -H -u candidate bash <<'CANDIDATE_SOLUTION'
 set -euo pipefail
 cd /home/candidate/cargo
@@ -8,6 +9,6 @@ mv old-crew.txt archive/2026/
 ln crew.txt crew-hard.txt
 ln -s crew.txt crew-soft.txt
 rm -r scratch
-sudo chgrp -R loaders crates
 
 CANDIDATE_SOLUTION
+sudo chgrp -R loaders /home/candidate/cargo/crates
