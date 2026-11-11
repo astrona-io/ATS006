@@ -1,0 +1,10 @@
+{
+  "initial_failures": {
+    "default/verify-find-triage": "file\\(s\\) modified before 2020-01-01 were not deleted"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ]
+}

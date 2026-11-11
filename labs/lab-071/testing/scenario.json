@@ -1,0 +1,13 @@
+{
+  "initial_failures": {
+    "default/verify-metrics-collector-service": "system user 'metrics' does not exist"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "reboot": [
+    "default"
+  ]
+}

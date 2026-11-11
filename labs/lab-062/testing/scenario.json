@@ -1,0 +1,11 @@
+{
+  "initial_failures": {
+    "data-002/verify-mirror-synced": "mirror synced - /backup/appdata/app.conf is missing"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh",
+      "vm": "data-001"
+    }
+  ]
+}

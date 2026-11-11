@@ -1,0 +1,10 @@
+{
+  "initial_failures": {
+    "default/verify-aliases-completed": "missing a persistent 'alias ll='"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ]
+}

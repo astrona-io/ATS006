@@ -1,0 +1,10 @@
+{
+  "initial_failures": {
+    "default/verify-chmod-permission-bits": "/srv/shared/reports mode is"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ]
+}

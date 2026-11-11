@@ -1,0 +1,10 @@
+{
+  "initial_failures": {
+    "default/verify-flightplan-and-answers": "(answers.txt is missing|flightplan.conf does not have the expected content)"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ]
+}
