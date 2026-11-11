@@ -1,0 +1,31 @@
+{
+  "initial_failures": {
+    "default/verify-service-budget": "FAIL: service CPU quota must be 25 percent"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "removed-limit",
+      "apply": [
+        {
+          "script": "testing/unlimited.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-service-budget": "FAIL: service CPU quota must be 25 percent"
+      },
+      "restore": [
+        {
+          "script": "testing/restore.sh"
+        }
+      ]
+    }
+  ],
+  "reboot": [
+    "default"
+  ]
+}

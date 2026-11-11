@@ -1,0 +1,31 @@
+{
+  "initial_failures": {
+    "default/verify-trusted-service": "trusted hostname-verified TLS request failed"
+  },
+  "solution": [
+    {
+      "script": "testing/reference.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "expired-certificate",
+      "apply": [
+        {
+          "script": "testing/expired.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-trusted-service": "trusted hostname-verified TLS request failed"
+      },
+      "restore": [
+        {
+          "script": "testing/reference.sh"
+        }
+      ]
+    }
+  ],
+  "reboot": [
+    "default"
+  ]
+}

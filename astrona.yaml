@@ -1000,6 +1000,31 @@ modules:
       - type: reading
         title: "Wrap-Up: Mission Debrief"
         path: sections/section-070/module-03/course-04-wrap-up.md
+      - type: reading
+        title: Certificate Trust and Expiry
+        path: sections/section-070/module-04/course.md
+      - type: reading
+        title: Verify and Renew a Service Certificate
+        path: sections/section-070/module-04/course-01-verify-and-renew.md
+      - type: reading
+        title: TLS Repair Tasks
+        path: labs/lab-074/docs/question.md
+      - type: lab
+        title: TLS Trust and Expiry Repair
+        path: labs/lab-074
+        difficulty: intermediate
+        estimated_duration: 15m
+        topic: tls
+        task_kind: troubleshooting
+        tags:
+        - openssl
+        - trust
+        - expiry
+        - nginx
+        learning_goals:
+        - Diagnose certificate expiry separately from trust and hostname errors
+        - Issue and deploy a certificate with a DNS SAN
+        - Verify the live service and reject an unrelated authority
       - type: quiz
         title: "Section 070 Knowledge Check: Service Configuration"
         path: sections/section-070/quiz.yaml
@@ -1028,6 +1053,63 @@ modules:
             url: https://docs.openssl.org/3.0/man1/openssl-req/
           - name: "openssl-x509"
             url: https://docs.openssl.org/3.0/man1/openssl-x509/
+
+
+  - id: module-performance
+    title: 'Section 080: Performance and application constraints'
+    content:
+    - type: reading
+      title: Performance and constraints
+      path: sections/section-080/README.md
+    - type: reading
+      title: Diagnose and limit a CPU-heavy service
+      path: sections/section-080/module-01/course.md
+    - type: reading
+      title: Diagnosis and persistent limits
+      path: sections/section-080/module-01/course-01-diagnosis.md
+    - type: reading
+      title: Question
+      path: labs/lab-081/docs/question.md
+    - type: lab
+      title: Diagnose and limit a CPU-heavy service
+      path: labs/lab-081
+      difficulty: intermediate
+      estimated_duration: 15m
+      topic: performance
+      task_kind: troubleshooting
+      learning_goals:
+      - Diagnose and constrain a service with cpu pressure
+      tags:
+      - systemd
+      - performance
+      - cpu
+    - type: reading
+      title: Recover a service from a memory limit
+      path: sections/section-080/module-02/course.md
+    - type: reading
+      title: Diagnosis and persistent limits
+      path: sections/section-080/module-02/course-01-diagnosis.md
+    - type: reading
+      title: Question
+      path: labs/lab-082/docs/question.md
+    - type: lab
+      title: Recover a service from a memory limit
+      path: labs/lab-082
+      difficulty: intermediate
+      estimated_duration: 15m
+      topic: performance
+      task_kind: troubleshooting
+      learning_goals:
+      - Diagnose and constrain a service with memory pressure
+      tags:
+      - systemd
+      - performance
+      - memory
+
+      - type: quiz
+        title: "Performance Diagnosis Knowledge Check"
+        path: sections/section-080/quiz.yaml
+        pass_score: 70
 
   - id: module-080
     title: "LFCS Essential Commands Domain Certification Quiz"

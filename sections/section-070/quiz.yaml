@@ -50,7 +50,7 @@ questions:
         explanation: "`on-failure` only restarts after a non-zero exit code or certain signals."
       - id: b
         text: "It stays stopped, because a clean deliberate stop is not a failure."
-        explanation: "Correct. `Restart=always` would restart it, but `on-failure` does not."
+        explanation: "Correct. An explicit systemctl stop suppresses automatic restart, including Restart=always."
       - id: c
         text: "It is disabled for the next boot as well."
         explanation: "Stopping a unit does not change whether it is enabled."

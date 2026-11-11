@@ -1,0 +1,137 @@
+schema_version: 1
+kind: question_bank
+id: ats006-080
+course_id: ATS006
+exam_code: LFCS
+status: alpha
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-080
+  title: Performance diagnosis and service budgets
+questions:
+- id: ats006-080-q01
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Interpret CPUQuota as a fraction of one CPU
+  source_readings:
+  - sections/section-080/module-01/course-01-diagnosis.md
+  prompt: A service keeps one CPU busy on a four-CPU host. It must continue processing work while using
+    at most one quarter of one CPU over each quota period. Which persistent service setting meets that
+    budget?
+  options:
+  - id: a
+    text: CPUWeight=25
+    explanation: Weight changes relative shares under contention; it is not a hard budget.
+  - id: b
+    text: CPUQuota=25%
+    explanation: This limits CPU time to 25% of one CPU over the quota period.
+  - id: c
+    text: CPUQuota=100%
+    explanation: This permits one full CPU rather than a quarter.
+  - id: d
+    text: Nice=19
+    explanation: Niceness changes scheduling priority but does not enforce a CPU-time budget.
+  correct_option: b
+  explanation: CPUQuota=25% expresses a quarter of one CPU, regardless of the host CPU count. A weight
+    or nice value cannot enforce that ceiling.
+- id: ats006-080-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish interval measurements from boot averages
+  source_readings:
+  - sections/section-080/module-01/course-01-diagnosis.md
+  prompt: You just started vmstat 1 while investigating a new CPU spike. The first line looks quiet but
+    later lines show heavy user CPU. Which data should you compare with a contemporaneous pidstat sample?
+  options:
+  - id: a
+    text: Only the first line, because later lines are cumulative.
+    explanation: The first line is the aggregate since boot; later lines describe intervals.
+  - id: b
+    text: The load average alone, because it identifies the process.
+    explanation: Load does not identify the responsible process or distinguish every wait state.
+  - id: c
+    text: Only the number of configured virtual CPUs.
+    explanation: CPU count is capacity, not a measurement of current demand.
+  - id: d
+    text: The later vmstat interval lines and the matching pidstat interval.
+    explanation: These describe the same recent measurement period and attribute CPU use to processes.
+  correct_option: d
+  explanation: Use aligned intervals to investigate current demand. The first vmstat report can hide a
+    recent spike in its since-boot average.
+- id: ats006-080-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish a service memory limit from host exhaustion
+  source_readings:
+  - sections/section-080/module-02/course-01-diagnosis.md
+  prompt: A process allocates 64 MiB and repeatedly restarts. The host has abundant available memory,
+    but its unit has MemoryMax=32M. What should you inspect first to explain the failure?
+  options:
+  - id: a
+    text: The unit journal and cgroup memory limit/OOM counters.
+    explanation: These can establish that the service hit its own ceiling despite free host memory.
+  - id: b
+    text: Only the host swap size, then increase it.
+    explanation: A cgroup limit can still kill the process while the host has free memory or swap.
+  - id: c
+    text: The CPU niceness of the service.
+    explanation: Niceness cannot explain an allocation exceeding the service memory limit.
+  - id: d
+    text: The number of enabled systemd targets.
+    explanation: Targets group units; their count does not determine the service memory budget.
+  correct_option: a
+  explanation: A per-service memory ceiling can cause an OOM kill independently of host exhaustion. Correlate
+    the effective limit, memory events and unit journal before changing the budget.
+- id: ats006-080-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish MemoryHigh pressure from MemoryMax enforcement
+  source_readings:
+  - sections/section-080/module-02/course-01-diagnosis.md
+  prompt: An administrator wants pressure and reclaim to begin at 96 MiB, with a hard service limit of
+    128 MiB. Which pair expresses that policy?
+  options:
+  - id: a
+    text: MemoryHigh=128M and MemoryMax=96M
+    explanation: The hard limit would be lower than the intended pressure threshold.
+  - id: b
+    text: MemoryLow=96M and MemorySwapMax=128M
+    explanation: MemoryLow protects memory from reclaim; MemorySwapMax limits swap rather than total resident
+      memory.
+  - id: c
+    text: MemoryHigh=96M and MemoryMax=128M
+    explanation: High applies reclaim pressure; Max imposes the hard limit.
+  - id: d
+    text: MemoryMin=96M and MemoryHigh=128M
+    explanation: MemoryMin protects memory; High alone does not impose the requested hard limit.
+  correct_option: c
+  explanation: MemoryHigh is a pressure boundary that can be exceeded, while MemoryMax is the hard ceiling.
+    The two settings have distinct roles.
+- id: ats006-080-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Verify runtime health and boot persistence
+  source_readings:
+  - sections/section-080/module-02/course-01-diagnosis.md
+  prompt: A repaired service is active immediately after restart. Previously it was killed and restarted
+    every few seconds. What evidence best establishes that the repair persists and the workload remains
+    healthy?
+  options:
+  - id: a
+    text: Check that the drop-in file exists, then stop the service.
+    explanation: A file does not prove effective settings, and stopping the workload bypasses the requirement.
+  - id: b
+    text: Observe stable restart counts and expected memory use, reboot, then repeat the checks and inspect
+      effective limits.
+    explanation: This checks the running workload, the absence of the restart loop and persistence across
+      boot.
+  - id: c
+    text: Read the previous boot journal without starting the service.
+    explanation: Historical logs do not establish the current workload or settings.
+  - id: d
+    text: Set MemoryMax=infinity and check that the process exists.
+    explanation: Removing the required ceiling bypasses the assigned resource budget.
+  correct_option: b
+  explanation: Check both effective limits and live behavior over an observation interval. Rebooting establishes
+    that the persistent configuration is loaded again.
