@@ -5,9 +5,13 @@ set -u
 fail() { echo "FAIL: $*"; exit 1; }
 body=$(sudo curl --noproxy '*' --silent --show-error --fail --max-time 5 \
   --cacert /opt/lab-ca/ca.crt --resolve status.lab.internal:8443:127.0.0.1 \
-  https://status.lab.internal:8443/ 2>/dev/null) || fail 'trusted hostname-verified TLS request failed'
+  https://status.lab.internal:8443/) || fail 'trusted hostname-verified TLS request failed'
 test "$body" = 'certificate service ready' || fail 'TLS service returned the wrong application body'
-sudo openssl x509 -in /etc/nginx/tls/status.crt -checkend 604800 -noout >/dev/null || fail 'certificate must remain valid for at least seven days'
+certificate=$(mktemp)
+trap 'rm -f "$certificate"' EXIT
+timeout 10 openssl s_client -connect 127.0.0.1:8443 -servername status.lab.internal \
+  -showcerts </dev/null 2>/dev/null | openssl x509 -out "$certificate" 2>/dev/null || fail 'could not read the served certificate'
+openssl x509 -in "$certificate" -checkend 604800 -noout >/dev/null || fail 'served certificate must remain valid for at least seven days'
 status=0
 sudo curl --noproxy '*' --silent --max-time 5 --cacert /opt/lab-ca/unrelated.crt \
   --resolve status.lab.internal:8443:127.0.0.1 https://status.lab.internal:8443/ >/dev/null 2>&1 || status=$?
