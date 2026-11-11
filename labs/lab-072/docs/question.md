@@ -9,3 +9,14 @@ Astronaut, this ship runs `nginx.service`, installed by a package. The package o
 3. Apply both changes as a drop-in override under `/etc/systemd/system/nginx.service.d/`. Do **not** edit the vendor-shipped unit file at `/usr/lib/systemd/system/nginx.service`: it must stay byte-for-byte unchanged.
 4. Reload systemd and restart `nginx`, so the changes take effect on the running process. The service must be running when you finish.
 5. Confirm with `systemctl show` that the merged, effective configuration has both changes.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-02](../../../sections/section-070/module-02/course.md).
+
+The grader checks:
+
+- Confirms a drop-in override sets Restart and Environment without modifying the vendor unit file.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

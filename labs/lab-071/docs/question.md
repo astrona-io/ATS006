@@ -14,3 +14,14 @@ Make systemd, the ship's duty officer, responsible for it:
    - restarts automatically on failure (`Restart=on-failure`),
    - only starts after the network is really usable, not just configured (`After=network-online.target` and `Wants=network-online.target`).
 4. Reload systemd, then enable and start the service, so it is running now and comes back after a reboot.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-070/module-01/course.md).
+
+The grader checks:
+
+- Confirms the metrics user, unit directives, and running/enabled state of metrics-collector.service.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

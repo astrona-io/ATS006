@@ -58,3 +58,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 A full filesystem stops logs, databases and uploads. The "deleted but still open" case is one of the most confusing ones, because the normal fix (find the big files and delete them) does nothing. If you know the mechanism, you can find the cause in a few commands and fix it without restarting anything.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Diskspace Troubleshooting Lab](../../../labs/lab-061/docs/question.md): Show that df and du disagree on the same filesystem; Find the process holding a deleted file open; Reclaim the space without deleting the application's legitimate logs.
+- [Diskspace & Sync Capstone Lab](../../../labs/lab-060/docs/question.md): Find the process holding a deleted file open and reclaim the space without deleting legitimate logs; Back up a directory with rsync and take a hard-linked snapshot with --link-dest.

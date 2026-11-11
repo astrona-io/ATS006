@@ -18,3 +18,18 @@ The grader checks that:
 - `audit.log.1`, `audit.log.2` and `audit.log.3` are still in `/var/log/audit-svc`.
 - `/backup/audit-svc-full` holds the three log files and does **not** hold `audit.log.4`.
 - `/backup/audit-svc-snap2` holds the three log files with a link count greater than 1, and an `audit.log.4` that contains `new audit batch`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-060/module-01/course.md), [module-02](../../../sections/section-060/module-02/course.md).
+
+The grader checks:
+
+- Confirms /var/log/audit-svc usage has dropped substantially from its near-100% baseline.
+- Confirms no deleted-but-open audit-svc file descriptors remain.
+- Confirms the legitimate audit.log.1/2/3 files were not deleted as part of the fix.
+- Confirms /backup/audit-svc-full holds a full rsync copy taken before audit.log.4 was created.
+- Confirms /backup/audit-svc-snap2 is a complete snapshot with unchanged files hardlinked against the full backup and audit.log.4 present as new content.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

@@ -13,3 +13,14 @@ Astronaut, you are auditing your own recent work before you hand the ship over t
    Set each one as an `export` line, for example `export HISTSIZE=5000`.
 2. Your shell history already contains the commands of an earlier investigation session. Find the exact `ssh` command that was used to jump to `db-02`, and write it, verbatim and nothing else, into `~/recovered-ssh-command.txt`.
 3. Find the exact command that ran immediately before that `ssh` command, and write it, verbatim and nothing else, into `~/command-before-ssh.txt`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-02](../../../sections/section-030/module-02/course.md).
+
+The grader checks:
+
+- Confirms HISTSIZE/HISTFILESIZE/HISTCONTROL/HISTTIMEFORMAT are persisted and the two recovered commands are correct.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

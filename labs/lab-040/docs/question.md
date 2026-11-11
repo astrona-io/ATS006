@@ -22,3 +22,19 @@ max_connections: 100
 log_level: info
 timeout: 60
 ```
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-040/module-01/course.md), [module-02](../../../sections/section-040/module-02/course.md), [module-03](../../../sections/section-040/module-03/course.md).
+
+The grader checks:
+
+- Confirms the deploy-configs repository was cloned to the expected path.
+- Confirms only the env-canary branch (feature_flag: enabled) was merged into main.
+- Confirms scripts/.keep was committed with the exact expected message.
+- Confirms both the retry-limit bump and the simulated upstream timeout commit landed on main.
+- Confirms the reconciliation used a rebase (no merge commits) resulting in a linear history.
+- Confirms the exact, ordered sequence of commit messages on main's final history.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

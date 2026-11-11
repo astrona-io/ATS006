@@ -12,3 +12,14 @@ Create a new script at `/opt/course/4/script.sh`, and make it executable. The sc
 4. Output the content of `VARIABLE3`.
 
 The script must print exactly these two values, one per line, and nothing else. Do not change `~/.bashrc`: everything happens inside the script.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-02](../../../sections/section-010/module-02/course.md).
+
+The grader checks:
+
+- Confirms script.sh defines VARIABLE2 as shell-local, exports VARIABLE3 correctly, produces the right output, and .bashrc was never touched.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

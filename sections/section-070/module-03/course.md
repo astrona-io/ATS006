@@ -60,3 +60,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 The exam asks you to produce working key and certificate files by hand. Small slips cause big failures: a key other users can read, a certificate without a SAN that every modern client quietly rejects, or a certificate made from an old key that will not work with the new one. This module shows you how to make each file and how to prove it is right before a service ever uses it.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [SSL Certificate Generation Lab](../../../labs/lab-073/docs/question.md): Generate an RSA key with tight permissions and a self-signed certificate with a SAN; Create a CSR for the same key and hostname; Prove the key and the certificate are a matching pair.
+- [Service Configuration Capstone Lab](../../../labs/lab-070/docs/question.md): Wrap a script as a systemd service that runs as its own non-root user; Change the restart delay with a drop-in override, not by editing the unit file; Issue a key and a self-signed certificate with a SAN and prove they match.

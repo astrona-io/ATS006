@@ -37,3 +37,21 @@ The release files wait in `/srv/teamspace/release-src`. Everything here belongs 
 6. Give the group `ops` ownership of `/srv/teamspace/releases` and everything inside it. The owner stays `root`.
 
 The grader starts a fresh login for `opsuser` and checks the modes of a new file and directory, checks the exact modes of the three workspace paths, creates a file in `/srv/teamspace/shared` as `opsuser` and checks its group, checks where every file in `/srv/teamspace/incoming` ended up, and checks the release tree, the preserved mode and time, the hard link's inode, the symbolic link's target and the group of every file and folder under `/srv/teamspace/releases`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-020/module-01/course.md), [module-02](../../../sections/section-020/module-02/course.md), [module-03](../../../sections/section-020/module-03/course.md), [module-04](../../../sections/section-020/module-04/course.md).
+
+The grader checks:
+
+- Confirms a fresh login shell for opsuser produces 640 files and 750 directories with no chmod involved.
+- Confirms /srv/teamspace/shared is mode 2770 owned by group ops, and that new files inside it inherit the ops group.
+- Confirms /srv/teamspace/bin/deploy.sh is mode 700.
+- Confirms /srv/teamspace/dropbox is mode 1777.
+- Confirms files older than the cutoff were deleted from /srv/teamspace/incoming, and remaining files were correctly split into archive/small and archive/large.
+- Confirms permission-777 files were moved to quarantine/ and the untouched mid-range files remain at the top level.
+- Confirms the release tree exists, app.conf was copied with its mode and time kept, old-release.txt was moved and tmp-build was removed.
+- Confirms the hard link shares the copy's inode, the symbolic link has the relative target 2026/q1 and everything under releases has group ops.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

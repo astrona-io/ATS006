@@ -58,3 +58,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 A log file that is missing the one error line you needed is worse than no log file at all. It looks complete, so nobody checks it. Getting redirection right means the right text lands in the right place. Getting the exit code right means a script knows when something failed, instead of carrying on as if everything worked.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Shell Redirection & Exit Code Diagnostics Lab](../../../labs/lab-011/docs/question.md): Send a program's stdout and stderr to separate files; Capture both streams in one file with the redirections in the right order; Record a program's exit code before another command overwrites it.
+- [Shell Semantics Integration Capstone Lab](../../../labs/lab-010/docs/question.md): Export one variable to a child process while keeping another one local to the script; Capture a child's stdout, stderr, both streams together and its exit code in separate files; Use an argument, an if test and a for loop to write a summary, then exit with the program's own exit code.

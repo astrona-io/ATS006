@@ -54,3 +54,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 A script that guesses its input breaks on the first odd file name. A script that checks its arguments, quotes its variables and returns an honest exit code can be trusted by cron, by a pipeline and by the next administrator.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Shell Script Arguments, Tests and Loops Lab](../../../labs/lab-013/docs/question.md): Check a script's arguments and report a wrong usage on stderr with the right exit code; Loop over files whose names hold spaces and sum a value across them.
+- [Shell Semantics Integration Capstone Lab](../../../labs/lab-010/docs/question.md): Export one variable to a child process while keeping another one local to the script; Capture a child's stdout, stderr, both streams together and its exit code in separate files; Use an argument, an if test and a for loop to write a summary, then exit with the program's own exit code.

@@ -9,3 +9,14 @@ Astronaut, the `analysts` team is moving into a shared compartment on this ship,
 3. `/srv/shared/dropbox` is a shared drop folder. Everyone must be able to read, write and enter it, but a person may delete only their *own* files from it, never someone else's.
 
 The grader checks the exact mode of all three paths, and checks that a new file created in `/srv/shared/reports` by `someanalyst` gets the group `analysts`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-020/module-01/course.md).
+
+The grader checks:
+
+- Confirms setgid on the shared reports directory (with group inheritance), owner-only lockdown on backup-runner.sh, and the sticky bit on dropbox.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

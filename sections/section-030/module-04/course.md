@@ -51,3 +51,9 @@ astrona ssh text-filters-playground
 ## Why this matters
 
 Most reports on a Linux machine are made by a short pipeline, not by a program. A pipeline that sorts as text when you meant numbers puts `9` after `10`, and one that forgets `sort` before `uniq` counts nothing right. Knowing each filter's one habit saves hours.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Sort, Count, Cut and Compare Text Lab](../../../labs/lab-034/docs/question.md): Rank values by count with sort and uniq; Sum and select fields with cut and awk; Compare two files and save the difference.
+- [Everyday Shell Craft Capstone Lab](../../../labs/lab-030/docs/question.md): Extract and redact incident log lines with grep and sed, and recover exact commands from shell history; Persist aliases, and build reports with sort, uniq, cut and awk; Edit a file in an editor and look up facts in the manual pages.

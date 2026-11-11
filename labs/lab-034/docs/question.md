@@ -11,3 +11,14 @@ Astronaut, mission control wants five small reports. The input files are in `/ho
 5. `roles.txt`: the roles in `crew.csv`, each one once, in capital letters, sorted alphabetically, one per line.
 
 The grader checks the content of each report.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-04](../../../sections/section-030/module-04/course.md).
+
+The grader checks:
+
+- Checks the five report files against the values that the data files produce.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

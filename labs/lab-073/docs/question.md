@@ -22,3 +22,14 @@ openssl rsa -in internal.web-srv1.local.key -noout -modulus
 ```
 
 The last two values must match. A request with the correct name but another key would produce a certificate this service cannot use. The grader verifies current validity and the request's signature and key as well as the certificate's fields. Trusting this self-signed certificate explicitly is only appropriate inside this lab.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-03](../../../sections/section-070/module-03/course.md).
+
+The grader checks:
+
+- Confirms the RSA key, self-signed SAN certificate, CSR, and key/cert pairing.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

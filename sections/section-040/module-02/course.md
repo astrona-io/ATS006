@@ -57,3 +57,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 On a real team, several people propose changes to the same configuration on different branches. Your job is often to find the one branch that holds the right value and bring only that one into `main`, without disturbing your own work. Doing that quickly and safely, from the command line, is exactly what the exam checks.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Git Branch Inspection & Merge Lab](../../../labs/lab-042/docs/question.md): Read a file on several branches without checking them out; Merge only the matching branch into main; Commit an otherwise empty directory with a placeholder file.
+- [Git Operations Capstone Lab](../../../labs/lab-040/docs/question.md): Find and merge the one branch with the right setting without checking the candidates out; Push with upstream tracking and rebase a topic branch onto an upstream that moved; Keep main's history linear with fast-forward merges.

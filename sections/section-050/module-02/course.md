@@ -61,3 +61,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Backups are only tested on the worst day: when something is gone. On that day you need the right files, with the right owners and permissions, without waiting for a week of full copies to unpack. The exam checks the same thing a real incident does: not that you ran `tar`, but that the restore matches the original.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [tar Backup Strategy Lab](../../../labs/lab-052/docs/question.md): Take a full backup with a snapshot file, permissions kept and a cache directory excluded; Take a true incremental backup and layer it over the full backup on restore; Prove both restores with an explicit comparison.
+- [Archiving & Backup Capstone Lab](../../../labs/lab-050/docs/question.md): Convert a bzip2 archive to gzip at the best level and prove both hold the same files; Take a full and a true incremental tar backup with a snapshot file and an exclude; Restore the full backup alone and with the increment, and prove both restores.

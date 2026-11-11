@@ -13,3 +13,16 @@ A crew mate already ran `du -sh /var/log/reporting-app`. It reports only a few m
 5. Confirm with `df -h` that usage on that filesystem has dropped substantially.
 
 The grader checks that the filesystem is at most 50% full, that `lsof +L1` no longer lists any deleted `reporting-app` file as open, and that all three legitimate log files are still there.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-060/module-01/course.md).
+
+The grader checks:
+
+- Confirms /var/log/reporting-app usage has dropped substantially from its near-100% baseline.
+- Confirms no deleted-but-open reporting-app file descriptors remain.
+- Confirms the legitimate reporting-app.log.* files were not deleted as part of the fix.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

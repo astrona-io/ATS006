@@ -31,3 +31,5 @@ sudo systemctl reload nginx
 The private key stays mode 600. Reusing it is appropriate for this expiry exercise; a suspected key compromise would require a new key and revocation handling. The CA signing key is colocated here only to make the sandbox self-contained.
 
 Repeat the trusted request, then replace the CA path with `/opt/lab-ca/unrelated.crt`. The first must return the application body and the second must fail certificate verification. `openssl x509 -checkend 604800 -noout -in /etc/nginx/tls/status.crt` checks whether the on-disk certificate remains valid for seven days. It does not prove NGINX loaded that file; the live request checks the served certificate. Reboot and repeat to establish persistence.
+
+Reference: [curl certificate verification](https://curl.se/docs/sslcerts.html).

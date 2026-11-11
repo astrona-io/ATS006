@@ -25,3 +25,19 @@ Create a wrapper script at `/opt/monitor/run-check.sh` which, every time it runs
 5. Exits itself with exactly the same exit code that `/usr/local/bin/service-probe` returned.
 
 `/var/log/monitor` already exists and is writable by your user. Make the script executable. The grader runs your script itself, with and without a label, and then checks every file.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-010/module-01/course.md), [module-02](../../../sections/section-010/module-02/course.md), [module-03](../../../sections/section-010/module-03/course.md).
+
+The grader checks:
+
+- Confirms run-check.sh exports PROBE_MODE=strict to the child probe but keeps CHECK_ID shell-local.
+- Confirms probe.out contains only the probe's stdout content.
+- Confirms probe.err contains only the probe's stderr content, with no leaked CHECK_ID warning.
+- Confirms probe.combined interleaves both stdout and stderr content.
+- Confirms the wrapper writes probe.summary from its optional label argument, an if test and a for loop.
+- Confirms probe.exit captured 0 and that run-check.sh itself exits with the probe's exit code.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

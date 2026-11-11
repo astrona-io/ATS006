@@ -11,3 +11,14 @@ Astronaut, mission control has installed a diagnostic program on this ship at `/
 5. Run `/bin/output-generator` and write its numeric **exit code** into `/var/output-generator/4.out`.
 
 The grader checks that `1.out` holds only the stdout line, `2.out` holds only the stderr line, `3.out` holds both, and `4.out` holds the program's exit code as a number.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-010/module-01/course.md).
+
+The grader checks:
+
+- Confirms stdout/stderr were captured independently, combined correctly, and the exit code was captured accurately.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

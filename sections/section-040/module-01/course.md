@@ -60,3 +60,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Configuration files, scripts and firewall rules more and more often live in a Git repository before they reach a server. An administrator who can create a repository, read its state and push it to a shared place can be trusted with that history. Every other Git skill, such as branches, merges and rebases, builds on the three states and the remote you learn here.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Git Fundamentals Lab](../../../labs/lab-041/docs/question.md): Create a repository and commit files in small, focused steps; Keep build output out of the repository with a .gitignore; Add a bare repository as origin and push with upstream tracking.
+- [Git Operations Capstone Lab](../../../labs/lab-040/docs/question.md): Find and merge the one branch with the right setting without checking the candidates out; Push with upstream tracking and rebase a topic branch onto an upstream that moved; Keep main's history linear with fast-forward merges.

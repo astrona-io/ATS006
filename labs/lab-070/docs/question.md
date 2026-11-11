@@ -29,3 +29,18 @@ Work inside `/opt/healthcheck/tls`, which already exists and belongs to you. TLS
 1. Generate a 2048-bit RSA private key at `healthcheck.key` and restrict its permissions to `600`.
 2. Generate a self-signed X.509 certificate at `healthcheck.crt`, valid for 365 days, with `CN=healthcheck.internal.local` and a SAN (Subject Alternative Name) entry `DNS:healthcheck.internal.local`.
 3. Prove that the private key and the certificate are a matching pair by comparing their RSA modulus values.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-070/module-01/course.md), [module-02](../../../sections/section-070/module-02/course.md), [module-03](../../../sections/section-070/module-03/course.md), [module-04](../../../sections/section-070/module-04/course.md).
+
+The grader checks:
+
+- Confirms healthcheck.service's base unit file has the correct directives and does not itself set RestartSec.
+- Confirms a systemctl edit drop-in (not the base unit) sets RestartSec=10.
+- Confirms healthcheck.service is active, enabled, and the merged RestartSec is actually in effect.
+- Confirms the RSA key and self-signed SAN certificate for healthcheck.internal.local.
+- Confirms the TLS private key and certificate are a matching pair.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

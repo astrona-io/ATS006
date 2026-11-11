@@ -48,3 +48,9 @@ astrona ssh docs-editor-playground
 ## Why this matters
 
 On a rescue console there is no browser and often only `vi`. An administrator who can find the right option in a manual page and fix a config file with an editor is never stuck.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Manual Pages and Editing a File Lab](../../../labs/lab-035/docs/question.md): Edit a configuration file with an editor and keep every other line unchanged; Find a manual page section and a command option with the manual pages.
+- [Everyday Shell Craft Capstone Lab](../../../labs/lab-030/docs/question.md): Extract and redact incident log lines with grep and sed, and recover exact commands from shell history; Persist aliases, and build reports with sort, uniq, cut and awk; Edit a file in an editor and look up facts in the manual pages.

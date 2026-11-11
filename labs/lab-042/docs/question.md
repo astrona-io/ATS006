@@ -13,3 +13,14 @@ The source repository is at `/repositories/auto-verifier`.
 5. Commit only `logs/.keep` with the message `added log directory`.
 
 When you finish, the clone must be checked out on `main`, and the last commit on `main` must be the `added log directory` commit.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-02](../../../sections/section-040/module-02/course.md).
+
+The grader checks:
+
+- Confirms the correct branch was merged into main and the logs/.keep directory was committed.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

@@ -14,3 +14,14 @@ Bootstrap has already created the directories `/home/candidate/projects` and `/r
 6. Confirm that `git fetch` and `git pull` both work against `origin` with no extra arguments.
 
 The history on `main` must hold exactly these three commits, oldest first: `initial commit`, `add usage comment to parser.sh`, `add .gitignore for build artifacts`. `origin`'s `main` must point at the same commit as your local `main`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-040/module-01/course.md).
+
+The grader checks:
+
+- Confirms repository init, staged/committed history, .gitignore behavior, and a working push/fetch/pull remote.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

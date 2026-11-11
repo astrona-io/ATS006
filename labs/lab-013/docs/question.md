@@ -10,3 +10,14 @@ Astronaut, mission control wants a standard procedure that counts the lines of e
 4. File names can hold spaces. A folder with no `.txt` file prints only `total: 0 lines`.
 
 The folder `/home/candidate/inbox` holds files to try it on. The grader runs your script on that folder and on other folders it builds itself.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-03](../../../sections/section-010/module-03/course.md).
+
+The grader checks:
+
+- Runs the script with no argument, a bad argument, a normal folder, a folder with spaces in file names and an empty folder, and checks output and exit codes.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

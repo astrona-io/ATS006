@@ -7,3 +7,14 @@ Allow 10–15 minutes for these tasks after VM startup. This lab runs independen
 3. Reload systemd and restart the service. Measure CPU use over several seconds and confirm the quota remains after reboot.
 
 The grader checks the live service, its finite budget, and the unchanged worker. CI repeats those checks after reboot.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-080/module-01/course.md).
+
+The grader checks:
+
+- verify-service-budget.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

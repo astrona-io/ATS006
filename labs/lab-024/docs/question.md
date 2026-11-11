@@ -12,3 +12,14 @@ Astronaut, tidy the cargo hold in `/home/candidate/cargo`. Work as `candidate`, 
 6. Give the group `loaders` ownership of `/home/candidate/cargo/crates` and everything inside it. The owner must stay `candidate`.
 
 The grader checks the tree, the preserved mode and time, the inode numbers of the hard link, the target of the symbolic link and the group of every file under `crates`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-04](../../../sections/section-020/module-04/course.md).
+
+The grader checks:
+
+- Checks the new tree, the preserved copy, the moved file, the hard link, the symbolic link, the removed folder and the group ownership.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

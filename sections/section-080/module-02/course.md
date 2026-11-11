@@ -5,3 +5,8 @@ Learn to diagnose the assigned service from live measurements and apply a persis
 <!-- astrona:playground -->
 
 Read the [diagnosis lesson](course-01-diagnosis.md), then complete the [independent lab](../../../labs/lab-082/docs/question.md). Startup and package installation are separate from the 10–15 minutes of lab work.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Recover a service from a memory limit](../../../labs/lab-082/docs/question.md): Diagnose and constrain a service with memory pressure.
