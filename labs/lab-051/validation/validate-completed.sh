@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Match the account used by astrona ssh, including its home and permissions.
 sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 set -u
 
 BZ2=/imports/import001.tar.bz2
@@ -76,4 +78,5 @@ fi
 
 echo "PASS: import001.tar.gz created at gzip level 9, listings match, original bz2 archive untouched"
 exit 0
+GRADER_ROOT
 ASTRONA_STUDENT_SCRIPT

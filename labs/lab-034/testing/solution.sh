@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+sudo -H -u candidate bash <<'CANDIDATE_SOLUTION'
 set -euo pipefail
 mkdir -p /home/candidate/report
 cd /home/candidate/data
@@ -10,3 +11,4 @@ status=0
 diff -u settings-old.conf settings-new.conf > /home/candidate/report/settings.diff || status=$?
 test "$status" = 1
 
+CANDIDATE_SOLUTION

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-mkdir -p /opt/monitor
+sudo install -d -o student -g student /opt/monitor /var/log/monitor
 cat >/opt/monitor/run-check.sh <<'REFERENCE_FILE'
 #!/usr/bin/env bash
 

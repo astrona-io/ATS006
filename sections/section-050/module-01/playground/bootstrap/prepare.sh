@@ -6,6 +6,15 @@ sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # There is no task and no grading: poke at it freely.
 set -euo pipefail
 
+missing=()
+for package in bzip2; do
+  dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q 'install ok installed' || missing+=("$package")
+done
+if [ "${#missing[@]}" -gt 0 ]; then
+  sudo apt-get update -y
+  sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing[@]}"
+fi
+
 LEARNER=candidate
 if ! id "$LEARNER" >/dev/null 2>&1; then
     sudo useradd -m -s /bin/bash "$LEARNER"

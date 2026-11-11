@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+sudo -H -u candidate bash <<'CANDIDATE_SOLUTION'
 set -euo pipefail
 cat >/home/candidate/scripts/count-lines.sh <<'REFERENCE_FILE'
 #!/usr/bin/env bash
@@ -25,3 +26,4 @@ echo "total: $total lines"
 REFERENCE_FILE
 chmod +x /home/candidate/scripts/count-lines.sh
 
+CANDIDATE_SOLUTION

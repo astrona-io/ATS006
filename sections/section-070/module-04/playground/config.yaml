@@ -1,7 +1,7 @@
 metadata:
   name: tls-trust-workshop
   docs:
-    overview: docs/overview.md
+    guide: docs/overview.md
 runtime:
   type: qemu
   qemu:

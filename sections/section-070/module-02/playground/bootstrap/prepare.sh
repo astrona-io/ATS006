@@ -17,6 +17,7 @@ as_learner() {
 }
 
 # --- packages the module uses -----------------------------------------------
+sudo apt-get update -y
 for package in nginx; do
     dpkg -s "$package" >/dev/null 2>&1 || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "$package"
 done

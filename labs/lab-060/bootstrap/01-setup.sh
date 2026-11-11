@@ -58,7 +58,7 @@ SEED_MARKER=/var/lib/audit-svc/.seeded
 
 : > "$LOGFILE"
 exec 9<>"$LOGFILE"
-rm -f "$LOGFILE"
+if [ ! -e "$SEED_MARKER" ]; then rm -f "$LOGFILE"; fi
 
 if [ ! -e "$SEED_MARKER" ]; then
   touch "$SEED_MARKER"

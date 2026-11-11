@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Match the account used by astrona ssh, including its home and permissions.
 sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 set -u
 
 if ! id opsuser >/dev/null 2>&1; then
@@ -14,19 +16,19 @@ TESTDIR="opsuser-umask-check-dir-$$"
 # sudo -iu starts a genuine login shell for opsuser, reading whatever
 # startup file(s) a real new login session would -- this is a functional
 # test of persistence, not a text grep for a specific file/line.
-output=$(sudo -iu opsuser bash -lc "
-  rm -f \"\$HOME/$TESTFILE\"
-  rm -rf \"\$HOME/$TESTDIR\"
-  touch \"\$HOME/$TESTFILE\"
-  mkdir \"\$HOME/$TESTDIR\"
-  stat -c '%a' \"\$HOME/$TESTFILE\"
-  stat -c '%a' \"\$HOME/$TESTDIR\"
-" 2>/dev/null)
-
+output=$(sudo -iu opsuser <<'UMASK_CHECK'
+set -e
+cd "$HOME"
+testfile="umask-file-$$"
+testdir="umask-dir-$$"
+trap 'rm -f "$testfile"; rmdir "$testdir"' EXIT
+touch "$testfile"
+mkdir "$testdir"
+stat -c '%a' "$testfile" "$testdir"
+UMASK_CHECK
+)
 file_mode=$(echo "$output" | sed -n '1p')
 dir_mode=$(echo "$output" | sed -n '2p')
-
-sudo -iu opsuser bash -lc "rm -f \"\$HOME/$TESTFILE\"; rm -rf \"\$HOME/$TESTDIR\"" 2>/dev/null || true
 
 if [ "$file_mode" != "640" ]; then
   echo "FAIL: a fresh login shell for opsuser created a file with mode '$file_mode', expected '640'"
@@ -40,4 +42,5 @@ fi
 
 echo "PASS: opsuser's persistent umask produces 640 files and 750 directories with no chmod involved"
 exit 0
+GRADER_ROOT
 ASTRONA_STUDENT_SCRIPT

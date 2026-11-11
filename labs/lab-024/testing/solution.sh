@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+sudo -H -u candidate bash <<'CANDIDATE_SOLUTION'
 set -euo pipefail
 cd /home/candidate/cargo
 mkdir -p archive/2026/q1
@@ -9,3 +10,4 @@ ln -s crew.txt crew-soft.txt
 rm -r scratch
 sudo chgrp -R loaders crates
 
+CANDIDATE_SOLUTION

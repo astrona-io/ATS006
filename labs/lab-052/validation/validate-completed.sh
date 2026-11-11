@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Match the account used by astrona ssh, including its home and permissions.
 sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 set -u
 
 FULL=/backup/full-backup.tar.gz
@@ -65,6 +67,9 @@ if sudo tar -tzf "$INCR" 2>/dev/null | grep -q 'srv/appdata/reports/2026-Q2-summ
   exit 1
 fi
 
+expected=$(mktemp -d)
+trap 'rm -rf "$expected"' EXIT
+sudo tar -xzpf "$FULL" -C "$expected" etc
 # --- Restore #1: full backup alone reflects the pre-change state ---
 
 if [[ ! -d "$RESTORE_FULL/etc" ]] || [[ ! -d "$RESTORE_FULL/srv/appdata" ]]; then
@@ -72,7 +77,7 @@ if [[ ! -d "$RESTORE_FULL/etc" ]] || [[ ! -d "$RESTORE_FULL/srv/appdata" ]]; the
   exit 1
 fi
 
-if ! sudo diff -rq /etc "$RESTORE_FULL/etc" >/dev/null 2>&1; then
+if ! sudo diff -rq "$expected/etc" "$RESTORE_FULL/etc" >/dev/null 2>&1; then
   echo "FAIL: sudo diff -r /etc $RESTORE_FULL/etc found differences -- full restore of /etc is not correct"
   exit 1
 fi
@@ -92,6 +97,7 @@ if [[ -e "$RESTORE_FULL/srv/appdata/cache" ]]; then
   exit 1
 fi
 
+sudo tar -xzpf "$INCR" -C "$expected" etc
 # --- Restore #2: full + incremental layered reflects the post-change state ---
 
 if [[ ! -d "$RESTORE_INCR/etc" ]] || [[ ! -d "$RESTORE_INCR/srv/appdata" ]]; then
@@ -99,7 +105,7 @@ if [[ ! -d "$RESTORE_INCR/etc" ]] || [[ ! -d "$RESTORE_INCR/srv/appdata" ]]; the
   exit 1
 fi
 
-if ! sudo diff -rq /etc "$RESTORE_INCR/etc" >/dev/null 2>&1; then
+if ! sudo diff -rq "$expected/etc" "$RESTORE_INCR/etc" >/dev/null 2>&1; then
   echo "FAIL: sudo diff -r /etc $RESTORE_INCR/etc found differences -- layered restore of /etc is not correct"
   exit 1
 fi
@@ -131,4 +137,5 @@ fi
 
 echo "PASS: full+incremental backup strategy correct, cache excluded, permissions preserved, both restores verified"
 exit 0
+GRADER_ROOT
 ASTRONA_STUDENT_SCRIPT
