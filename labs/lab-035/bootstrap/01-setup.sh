@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap for lab-035: installs the manual pages, vim and nano, and creates the candidate user with a half-filled flight plan.
 # It sets up the starting state only, never the graded result.
 set -eu
@@ -26,3 +28,4 @@ fuel=PLACEHOLDER
 route=PLACEHOLDER
 checked=no
 EOF
+ASTRONA_STUDENT_SCRIPT

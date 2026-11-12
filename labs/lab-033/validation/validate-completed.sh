@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 BASHRC="$HOME/.bashrc"
@@ -55,3 +57,4 @@ fi
 
 echo "PASS: ll/rm/myip are persisted and functional, non-interactive shells bypass the alias, and the artifact was removed with the real rm"
 exit 0
+ASTRONA_STUDENT_SCRIPT

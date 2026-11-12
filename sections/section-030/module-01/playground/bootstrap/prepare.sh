@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Searching and Rewriting Text with grep and sed
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -36,3 +38,4 @@ service stopped
 EOF
 
 echo "[playground] ready. Try:  grep -c ' 500 ' ~/logs/access.log   sed -E 's/password=[^ ]+/password=REDACTED/' ~/logs/app.log"
+ASTRONA_STUDENT_SCRIPT

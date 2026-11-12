@@ -57,3 +57,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 A service, a scheduled job or a program started by a script only sees what was exported into the environment it was started from. A variable that is set correctly but never exported does not exist from that program's point of view. Knowing the rule turns "but I set it!" from a mystery into a two-second fix.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Environment Variable Scope Lab](../../../labs/lab-012/docs/question.md): Write a script that keeps one variable local and exports another to its child processes; Build a new variable from an existing exported one without changing ~/.bashrc.
+- [Shell Semantics Integration Capstone Lab](../../../labs/lab-010/docs/question.md): Export one variable to a child process while keeping another one local to the script; Capture a child's stdout, stderr, both streams together and its exit code in separate files; Use an argument, an if test and a for loop to write a summary, then exit with the program's own exit code.

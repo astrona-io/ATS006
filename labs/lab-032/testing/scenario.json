@@ -1,0 +1,10 @@
+{
+  "initial_failures": {
+    "default/verify-history-config-and-recovery": "missing a required setting matching"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ]
+}

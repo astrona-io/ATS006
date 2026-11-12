@@ -12,7 +12,7 @@ ssh data-002 'echo connected'
 connected
 ```
 
-Key-based access to `data-002` is already set up, so no password prompt appears. `rsync -e ssh` needs this to run without asking for a password.
+The destination directories are owned by `student`, and key-based access to `data-002` is already set up, so no password prompt appears. `rsync -e ssh` needs this to run without asking for a password.
 
 ## Step 2: Preview the mirroring sync with a dry run
 

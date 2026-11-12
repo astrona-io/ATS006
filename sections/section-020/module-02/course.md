@@ -60,3 +60,9 @@ Read the parts in order. The mission comes right after the part that teaches its
 ## Why this matters
 
 A wrong `umask` creates wrong permissions silently, on every file, every day, until someone notices. A mask that is too loose leaves new files readable by everyone. A mask that is too strict breaks a team's shared work. The exam asks you to set a persistent `umask` from a required result, so you must be able to work the numbers both ways.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [umask Default Permissions Lab](../../../labs/lab-022/docs/question.md): Predict the mode of a new file and a new directory from the current umask; Set a persistent umask so new files come out 640 and new directories 750 at every login.
+- [Permissions & File Triage Capstone Lab](../../../labs/lab-020/docs/question.md): Give a user a persistent umask that makes 640 files and 750 directories; Set the setgid, owner-only and sticky permissions on a shared team workspace; Triage a folder with find by age, size and permission, in the order given; Stage a release with copy, move, hard and symbolic links, remove and group ownership.

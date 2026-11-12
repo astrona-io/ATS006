@@ -1,0 +1,10 @@
+{
+  "initial_failures": {
+    "default/verify-space-reclaimed": "space was not reclaimed"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ]
+}

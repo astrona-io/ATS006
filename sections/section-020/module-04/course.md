@@ -58,3 +58,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 A copy that lost its mode, a symbolic link that points at nothing, or a shared folder owned by the wrong team is a quiet fault. Nothing crashes. The wrong person just cannot read a file, or a backup holds the wrong version. These commands are small, and a careful administrator uses them with the right option every time.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [File Operations, Links and Ownership Lab](../../../labs/lab-024/docs/question.md): Copy a file so that it keeps its mode and modification time; Make a hard link and a relative symbolic link and tell them apart; Hand a whole directory tree to another group.
+- [Permissions & File Triage Capstone Lab](../../../labs/lab-020/docs/question.md): Give a user a persistent umask that makes 640 files and 750 directories; Set the setgid, owner-only and sticky permissions on a shared team workspace; Triage a folder with find by age, size and permission, in the order given; Stage a release with copy, move, hard and symbolic links, remove and group ownership.

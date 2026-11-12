@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the exact, ordered sequence of commit messages reachable from
 # main on the shared upstream, oldest to newest -- the single strictest
 # check that the whole capstone story landed in the right order.
@@ -26,3 +28,4 @@ fi
 
 echo "PASS: main's commit history matches the expected 5-commit sequence exactly"
 exit 0
+ASTRONA_STUDENT_SCRIPT

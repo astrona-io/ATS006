@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 set -u
 
 FULL=/backup/services-full.tar.gz
@@ -44,3 +48,5 @@ fi
 
 echo "PASS: incremental backup is a true increment: smaller than full, captures real changes, skips unchanged data"
 exit 0
+GRADER_ROOT
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: installs the /usr/local/bin/service-probe diagnostic program
 # and prepares a writable /var/log/monitor directory. The lab's own task
 # is to build the /opt/monitor/run-check.sh wrapper around this probe --
@@ -27,3 +29,4 @@ sudo chmod +x /usr/local/bin/service-probe
 
 sudo mkdir -p /var/log/monitor
 sudo chown "$(whoami)" /var/log/monitor
+ASTRONA_STUDENT_SCRIPT

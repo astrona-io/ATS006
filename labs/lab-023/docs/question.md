@@ -12,3 +12,14 @@ Astronaut, the backup compartment `/var/backup/backup-015` has turned into a jun
 Each later step must only act on the files still left in the top level of `/var/backup/backup-015` after the earlier steps ran. A file that fits more than one rule goes where the earliest matching step puts it.
 
 The grader checks that no file older than the cutoff is left anywhere under the folder, that each destination holds exactly the files that belong there, and that the files no rule matches stay in the top level.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-03](../../../sections/section-020/module-03/course.md).
+
+The grader checks:
+
+- Confirms old files were deleted, and remaining files were correctly sorted into small/, large/, and compromised/.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

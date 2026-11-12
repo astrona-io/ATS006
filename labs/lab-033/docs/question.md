@@ -11,3 +11,14 @@ Astronaut, you want a few nicknames for orders at your bridge console, and one o
 Then, without removing or disabling the `rm` safety alias, use the real, non-interactive `rm` exactly once to delete `~/lab-artifact-to-delete.txt`.
 
 The aliases must only live in interactive shells: a non-interactive shell (such as `bash -c 'type rm'`) must still see the real `rm` program.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-03](../../../sections/section-030/module-03/course.md).
+
+The grader checks:
+
+- Confirms ll/rm/myip are persisted and functional, non-interactive shells don't see them, and the artifact file was removed with the real rm.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

@@ -8,3 +8,14 @@ Astronaut, a web server on this ship has been probed by a scanning bot. Mission 
 2. Do not change `nginx.log` itself. It must keep all of its lines.
 3. In `server.log`, replace every line that starts with `container.web`, ends with `24h`, and has the word `Running` anywhere in between, with the exact literal text: `SENSITIVE LINE REMOVED`.
 4. Every other line in `server.log` must stay exactly as it is, in the same order.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-030/module-01/course.md).
+
+The grader checks:
+
+- Confirms nginx.log.extracted contains exactly the matching lines and server.log was redacted correctly.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

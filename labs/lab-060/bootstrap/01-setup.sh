@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: formats and mounts the extraDisk at /var/log/audit-svc,
 # seeds three legitimate rotated log files, and installs+starts an
 # audit-svc.service that opens a log file, immediately unlinks it, and
@@ -56,7 +58,7 @@ SEED_MARKER=/var/lib/audit-svc/.seeded
 
 : > "$LOGFILE"
 exec 9<>"$LOGFILE"
-rm -f "$LOGFILE"
+if [ ! -e "$SEED_MARKER" ]; then rm -f "$LOGFILE"; fi
 
 if [ ! -e "$SEED_MARKER" ]; then
   touch "$SEED_MARKER"
@@ -99,3 +101,4 @@ fi
 # /backup/audit-svc-snap2 are the graded task, created by the student's
 # own rsync commands.
 sudo mkdir -p /backup
+ASTRONA_STUDENT_SCRIPT

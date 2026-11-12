@@ -61,3 +61,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Turning a loose script into a supervised service is one of the most common jobs a Linux administrator does, and the exam asks for it directly. A unit file with the wrong `Restart=` value, or an `After=` line that does not really pull in the network, looks fine at a glance. It fails the first time the network is slow at boot. Knowing what each line does is what keeps your stations staffed.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [systemd Unit Creation Lab](../../../labs/lab-071/docs/question.md): Create a non-root system user and give it the log directory; Write a unit file that runs a script as that user and restarts it on failure; Enable and start the service so it runs now and after a reboot.
+- [Service Configuration Capstone Lab](../../../labs/lab-070/docs/question.md): Wrap a script as a systemd service that runs as its own non-root user; Change the restart delay with a drop-in override, not by editing the unit file; Issue a key and a self-signed certificate with a SAN and prove they match.

@@ -50,7 +50,7 @@ questions:
         explanation: "`on-failure` only restarts after a non-zero exit code or certain signals."
       - id: b
         text: "It stays stopped, because a clean deliberate stop is not a failure."
-        explanation: "Correct. `Restart=always` would restart it, but `on-failure` does not."
+        explanation: "Correct. An explicit systemctl stop suppresses automatic restart, including Restart=always."
       - id: c
         text: "It is disabled for the next boot as well."
         explanation: "Stopping a unit does not change whether it is enabled."
@@ -399,3 +399,30 @@ questions:
     correct_option: c
     explanation: "The modulus is unique to each RSA key pair. If the hashes differ, the key was usually generated again after the certificate, so make the certificate again from the current key."
 
+  - id: ats006-070-private-ca
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: Verify a private CA without disabling TLS checks
+    source_readings:
+    - sections/section-070/module-04/course-01-verify-and-renew.md
+    prompt: "The HTTPS certificate has the correct hostname and valid dates, but curl rejects its issuer.\
+      \ The service uses your lab\u2019s private CA, whose certificate you obtained through the trusted\
+      \ lab setup. Which command tests the service while retaining certificate verification?"
+    options:
+    - id: a
+      text: curl --insecure https://status.lab.internal:8443
+      explanation: This bypasses certificate verification.
+    - id: b
+      text: curl --cert lab-ca.crt https://status.lab.internal:8443
+      explanation: This option supplies a client certificate rather than a CA trust anchor.
+    - id: c
+      text: curl --cacert lab-ca.crt https://status.lab.internal:8443
+      explanation: This uses the supplied CA certificate to verify the server and retains hostname
+        checks.
+    - id: d
+      text: 'curl -H "Host: status.lab.internal" https://127.0.0.1:8443'
+      explanation: An HTTP Host header does not establish trust in the certificate issuer or change
+        the TLS URL hostname.
+    correct_option: c
+    explanation: Use --cacert with the trusted CA certificate. A successful request with --insecure
+      does not prove trust.

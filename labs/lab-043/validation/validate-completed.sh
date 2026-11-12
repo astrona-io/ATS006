@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 REPO=/home/candidate/repositories/upstream-app
@@ -65,3 +67,4 @@ fi
 
 echo "PASS: fix-timeout-value was rebased cleanly onto the simulated upstream commit"
 exit 0
+ASTRONA_STUDENT_SCRIPT

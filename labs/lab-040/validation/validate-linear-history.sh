@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the reconciliation was done with a rebase, not a merge: main's
 # final history on the shared upstream must contain zero merge commits
 # (every commit has exactly one parent), proving the retry-limit commit
@@ -23,3 +25,4 @@ fi
 
 echo "PASS: main's history is fully linear with no merge commits"
 exit 0
+ASTRONA_STUDENT_SCRIPT

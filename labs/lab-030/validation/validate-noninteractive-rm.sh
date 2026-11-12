@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 noninteractive_rm=$(bash -c 'type rm' 2>/dev/null)
@@ -15,3 +17,4 @@ fi
 
 echo "PASS: a non-interactive shell resolves rm to the real binary, not the alias"
 exit 0
+ASTRONA_STUDENT_SCRIPT

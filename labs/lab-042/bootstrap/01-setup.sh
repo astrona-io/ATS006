@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: builds the source "auto-verifier" repository at
 # /repositories/auto-verifier with a main branch and three candidate
 # branches (dev4, dev5, dev6), each setting a different
@@ -54,3 +56,4 @@ sed -i 's/user_registration_level: closed/user_registration_level: waitlist/' "$
 git -C "$REPO" commit -q -am "dev6: waitlist registration mode"
 
 git -C "$REPO" checkout -q main
+ASTRONA_STUDENT_SCRIPT

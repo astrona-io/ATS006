@@ -59,3 +59,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Archives move data between machines, teams and years. If a conversion drops a file or quietly ignores a compression request, nobody notices until the day the data is needed. The habits in this module (list before you trust, sort before you compare, never write to the original) protect you on the exam and on every real server.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Archive Conversion & Verification Lab](../../../labs/lab-051/docs/question.md): Convert a bzip2 tar archive to gzip at the best compression level without touching the original; Prove both archives hold the same files with sorted listings.
+- [Archiving & Backup Capstone Lab](../../../labs/lab-050/docs/question.md): Convert a bzip2 archive to gzip at the best level and prove both hold the same files; Take a full and a true incremental tar backup with a snapshot file and an exclude; Restore the full backup alone and with the increment, and prove both restores.

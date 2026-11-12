@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 # Confirms probe.err contains only the probe's stderr content (the
 # PROBE_DIAG line), with no stdout leaked in and no PROBE_WARN line --
 # the latter would only appear if CHECK_ID was incorrectly exported.
@@ -37,3 +41,5 @@ fi
 
 echo "PASS: probe.err contains only the probe's stderr content, with no CHECK_ID leak"
 exit 0
+GRADER_ROOT
+ASTRONA_STUDENT_SCRIPT

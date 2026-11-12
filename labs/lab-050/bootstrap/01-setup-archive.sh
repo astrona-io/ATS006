@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap (Part 1): seeds /exports/reports-2026-08.tar.bz2 with a small
 # multi-file dataset. Does NOT create the gzip archive or the listing
 # files -- that is the graded task.
 
 set -eu
+
+missing=()
+for package in bzip2; do
+  dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q 'install ok installed' || missing+=("$package")
+done
+if [ "${#missing[@]}" -gt 0 ]; then
+  sudo apt-get update -y
+  sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing[@]}"
+fi
 
 sudo mkdir -p /exports
 
@@ -35,3 +46,4 @@ rm -rf "$STAGE"
 # Content baseline so validation can prove the original was never modified.
 sudo mkdir -p /var/lib/astrona-lab
 sha256sum /exports/reports-2026-08.tar.bz2 | sudo tee /var/lib/astrona-lab/reports-2026-08.tar.bz2.sha256 > /dev/null
+ASTRONA_STUDENT_SCRIPT

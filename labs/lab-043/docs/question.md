@@ -19,3 +19,14 @@ retries: 3
 4. Using Git's history and diff tools, show exactly what `fix-timeout-value` changed compared with the commit it branched from.
 5. Simulate the upstream moving on without you: in a separate throwaway clone of `/repositories/upstream-app.git`, change `retries: 3` to `retries: 5` in `config.yaml` directly on its default branch, commit with the message `bump retry count for flaky network`, and push it to `origin`'s default branch. Delete the throwaway clone afterwards.
 6. Back in `/home/candidate/repositories/upstream-app`, fetch that change and bring `fix-timeout-value` up to date with the new upstream tip using a **rebase**. Your focused commit must end up replayed directly on top of the upstream commit, with no merge commit.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-03](../../../sections/section-040/module-03/course.md).
+
+The grader checks:
+
+- Confirms the topic branch was rebased cleanly onto the simulated upstream commit.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

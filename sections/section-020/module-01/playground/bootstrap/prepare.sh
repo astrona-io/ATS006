@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Permission Bits and Special Bits
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -31,3 +33,4 @@ sudo chgrp crew /srv/chmod-practice/shared
 sudo chmod 0775 /srv/chmod-practice/shared
 
 echo "[playground] ready. Try:  ls -l /srv/chmod-practice   chmod 755 /srv/chmod-practice/run-report.sh"
+ASTRONA_STUDENT_SCRIPT

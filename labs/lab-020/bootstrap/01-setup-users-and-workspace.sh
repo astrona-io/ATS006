@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: creates the "ops" group and "opsuser" account with NO
 # persistent umask override yet, and pre-stages the three shared-workspace
 # targets with intentionally WRONG/incomplete permissions. The persistent
@@ -41,3 +43,4 @@ sudo chmod 664 /srv/teamspace/bin/deploy.sh
 # other's files.
 sudo mkdir -p /srv/teamspace/dropbox
 sudo chmod 777 /srv/teamspace/dropbox
+ASTRONA_STUDENT_SCRIPT

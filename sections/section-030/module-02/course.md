@@ -58,3 +58,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Recalling a command is faster and safer than retyping it, and the exam rewards speed and accuracy. History is also evidence: during an incident it tells you exactly what was run, in which order, and, with timestamps, when. Setting it up well once pays off on every shift.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Shell History Recall Lab](../../../labs/lab-032/docs/question.md): Persist history size, ignore rules and timestamps in ~/.bashrc; Recover an exact earlier command and the command that ran just before it.
+- [Everyday Shell Craft Capstone Lab](../../../labs/lab-030/docs/question.md): Extract and redact incident log lines with grep and sed, and recover exact commands from shell history; Persist aliases, and build reports with sort, uniq, cut and awk; Edit a file in an editor and look up facts in the manual pages.

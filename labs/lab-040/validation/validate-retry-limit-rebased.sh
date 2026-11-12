@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the final main tip on the shared upstream contains BOTH the
 # student's retry-limit bump and the simulated teammate's timeout
 # commit together -- proof the rebase actually reconciled the two lines
@@ -37,3 +39,4 @@ fi
 
 echo "PASS: main's app.conf reflects both the retry-limit bump and the simulated teammate's timeout commit"
 exit 0
+ASTRONA_STUDENT_SCRIPT

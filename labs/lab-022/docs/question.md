@@ -9,3 +9,14 @@ Astronaut, new crates on this ship come out with the wrong default lock. Set up 
 3. After the change, prove that a new file really comes out `640` and a new directory `750` in a fresh login, without running any `chmod` afterwards.
 
 The grader starts a fresh login shell for `candidate`, creates a file and a directory in the home directory, and checks that they come out `640` and `750`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-02](../../../sections/section-020/module-02/course.md).
+
+The grader checks:
+
+- Confirms a fresh login shell for candidate produces 640 files and 750 directories with no chmod involved.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

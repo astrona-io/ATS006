@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the TLS private key and self-signed certificate for
 # healthcheck.internal.local exist with the correct properties.
 
@@ -19,7 +21,7 @@ if [[ "$key_perms" != "600" ]]; then
   exit 1
 fi
 
-key_bits=$(openssl rsa -in "$KEY" -noout -text 2>/dev/null | grep -m1 "Private-Key" | grep -oE '[0-9]+')
+key_bits=$(openssl rsa -in "$KEY" -noout -text 2>/dev/null | sed -nE 's/.*Private-Key: \(([0-9]+) bit.*/\1/p')
 if [[ "$key_bits" != "2048" ]]; then
   echo "FAIL: private key is ${key_bits:-unknown} bits, expected 2048"
   exit 1
@@ -59,3 +61,4 @@ fi
 
 echo "PASS: healthcheck.key and healthcheck.crt are correctly generated"
 exit 0
+ASTRONA_STUDENT_SCRIPT

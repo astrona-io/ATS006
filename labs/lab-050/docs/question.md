@@ -26,3 +26,18 @@ This ship also runs a service rooted at `/opt/services`. It has a `data/tmp/` su
 4. Restore the full backup **alone** into `/restore/services-full`.
 5. Restore the full backup **and then layer the incremental backup on top of it** into `/restore/services-current`, so it shows the state after the changes in step 2.
 6. Prove both restores are correct with an explicit comparison, not just a clean exit code. The restored `config/secrets.conf` must keep the mode and owner of the live file.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-050/module-01/course.md), [module-02](../../../sections/section-050/module-02/course.md).
+
+The grader checks:
+
+- Confirms reports-2026-08.tar.gz was created at gzip level 9, both sorted listings match, and the original bz2 archive is untouched.
+- Confirms the full services backup excludes data/tmp and preserves permissions.
+- Confirms the incremental backup is a true increment: smaller than the full backup, captures the real changes, and skips the unchanged ledger file.
+- Confirms the full-only restore reflects the pre-change state with correct permissions and no excluded content.
+- Confirms the full+incremental layered restore reflects the post-change state.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

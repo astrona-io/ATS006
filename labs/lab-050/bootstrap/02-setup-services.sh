@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap (Part 2): seeds /opt/services with a config file, a
 # deliberately restricted-permission secrets file (to test -p
 # preservation), a stable data file that never changes during the lab
@@ -30,3 +32,4 @@ EOF
 
 echo "cached-render-$$" | sudo tee /opt/services/data/tmp/render-cache-1.tmp > /dev/null
 echo "cached-render-$$" | sudo tee /opt/services/data/tmp/render-cache-2.tmp > /dev/null
+ASTRONA_STUDENT_SCRIPT

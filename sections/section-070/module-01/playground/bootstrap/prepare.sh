@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Creating a systemd Service
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -25,3 +27,4 @@ sudo chmod 0755 /usr/local/bin/collector.sh
 sudo touch /var/log/collector.log
 
 echo "[playground] ready. Try:  sudo /usr/local/bin/collector.sh   (stop it with Ctrl+C)"
+ASTRONA_STUDENT_SCRIPT

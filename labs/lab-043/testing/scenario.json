@@ -1,0 +1,28 @@
+{
+  "initial_failures": {
+    "default/verify-upstream-reconciliation": "no cloned repository found"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "missing-required-output",
+      "apply": [
+        {
+          "script": "testing/missing-output.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-upstream-reconciliation": "no cloned repository found"
+      },
+      "restore": [
+        {
+          "script": "testing/restore-output.sh"
+        }
+      ]
+    }
+  ]
+}

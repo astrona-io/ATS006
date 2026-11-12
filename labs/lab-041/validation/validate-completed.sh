@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 REPO=/home/candidate/projects/log-parser
@@ -71,3 +73,4 @@ fi
 
 echo "PASS: log-parser history, .gitignore, and origin remote all match the expected end-state"
 exit 0
+ASTRONA_STUDENT_SCRIPT

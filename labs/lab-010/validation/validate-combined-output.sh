@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 # Confirms probe.combined captured both stdout and stderr content,
 # proving the wrapper used the correct "> file 2>&1" ordering.
 
@@ -31,3 +35,5 @@ fi
 
 echo "PASS: probe.combined contains both stdout and stderr content"
 exit 0
+GRADER_ROOT
+ASTRONA_STUDENT_SCRIPT

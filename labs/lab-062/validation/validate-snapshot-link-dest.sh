@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 # Confirms /backup/snapshots/snap2 exists as a complete, browsable copy
 # and that unchanged files were hardlinked (not recopied) against the
 # --link-dest reference at /backup/appdata.
@@ -22,3 +26,5 @@ done
 
 echo "PASS: $SNAP is a complete snapshot with files hardlinked against the --link-dest reference"
 exit 0
+GRADER_ROOT
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms that env-canary specifically (feature_flag: enabled) was
 # merged into main on the shared upstream, and not env-staging/env-prod.
 
@@ -35,3 +37,4 @@ fi
 
 echo "PASS: env-canary was merged into main and app.conf shows feature_flag: enabled"
 exit 0
+ASTRONA_STUDENT_SCRIPT

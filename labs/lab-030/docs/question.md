@@ -24,3 +24,21 @@ Astronaut, you are the incident responder handing a compromised web server over 
 7. Create `~/handover-facts.txt` with two lines. Find both facts in the manual pages, not from memory.
    - `sort-numeric=<option>`: the option of `sort` that compares by numeric value, with the dash, for example `-x`.
    - `fstab-file-section=<N>`: the number of the manual section that describes the **file format** of `/etc/fstab`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-01](../../../sections/section-030/module-01/course.md), [module-02](../../../sections/section-030/module-02/course.md), [module-03](../../../sections/section-030/module-03/course.md), [module-04](../../../sections/section-030/module-04/course.md), [module-05](../../../sections/section-030/module-05/course.md).
+
+The grader checks:
+
+- Confirms attacker-requests.log contains exactly the matching lines and access.log is untouched.
+- Confirms service.log was redacted exactly where required and nowhere else.
+- Confirms the ufw blocking command and the command run right after it were recovered correctly.
+- Confirms ll, rm, and report aliases are persisted and functional in ~/.bashrc.
+- Confirms a non-interactive shell never sees the rm safety alias.
+- Confirms the report alias actually runs and prints the correct redacted-line count.
+- Confirms top-sources.txt and attacker-statuses.txt hold the right counts and codes.
+- Confirms handover.conf was edited exactly as required and handover-facts.txt holds the two manual-page facts.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

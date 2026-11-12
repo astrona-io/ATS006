@@ -1,0 +1,31 @@
+{
+  "initial_failures": {
+    "default/verify-service-budget": "FAIL: MemoryMax must be 128 MiB"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "removed-limit",
+      "apply": [
+        {
+          "script": "testing/unlimited.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-service-budget": "FAIL: MemoryMax must be 128 MiB"
+      },
+      "restore": [
+        {
+          "script": "testing/restore.sh"
+        }
+      ]
+    }
+  ],
+  "reboot": [
+    "default"
+  ]
+}

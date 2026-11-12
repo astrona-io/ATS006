@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms the base unit file at /etc/systemd/system/healthcheck.service has
 # the correct directives, and does NOT itself set RestartSec (that value
 # must live only in the Part 2 drop-in).
@@ -56,3 +58,4 @@ fi
 
 echo "PASS: base healthcheck.service unit is correctly authored"
 exit 0
+ASTRONA_STUDENT_SCRIPT

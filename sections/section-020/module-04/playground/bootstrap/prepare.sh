@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Files, Links and Ownership
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -25,3 +27,4 @@ echo "crate two" | as_learner tee "$LEARNER_HOME/cargo/crates/two.txt" >/dev/nul
 as_learner touch -d "2026-01-15 10:00" "$LEARNER_HOME/cargo/manifest.txt"
 
 echo "[playground] ready. Try:  ls -la ~/cargo   ln ~/cargo/crew.txt ~/cargo/crew-hard.txt"
+ASTRONA_STUDENT_SCRIPT

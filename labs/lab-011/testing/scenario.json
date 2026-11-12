@@ -1,0 +1,28 @@
+{
+  "initial_failures": {
+    "default/verify-redirection-and-exit-code": "/var/output-generator(/1.out is missing or empty| does not exist)"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "missing-required-output",
+      "apply": [
+        {
+          "script": "testing/missing-output.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-redirection-and-exit-code": "/var/output-generator(/1.out is missing or empty| does not exist)"
+      },
+      "restore": [
+        {
+          "script": "testing/restore-output.sh"
+        }
+      ]
+    }
+  ]
+}

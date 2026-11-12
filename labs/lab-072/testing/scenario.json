@@ -1,0 +1,13 @@
+{
+  "initial_failures": {
+    "default/verify-nginx-drop-in-override": "(drop-in|override.conf)"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "reboot": [
+    "default"
+  ]
+}

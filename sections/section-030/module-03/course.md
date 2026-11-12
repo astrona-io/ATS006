@@ -58,3 +58,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Good aliases save thousands of keystrokes and add safety, such as a confirmation before every delete. Bad ones make a familiar command unpredictable for you and for the next person who inherits your shell. Knowing exactly where an alias works, and where it does not, also explains a whole class of "it works at my prompt but not in the script" problems.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Command Aliases Lab](../../../labs/lab-033/docs/question.md): Persist ll, rm and myip aliases for interactive shells; Run the real rm once without removing the safety alias.
+- [Everyday Shell Craft Capstone Lab](../../../labs/lab-030/docs/question.md): Extract and redact incident log lines with grep and sed, and recover exact commands from shell history; Persist aliases, and build reports with sort, uniq, cut and awk; Edit a file in an editor and look up facts in the manual pages.

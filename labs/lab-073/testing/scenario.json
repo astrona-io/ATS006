@@ -1,0 +1,44 @@
+{
+  "initial_failures": {
+    "default/verify-ssl-key-cert-csr": "FAIL: private key not found"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "unrelated-csr",
+      "apply": [
+        {
+          "script": "testing/wrong-csr.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-ssl-key-cert-csr": "FAIL: CSR public key does not match"
+      },
+      "restore": [
+        {
+          "script": "testing/solution.sh"
+        }
+      ]
+    },
+    {
+      "name": "wrong-key-size",
+      "apply": [
+        {
+          "script": "testing/wrong-size.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-ssl-key-cert-csr": "FAIL: private key is 3072 bits"
+      },
+      "restore": [
+        {
+          "script": "testing/solution.sh"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 # Confirms /var/log/reporting-app usage has dropped substantially from
 # its near-100% baseline set up by bootstrap.
 
@@ -19,3 +23,5 @@ fi
 
 echo "PASS: $MOUNT usage is down to ${used_pct}% - space reclaimed"
 exit 0
+GRADER_ROOT
+ASTRONA_STUDENT_SCRIPT

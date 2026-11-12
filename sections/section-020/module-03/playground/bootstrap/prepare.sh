@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Finding Files by Age, Size and Permission
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -29,3 +31,4 @@ echo "scratch" > tmp/scratch.tmp
 chmod 0666 tmp/scratch.tmp logs/last-month.log
 '
 echo "[playground] ready. Try:  find /srv/triage -type f -mtime +30   find /srv/triage -size +1M"
+ASTRONA_STUDENT_SCRIPT

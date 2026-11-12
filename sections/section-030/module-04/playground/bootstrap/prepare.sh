@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Comparing and Shaping Text
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -58,3 +60,4 @@ alarm=on
 EOF
 
 echo "[playground] ready. Try:  sort -t, -k4 -n ~/data/crew.csv   diff -u ~/data/settings-old.conf ~/data/settings-new.conf"
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Confirms scripts/.keep was committed to main (using the .keep
 # placeholder convention for an otherwise-empty directory) with the
 # exact expected commit message, and that the commit only touched
@@ -37,3 +39,4 @@ fi
 
 echo "PASS: scripts/.keep committed on main with the exact expected message"
 exit 0
+ASTRONA_STUDENT_SCRIPT

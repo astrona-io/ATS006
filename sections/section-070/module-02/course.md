@@ -60,3 +60,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Changing a packaged service safely is a daily administration job, and the exam asks for it. A hand-edit to the vendor file quietly disappears at the next package upgrade. A drop-in applied the wrong way can add a second start command instead of replacing the first, and the service half-works with no clear error. Knowing exactly how the note sits on top of the card keeps your change in place.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [systemd Unit Override Lab](../../../labs/lab-072/docs/question.md): Change a packaged service's restart policy and environment with a drop-in override; Prove the merged configuration with systemctl show while the vendor unit file stays unchanged.
+- [Service Configuration Capstone Lab](../../../labs/lab-070/docs/question.md): Wrap a script as a systemd service that runs as its own non-root user; Change the restart delay with a drop-in override, not by editing the unit file; Issue a key and a self-signed certificate with a SAN and prove they match.

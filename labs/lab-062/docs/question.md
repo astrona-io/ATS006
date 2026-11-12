@@ -18,3 +18,17 @@ The grader checks on `data-002` that:
 - `/backup/appdata/tmp` does not exist.
 - The stale file `/backup/appdata/decommissioned-report.txt` is gone.
 - `/backup/snapshots/snap2` holds `app.conf`, `data1.txt` and `data2.txt`, each with a link count greater than 1.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-02](../../../sections/section-060/module-02/course.md).
+
+The grader checks:
+
+- Confirms /backup/appdata contains an exact mirror of /srv/appdata's real files.
+- Confirms tmp/ was excluded from the mirror entirely.
+- Confirms the pre-existing stale file was removed by the --delete mirroring sync.
+- Confirms a second snapshot exists at /backup/snapshots/snap2 and shares inodes with the mirror via --link-dest.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

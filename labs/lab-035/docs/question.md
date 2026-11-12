@@ -13,3 +13,14 @@ Astronaut, the flight plan `/home/candidate/flightplan.conf` is half filled in. 
    - `ls-sort-by-time=<option>`: the option of `ls` that sorts the listing by modification time, newest first, with the dash, for example `-x`.
 
 The grader checks the exact content of both files.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-05](../../../sections/section-030/module-05/course.md).
+
+The grader checks:
+
+- Checks the exact content of the edited flight plan and of the answers file.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.

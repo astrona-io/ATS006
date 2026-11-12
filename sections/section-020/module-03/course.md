@@ -61,3 +61,9 @@ Read the parts in order. The mission comes right after the part that teaches its
 ## Why this matters
 
 Cleaning up a full backup folder, finding wide-open files after an incident, archiving old logs: these are everyday administration jobs, and the exam asks for them by name. A single wrong prefix (`-3k` instead of `+3k`) or a pass run in the wrong order leaves the machine in a state that looks close but is wrong.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [find Triage by Criteria Lab](../../../labs/lab-023/docs/question.md): Delete files modified before a given date with find; Move files by size and by exact permission into separate folders, in the order given.
+- [Permissions & File Triage Capstone Lab](../../../labs/lab-020/docs/question.md): Give a user a persistent umask that makes 640 files and 750 directories; Set the setgid, owner-only and sticky permissions on a shared team workspace; Triage a folder with find by age, size and permission, in the order given; Stage a release with copy, move, hard and symbolic links, remove and group ownership.

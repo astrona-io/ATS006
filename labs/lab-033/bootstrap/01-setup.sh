@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: pre-stages a file that the student must remove later using
 # the real, non-aliased rm (via the backslash-escape trick) without
 # disabling the rm safety alias for anything else. Bootstrap does not
@@ -7,3 +9,4 @@
 set -eu
 
 echo "temporary artifact -- remove with the real rm, not the aliased one" > "$HOME/lab-artifact-to-delete.txt"
+ASTRONA_STUDENT_SCRIPT

@@ -1,0 +1,28 @@
+{
+  "initial_failures": {
+    "default/verify-wrapper-script": "run-check.sh does not exist"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "missing-required-output",
+      "apply": [
+        {
+          "script": "testing/missing-output.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-wrapper-script": "run-check.sh does not exist"
+      },
+      "restore": [
+        {
+          "script": "testing/restore-output.sh"
+        }
+      ]
+    }
+  ]
+}

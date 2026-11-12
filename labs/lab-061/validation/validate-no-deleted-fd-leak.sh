@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
+# Inspect protected state; user access checks select their target account explicitly.
+sudo -n bash <<'GRADER_ROOT'
 # Confirms no deleted-but-open reporting-app file descriptors remain --
 # either truncated live via /proc/PID/fd or cleared by a service restart.
 
@@ -13,3 +17,5 @@ fi
 
 echo "PASS: no deleted-but-open reporting-app file descriptors remain"
 exit 0
+GRADER_ROOT
+ASTRONA_STUDENT_SCRIPT

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: ensures openssl is installed and creates the empty working
 # directory for the student's key/cert/CSR generation. Does NOT generate
 # any key, certificate, or CSR material -- that is the graded task.
@@ -12,3 +14,4 @@ fi
 
 sudo mkdir -p /opt/tls/internal-web-srv1
 sudo chown "$(whoami)":"$(whoami)" /opt/tls/internal-web-srv1
+ASTRONA_STUDENT_SCRIPT

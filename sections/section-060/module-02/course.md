@@ -59,3 +59,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Keeping two machines in sync, and keeping a history of snapshots you can browse, are everyday jobs. `rsync` does both with one tool. It also has one of the most dangerous options in daily use, `--delete`, so the safe habits in this module protect real data.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [rsync Mirroring & Snapshots Lab](../../../labs/lab-062/docs/question.md): Preview a sync with a dry run, then mirror a directory to another machine over SSH with an exclude and --delete; Take a snapshot with --link-dest that hard-links unchanged files.
+- [Diskspace & Sync Capstone Lab](../../../labs/lab-060/docs/question.md): Find the process holding a deleted file open and reclaim the space without deleting legitimate logs; Back up a directory with rsync and take a hard-linked snapshot with --link-dest.

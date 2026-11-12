@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 report_output=$(bash -ic 'report' 2>/dev/null | tr -d '[:space:]')
@@ -10,3 +12,4 @@ fi
 
 echo "PASS: the report alias runs correctly and prints the right redacted-line count"
 exit 0
+ASTRONA_STUDENT_SCRIPT

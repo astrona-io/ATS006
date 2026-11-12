@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # Bootstrap: stages the unmanaged collector.sh script and its log directory,
 # but does NOT create the "metrics" user, the systemd unit, or fix directory
 # ownership -- those are the graded task the student must perform.
@@ -22,3 +24,4 @@ sudo chmod +x /opt/metrics/collector.sh
 sudo mkdir -p /var/log/metrics-collector
 
 sudo udevadm settle --timeout=30 || true
+ASTRONA_STUDENT_SCRIPT

@@ -59,3 +59,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Reading logs is a large share of every administrator's working day, and on the exam you get no time to scroll and squint. A precise pattern pulls exactly the lines you need out of a wall of text in one command. A careful `sed` rewrite removes sensitive lines without touching anything else. Both skills come back on every real incident call.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [grep & sed Text Processing Lab](../../../labs/lab-031/docs/question.md): Extract only the log lines that match two conditions at once with grep; Replace whole matching lines in place with sed and leave every other line untouched.
+- [Everyday Shell Craft Capstone Lab](../../../labs/lab-030/docs/question.md): Extract and redact incident log lines with grep and sed, and recover exact commands from shell history; Persist aliases, and build reports with sort, uniq, cut and awk; Edit a file in an editor and look up facts in the manual pages.

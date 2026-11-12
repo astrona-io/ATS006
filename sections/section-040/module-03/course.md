@@ -58,3 +58,9 @@ Every command block in the parts runs **inside that virtual machine**, as the us
 ## Why this matters
 
 Shared configuration repositories change while you work on them. An administrator who can isolate a change, see exactly what it does, and replay it on top of the newest upstream keeps the history clean and never overwrites a teammate's work. The exam asks for this full cycle, including the rebase.
+
+<!-- curriculum-practice -->
+## Practice and assessment
+
+- [Git Upstream Reconciliation Lab](../../../labs/lab-043/docs/question.md): Make one focused commit on a topic branch and show exactly what it changed; Fetch new upstream work and rebase the topic branch on top of it.
+- [Git Operations Capstone Lab](../../../labs/lab-040/docs/question.md): Find and merge the one branch with the right setting without checking the candidates out; Push with upstream tracking and rebase a topic branch onto an upstream that moved; Keep main's history linear with fast-forward merges.

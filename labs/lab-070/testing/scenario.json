@@ -1,0 +1,13 @@
+{
+  "initial_failures": {
+    "default/verify-service-unit": "base unit file not found"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "reboot": [
+    "default"
+  ]
+}

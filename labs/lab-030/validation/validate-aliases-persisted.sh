@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
 BASHRC="$HOME/.bashrc"
@@ -32,3 +34,4 @@ fi
 
 echo "PASS: ll, rm, and report aliases are all persisted and defined correctly"
 exit 0
+ASTRONA_STUDENT_SCRIPT

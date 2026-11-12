@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 set -u
 
-# This validation process may run non-interactively, in which case
-# ~/.bashrc (where VARIABLE1 is exported) is never auto-sourced the way
-# it would be for an interactive login session. Source it explicitly so
-# VARIABLE1 is present in this shell's environment before we exec the
-# student's script, exactly as it would be for a real interactive run.
-if [ -z "${VARIABLE1:-}" ] && [ -f "$HOME/.bashrc" ]; then
-  # shellcheck disable=SC1090
-  source "$HOME/.bashrc" 2>/dev/null || true
-fi
+# Read the supplied export through the same interactive startup path as the learner.
+VARIABLE1=$(bash -ic 'printf "%s" "$VARIABLE1"' 2>/dev/null)
+export VARIABLE1
 
 SCRIPT=/opt/course/4/script.sh
 
@@ -70,3 +66,4 @@ fi
 
 echo "PASS: script.sh defines VARIABLE2 as shell-local and VARIABLE3 as exported, with correct output and untouched .bashrc"
 exit 0
+ASTRONA_STUDENT_SCRIPT

@@ -1,0 +1,10 @@
+{
+  "initial_failures": {
+    "default/verify-umask-persistent": "fresh login shell for candidate created a file with mode"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ]
+}

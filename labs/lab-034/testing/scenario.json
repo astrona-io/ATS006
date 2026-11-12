@@ -1,0 +1,28 @@
+{
+  "initial_failures": {
+    "default/verify-text-reports": "/home/candidate/report( does not exist|/by-hours.txt is missing or empty)"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "missing-required-output",
+      "apply": [
+        {
+          "script": "testing/missing-output.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-text-reports": "/home/candidate/report( does not exist|/by-hours.txt is missing or empty)"
+      },
+      "restore": [
+        {
+          "script": "testing/restore-output.sh"
+        }
+      ]
+    }
+  ]
+}

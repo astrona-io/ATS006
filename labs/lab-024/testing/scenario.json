@@ -1,0 +1,28 @@
+{
+  "initial_failures": {
+    "default/verify-file-operations": "archive/2026/q1 does not exist"
+  },
+  "solution": [
+    {
+      "script": "testing/solution.sh"
+    }
+  ],
+  "negative": [
+    {
+      "name": "missing-required-output",
+      "apply": [
+        {
+          "script": "testing/missing-output.sh"
+        }
+      ],
+      "failures": {
+        "default/verify-file-operations": "archive/2026/q1 does not exist"
+      },
+      "restore": [
+        {
+          "script": "testing/restore-output.sh"
+        }
+      ]
+    }
+  ]
+}

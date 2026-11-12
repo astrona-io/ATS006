@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Match the account used by astrona ssh, including its home and permissions.
+sudo -H -u student bash <<'ASTRONA_STUDENT_SCRIPT'
 # OS preparation for PLAYGROUND - Overriding a systemd Unit
 # Runs once when the environment comes up. It seeds a small practice scene.
 # There is no task and no grading: poke at it freely.
@@ -15,6 +17,7 @@ as_learner() {
 }
 
 # --- packages the module uses -----------------------------------------------
+sudo apt-get update -y
 for package in nginx; do
     dpkg -s "$package" >/dev/null 2>&1 || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "$package"
 done
@@ -22,3 +25,4 @@ done
 sudo systemctl enable --now nginx
 
 echo "[playground] ready. Try:  systemctl cat nginx   sudo systemctl edit nginx"
+ASTRONA_STUDENT_SCRIPT

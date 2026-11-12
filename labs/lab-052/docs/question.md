@@ -14,3 +14,14 @@ Astronaut, this training ship carries two kinds of cargo worth protecting: its c
 4. Restore the full backup **alone** into `/restore/full`.
 5. Restore the full backup **and then layer the incremental backup on top of it** into `/restore/incremental`, so it shows the state after the changes in step 2.
 6. Prove with an explicit comparison (not just a clean exit code) that both restores are correct. The restored `etc/` in both directories must match the live `/etc`, and the restored `etc/shadow` must keep the mode and owner of the live `/etc/shadow`.
+<!-- curriculum-links -->
+
+## Related lessons and assessment
+
+Read [module-02](../../../sections/section-050/module-02/course.md).
+
+The grader checks:
+
+- Confirms the full backup excludes cache and preserves permissions, the incremental backup captures only real changes, and both restores reproduce the correct content.
+
+Use the inspection commands in the solution to check your work. Submit when you have finished; submission ends this environment.
